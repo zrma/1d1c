@@ -78,13 +78,13 @@ func diffPos(s1, s2 string, length int) (target int, diff bool) {
 }
 
 func palindromeIndex(s string) int32 {
-	l := len(s)
-	if l < 2 {
+	length := len(s)
+	if length < 2 {
 		return -1
 	}
 
 	re := str.Reverse(s)
-	pos, diff := diffPos(s, re, l)
+	pos, diff := diffPos(s, re, length)
 	if !diff {
 		// 만약 이미 회문이라면 더 이상 제거할 문자가 없다
 		return -1

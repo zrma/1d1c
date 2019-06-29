@@ -30,13 +30,13 @@ func newStudent(firstName, lastName string, identification int, scores []int) *s
 }
 
 func (s student) calculate() string {
-	l := len(s.testScores)
+	length := len(s.testScores)
 	sum := 0
 	for _, s := range s.testScores {
 		sum += s
 	}
 
-	avr := sum / l
+	avr := sum / length
 	switch {
 	case avr >= 90:
 		return "O"

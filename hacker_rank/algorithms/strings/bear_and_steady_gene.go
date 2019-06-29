@@ -42,15 +42,15 @@ func calculators(l int) (increaseFunc, decreaseFunc, validateFunc) {
 
 // 넘치는 문자열을 넘치는 만큼만 포함하는 최소 구간을 찾는다.
 func steadyGene(gene string) int32 {
-	l := len(gene)
-	increase, decrease, validate := calculators(l)
+	length := len(gene)
+	increase, decrease, validate := calculators(length)
 	for _, g := range gene {
 		increase(byte(g))
 	}
 
 	var begin, end int32
 	var minRange int32 = math.MaxInt32
-	for end < int32(l-1) {
+	for end < int32(length-1) {
 		decrease(gene[end])
 		end++
 

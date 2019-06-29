@@ -1,16 +1,16 @@
 package arrays
 
-func rotLeft(a []int32, d int32) []int32 {
-	l := int32(len(a))
+func rotLeft(arr []int32, n int32) []int32 {
+	length := int32(len(arr))
 
-	if (d < 1) || (d%l == 0) {
-		return a
+	if (n < 1) || (n%length == 0) {
+		return arr
 	}
 
-	if d > l {
-		d = d % l
+	if n > length {
+		n = n % length
 	}
 
-	result := a[d:]
-	return append(result, a[:d]...)
+	result := arr[n:]
+	return append(result, arr[:n]...)
 }
