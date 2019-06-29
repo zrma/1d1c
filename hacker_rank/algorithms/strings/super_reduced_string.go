@@ -1,10 +1,5 @@
 package strings
 
-import (
-	"fmt"
-	"strings"
-)
-
 func superReducedString(s string) string {
 	const emptyString = "Empty String"
 
@@ -12,26 +7,21 @@ func superReducedString(s string) string {
 		return emptyString
 	}
 
-	pair := make(map[string]interface{})
-	for _, c := range s {
-		pair[fmt.Sprintf("%c%c", c, c)] = nil
-	}
+	stack := make([]rune, 0)
+	idx := -1
 
-	find := func() (string, bool) {
-		for c := range pair {
-			if strings.Contains(s, c) {
-				return c, true
-			}
+	for _, r := range s {
+		if idx >= 0 && stack[idx] == r {
+			stack = stack[0:idx]
+			idx--
+		} else {
+			stack = append(stack, r)
+			idx++
 		}
-		return "", false
 	}
 
-	for c, ok := find(); ok; c, ok = find() {
-		s = strings.ReplaceAll(s, c, "")
-	}
-
-	if s == "" {
+	if len(stack) == 0 {
 		return emptyString
 	}
-	return s
+	return string(stack)
 }
