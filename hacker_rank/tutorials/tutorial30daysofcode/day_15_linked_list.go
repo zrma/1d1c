@@ -37,11 +37,11 @@ func (l linkedList) display() {
 }
 
 func displayLinkedList(arr []int) {
-	length := linkedList{nil}
+	list := linkedList{nil}
 
 	for _, data := range arr {
-		length.head = length.insert(data)
+		list.head = list.insert(data)
 	}
 
-	length.display()
+	list.display()
 }

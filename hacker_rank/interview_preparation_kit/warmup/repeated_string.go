@@ -9,10 +9,10 @@ func repeatedString(s string, n int64) int64 {
 		return 0
 	}
 
-	l := int64(len(s))
+	length := int64(len(s))
 	cnt := int64(strings.Count(s, findTarget))
-	repeatCnt := n / l
-	mod := n % l
+	repeatCnt := n / length
+	mod := n % length
 
 	return cnt*repeatCnt + partialCnt(s, mod)
 }
