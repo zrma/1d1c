@@ -5,18 +5,19 @@ cache:
   directories:
     - $HOME/.cache/go-build
     - $HOME/gopath/pkg/mod
-before_install:
-- chmod +x ./sonar.sh
+dist: trusty
 script:
 - make lint
 - make test
-- "./sonar.sh"
+- sonar-scanner
 after_script:
 - make cover
 after_success:
 - bash <(curl -s https://codecov.io/bash)
 addons:
-  sonarcloud: true
+  sonarcloud:
+    organization: $ORGANIZATION
+    token: $SONARCLOUD_TOKEN
 env:
   global:
   - secure: OqDAwMmA+zcDuLhKl9lE5fVVJxFJMbrooa1UnPyQ+18rX5slIZzP8n5dHO03FLL2XKr+e32TJ2XuwsUVSW+wI4p5BwrM2T93sKlWr+waBYBfm2rVqK41t9oEKSK4W6DpiM6h/G53RzBwLbm6OMr18r6vSr+apT8zA5lXIUKNaLZOB8dRtxpFst5OLAR0nhAngsFqk6A83yBglABCZXfZXF7Wuer2IKObxEFr2wO+aP6alapGN5ZTvsRJJzsz1S9hiwWrmeGS8srXJNVaQHVJPSKTCMdcDb90XtqMoj8z/Avxq+7uxKY7i+kngOPkqk2JpisTLR664pik/cU6xtWH+/sAIJYxmh8oDucTRuVQkb30tRbths+hUFtU5Cwt5BlbkWzHJbgf8IQEzuLRackjIMfXJWXf2bof08hKHyWD1jSkMQIq6pT/GkoRVKIn+e1s7A4MBmokG+Q+gaTxs85jcO0da3Div2BULQBvD9tI2ryEYW7BwFU8IhJ5keszVFCcA7J24Lc9S/6ToXNxI6hW9BMff7vlG5kFVC7CXoM+fbnxzZiNmyh6MfrO2QjVUFjQJPkUaYl9hzQtWlipbeI3x1Dpr5IBMRn3u67digA2FMvtkYZgBXipUETkbUIa5oUndCtCTV5RZx18/YQReTy4ehlyxUKkac1UzT9Hls11XG0=
