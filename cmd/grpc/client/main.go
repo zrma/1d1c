@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -24,7 +25,7 @@ func main() {
 		grpc.WithKeepaliveParams(keepalive.ClientParameters{
 			// keepalive settings - https://github.com/grpc/grpc/blob/master/doc/keepalive.md
 			Time:                10 * time.Second,
-			Timeout:             30 * time.Second,
+			Timeout:             3 * time.Second,
 			PermitWithoutStream: true,
 		}),
 	)
@@ -53,5 +54,26 @@ func main() {
 	}
 	log.Printf("Greeting again: %s", r.Message)
 
-	time.Sleep(time.Second * 180)
+	go func() {
+		for {
+			time.Sleep(60 * time.Second)
+			r, err := c.SayHello(context.Background(), &pb.HelloRequest{Name: name})
+			if err != nil {
+				log.Fatalf("could not greet: %v", err)
+			}
+			log.Printf("Greeting: %s", r.GetMessage())
+		}
+	}()
+
+	prev := conn.GetState()
+	for i := 0; i < 1000000000; i++ {
+		time.Sleep(time.Nanosecond)
+		if curr := conn.GetState(); curr != prev {
+			log.Println(curr)
+			prev = curr
+		}
+		if i%10000 == 0 {
+			fmt.Printf(".")
+		}
+	}
 }

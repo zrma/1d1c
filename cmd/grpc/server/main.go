@@ -24,7 +24,7 @@ func main() {
 	var opts []grpc.ServerOption
 	opts = append(opts,
 		grpc.KeepaliveParams(keepalive.ServerParameters{
-			MaxConnectionIdle: 15 * time.Second,
+			MaxConnectionIdle: 30 * time.Second,
 			//MaxConnectionAge:      0,
 			//MaxConnectionAgeGrace: 0,
 			// pings the client to see if the transport is still alive.
@@ -36,6 +36,13 @@ func main() {
 			PermitWithoutStream: true,
 		}),
 	)
+
+	go func() {
+		for i := 0; i < 1000000000; i++ {
+			time.Sleep(time.Second)
+			log.Printf(".")
+		}
+	}()
 
 	s := grpc.NewServer(opts...)
 	pb.RegisterGreeterServer(s, &server{})
