@@ -1,16 +1,15 @@
 package main
 
 import (
+	"github.com/zrma/1d1c/cmd/interface/vehicle"
 	"log"
 )
-
-type vehicle interface {
-	Run()
-}
 
 type car struct {
 	dist int
 }
+
+var _ vehicle.Vehicle = (*car)(nil)
 
 func (c *car) Dist() int {
 	return c.dist
@@ -21,7 +20,7 @@ func (c *car) Run() {
 }
 
 func main() {
-	var v vehicle = &car{}
+	var v vehicle.Vehicle = &car{}
 	v.Run()
 	v.Run()
 	v.Run()
@@ -34,7 +33,7 @@ func main() {
 
 	d, ok := v.(interface{ Dist() int })
 	if !ok {
-		log.Println("v is not Get() interface")
+		log.Println("v is not Dist() interface")
 	}
 	log.Println(d)
 	log.Println(d.Dist())

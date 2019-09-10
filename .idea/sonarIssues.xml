@@ -28,6 +28,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/cmd/interface/vehicle/vehicle.go">
+          <value>
+            <set />
+          </value>
+        </entry>
       </map>
     </option>
   </component>
