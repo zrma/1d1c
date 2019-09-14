@@ -3,6 +3,7 @@ module github.com/zrma/1d1c
 go 1.12
 
 require (
+	github.com/emitter-io/go v1.0.0
 	github.com/go-test/deep v1.0.1
 	github.com/golang/protobuf v1.2.0
 	github.com/onsi/ginkgo v1.8.0
