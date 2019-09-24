@@ -8,6 +8,7 @@ require (
 	github.com/emitter-io/go v1.0.0
 	github.com/go-test/deep v1.0.1
 	github.com/golang/protobuf v1.3.2
+	github.com/google/uuid v1.1.1
 	github.com/micro/go-micro v1.10.0
 	github.com/micro/micro v1.10.0
 	github.com/onsi/ginkgo v1.8.0
