@@ -5,10 +5,12 @@ go 1.12
 require (
 	github.com/Songmu/ghch v0.10.0 // indirect
 	github.com/Songmu/goxz v0.4.1 // indirect
+	github.com/a-urth/go-bindata v0.0.0-20180209162145-df38da164efc // indirect
 	github.com/emitter-io/go v1.0.0
 	github.com/go-test/deep v1.0.1
 	github.com/golang/protobuf v1.3.2
 	github.com/google/uuid v1.1.1
+	github.com/mattn/goveralls v0.0.3 // indirect
 	github.com/micro/go-micro v1.10.0
 	github.com/micro/micro v1.10.0
 	github.com/onsi/ginkgo v1.8.0
