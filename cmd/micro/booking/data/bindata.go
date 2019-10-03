@@ -224,11 +224,11 @@ func AssetNames() []string {
 
 // _bindata is a table, holding each asset generator, mapped to its name.
 var _bindata = map[string]func() (*asset, error){
-	"data/bindata.go": dataBindataGo,
+	"data/bindata.go":     dataBindataGo,
 	"data/customers.json": dataCustomersJson,
 	"data/locations.json": dataLocationsJson,
-	"data/profiles.json": dataProfilesJson,
-	"data/rates.json": dataRatesJson,
+	"data/profiles.json":  dataProfilesJson,
+	"data/rates.json":     dataRatesJson,
 }
 
 // AssetDir returns the file names below a certain
@@ -270,13 +270,14 @@ type bintree struct {
 	Func     func() (*asset, error)
 	Children map[string]*bintree
 }
+
 var _bintree = &bintree{nil, map[string]*bintree{
 	"data": &bintree{nil, map[string]*bintree{
-		"bindata.go": &bintree{dataBindataGo, map[string]*bintree{}},
+		"bindata.go":     &bintree{dataBindataGo, map[string]*bintree{}},
 		"customers.json": &bintree{dataCustomersJson, map[string]*bintree{}},
 		"locations.json": &bintree{dataLocationsJson, map[string]*bintree{}},
-		"profiles.json": &bintree{dataProfilesJson, map[string]*bintree{}},
-		"rates.json": &bintree{dataRatesJson, map[string]*bintree{}},
+		"profiles.json":  &bintree{dataProfilesJson, map[string]*bintree{}},
+		"rates.json":     &bintree{dataRatesJson, map[string]*bintree{}},
 	}},
 }}
 
@@ -326,4 +327,3 @@ func _filePath(dir, name string) string {
 	cannonicalName := strings.Replace(name, "\\", "/", -1)
 	return filepath.Join(append([]string{dir}, strings.Split(cannonicalName, "/")...)...)
 }
-
