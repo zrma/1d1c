@@ -1,5 +1,5 @@
 consul:
-  command: -server -bootstrap -rejoin 
+  command: -server -bootstrap -rejoin
   image: progrium/consul:latest
   ports:
     - "8300:8300"
