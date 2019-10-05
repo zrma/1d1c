@@ -37,7 +37,7 @@ type Geo struct {
 }
 
 // Nearby returns all hotels within a given distance.
-func (s *Geo) Nearby(ctx context.Context, req *geo.Request, rsp *geo.Result) error {
+func (s *Geo) Nearby(ctx context.Context, req *geo.Request, res *geo.Result) error {
 	md, _ := metadata.FromContext(ctx)
 	traceID := md["traceID"]
 
@@ -58,7 +58,7 @@ func (s *Geo) Nearby(ctx context.Context, req *geo.Request, rsp *geo.Result) err
 	})
 
 	for _, p := range points {
-		rsp.HotelIds = append(rsp.HotelIds, p.Id())
+		res.HotelIds = append(res.HotelIds, p.Id())
 	}
 	return nil
 }

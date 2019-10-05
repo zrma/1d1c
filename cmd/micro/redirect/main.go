@@ -12,9 +12,9 @@ import (
 type Redirect struct{}
 
 // URL function does redirection
-func (r *Redirect) URL(ctx context.Context, req *api.Request, rsp *api.Response) error {
-	rsp.StatusCode = int32(301)
-	rsp.Header = map[string]*api.Pair{
+func (r *Redirect) URL(ctx context.Context, req *api.Request, res *api.Response) error {
+	res.StatusCode = int32(301)
+	res.Header = map[string]*api.Pair{
 		"Location": {
 			Key:    "Location",
 			Values: []string{"https://google.com"},

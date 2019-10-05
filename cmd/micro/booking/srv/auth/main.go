@@ -20,7 +20,7 @@ type Auth struct {
 }
 
 // VerifyToken returns a customer from authentication token.
-func (s *Auth) VerifyToken(ctx context.Context, req *auth.Request, rsp *auth.Result) error {
+func (s *Auth) VerifyToken(ctx context.Context, req *auth.Request, res *auth.Result) error {
 	md, _ := metadata.FromContext(ctx)
 	traceID := md["traceID"]
 
@@ -33,7 +33,7 @@ func (s *Auth) VerifyToken(ctx context.Context, req *auth.Request, rsp *auth.Res
 		return errors.New("invalid Token")
 	}
 
-	rsp.Customer = customer
+	res.Customer = customer
 	return nil
 }
 

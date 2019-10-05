@@ -20,7 +20,7 @@ type Profile struct {
 }
 
 // GetProfiles returns hotel profiles for requested IDs
-func (s *Profile) GetProfiles(ctx context.Context, req *profile.Request, rsp *profile.Result) error {
+func (s *Profile) GetProfiles(ctx context.Context, req *profile.Request, res *profile.Result) error {
 	md, _ := metadata.FromContext(ctx)
 	traceID := md["traceID"]
 	if tr, ok := trace.FromContext(ctx); ok {
@@ -28,7 +28,7 @@ func (s *Profile) GetProfiles(ctx context.Context, req *profile.Request, rsp *pr
 	}
 
 	for _, i := range req.HotelIds {
-		rsp.Hotels = append(rsp.Hotels, s.hotels[i])
+		res.Hotels = append(res.Hotels, s.hotels[i])
 	}
 	return nil
 }

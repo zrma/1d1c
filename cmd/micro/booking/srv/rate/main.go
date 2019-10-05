@@ -24,7 +24,7 @@ type Rate struct {
 }
 
 // GetRates gets rates for hotels for specific date range.
-func (s *Rate) GetRates(ctx context.Context, req *rate.Request, rsp *rate.Result) error {
+func (s *Rate) GetRates(ctx context.Context, req *rate.Request, res *rate.Result) error {
 	md, _ := metadata.FromContext(ctx)
 	traceID := md["traceID"]
 
@@ -39,7 +39,7 @@ func (s *Rate) GetRates(ctx context.Context, req *rate.Request, rsp *rate.Result
 			OutDate: req.OutDate,
 		}
 		if s.rateTable[data] != nil {
-			rsp.RatePlans = append(rsp.RatePlans, s.rateTable[data])
+			res.RatePlans = append(res.RatePlans, s.rateTable[data])
 		}
 	}
 	return nil

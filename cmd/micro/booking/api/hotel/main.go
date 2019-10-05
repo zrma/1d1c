@@ -48,7 +48,7 @@ type Hotel struct {
 }
 
 // Rates method register client's order
-func (s *Hotel) Rates(ctx context.Context, req *hotel.Request, rsp *hotel.Response) error {
+func (s *Hotel) Rates(ctx context.Context, req *hotel.Request, res *hotel.Response) error {
 	// tracing
 	tr := trace.New("api.v1", "Hotel.Rates")
 	defer tr.Finish()
@@ -118,8 +118,8 @@ func (s *Hotel) Rates(ctx context.Context, req *hotel.Request, rsp *hotel.Respon
 		return merr.InternalServerError("api.hotel.rates", err.Error())
 	}
 
-	rsp.Hotels = profileReply.hotels
-	rsp.RatePlans = rateReply.ratePlans
+	res.Hotels = profileReply.hotels
+	res.RatePlans = rateReply.ratePlans
 	return nil
 }
 

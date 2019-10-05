@@ -14,16 +14,16 @@ import (
 type Command struct{}
 
 // Help returns the command usage
-func (c *Command) Help(ctx context.Context, req *proto.HelpRequest, rsp *proto.HelpResponse) error {
-	rsp.Usage = "command"
-	rsp.Description = "This is an example bot command as a micro service"
+func (c *Command) Help(ctx context.Context, req *proto.HelpRequest, res *proto.HelpResponse) error {
+	res.Usage = "command"
+	res.Description = "This is an example bot command as a micro service"
 	return nil
 }
 
 // Exec executes the command
-func (c *Command) Exec(ctx context.Context, req *proto.ExecRequest, rsp *proto.ExecResponse) error {
-	rsp.Result = []byte(strings.Join(req.Args, " "))
-	// rsp.Error could be set to return an error instead
+func (c *Command) Exec(ctx context.Context, req *proto.ExecRequest, res *proto.ExecResponse) error {
+	res.Result = []byte(strings.Join(req.Args, " "))
+	// res.Error could be set to return an error instead
 	// the function error would only be used for service level issues
 	return nil
 }
