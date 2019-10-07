@@ -5,7 +5,7 @@ import (
 	"encoding/base64"
 	"errors"
 	_ "expvar"
-
+	"log"
 	"net/http"
 	_ "net/http/pprof"
 	"strings"
@@ -15,7 +15,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/client"
-	merr "github.com/micro/go-micro/errors"
+	. "github.com/micro/go-micro/errors"
 	"github.com/micro/go-micro/metadata"
 	"github.com/zrma/1d1c/cmd/micro/booking/api/hotel/proto"
 	"github.com/zrma/1d1c/cmd/micro/booking/srv/auth/proto"
@@ -76,19 +76,19 @@ func (s *Hotel) Rates(ctx context.Context, req *hotel.Request, res *hotel.Respon
 	// token from request headers
 	token, err := getToken(md)
 	if err != nil {
-		return merr.Forbidden("api.hotel.rates", err.Error())
+		return Forbidden("api.hotel.rates", err.Error())
 	}
 
 	// verify token w/ auth service
 	authClient := auth.NewAuthService("go.micro.srv.auth", s.Client)
 	if _, err = authClient.VerifyToken(ctx, &auth.Request{AuthToken: token}); err != nil {
-		return merr.Unauthorized("api.hotel.rates", "Unauthorized")
+		return Unauthorized("api.hotel.rates", "Unauthorized")
 	}
 
 	// checkin and checkout date query params
 	inDate, outDate := req.InDate, req.OutDate
 	if inDate == "" || outDate == "" {
-		return merr.BadRequest("api.hotel.rates", "Please specify inDate/outDate params")
+		return BadRequest("api.hotel.rates", "Please specify inDate/outDate params")
 	}
 
 	// finds nearby hotels
@@ -99,23 +99,23 @@ func (s *Hotel) Rates(ctx context.Context, req *hotel.Request, res *hotel.Respon
 		Lon: -0.114723,
 	})
 	if err != nil {
-		return merr.InternalServerError("api.hotel.rates", err.Error())
+		return InternalServerError("api.hotel.rates", err.Error())
 	}
 
-	// make reqeusts for profiles and rates
+	// make request for profiles and rates
 	profileCh := getHotelProfiles(ctx, s.Client, nearby.HotelIds)
 	rateCh := getRatePlans(ctx, s.Client, nearby.HotelIds, inDate, outDate)
 
 	// wait on profiles reply
 	profileReply := <-profileCh
 	if err := profileReply.err; err != nil {
-		return merr.InternalServerError("api.hotel.rates", err.Error())
+		return InternalServerError("api.hotel.rates", err.Error())
 	}
 
 	// wait on rates reply
 	rateReply := <-rateCh
 	if err := rateReply.err; err != nil {
-		return merr.InternalServerError("api.hotel.rates", err.Error())
+		return InternalServerError("api.hotel.rates", err.Error())
 	}
 
 	res.Hotels = profileReply.hotels
@@ -124,15 +124,15 @@ func (s *Hotel) Rates(ctx context.Context, req *hotel.Request, res *hotel.Respon
 }
 
 func getToken(md metadata.Metadata) (string, error) {
-	// Grab the raw Authoirzation header
+	// Grab the raw authorization header
 	authHeader := md["Authorization"]
 	if authHeader == "" {
-		return "", errors.New("Authorization header required")
+		return "", errors.New("authorization header required")
 	}
 
 	// Confirm the request is sending Basic Authentication credentials.
 	if !strings.HasPrefix(authHeader, BasicSchema) && !strings.HasPrefix(authHeader, BearerSchema) {
-		return "", errors.New("Authorization requires Basic/Bearer scheme")
+		return "", errors.New("authorization requires Basic/Bearer scheme")
 	}
 
 	// Get the token from the request header
@@ -140,10 +140,10 @@ func getToken(md metadata.Metadata) (string, error) {
 	if strings.HasPrefix(authHeader, BasicSchema) {
 		str, err := base64.StdEncoding.DecodeString(authHeader[len(BasicSchema):])
 		if err != nil {
-			return "", errors.New("Base64 encoding issue")
+			return "", errors.New("base64 encoding issue")
 		}
-		creds := strings.Split(string(str), ":")
-		return creds[0], nil
+		credential := strings.Split(string(str), ":")
+		return credential[0], nil
 	}
 
 	return authHeader[len(BearerSchema):], nil
@@ -154,12 +154,16 @@ func getRatePlans(ctx context.Context, c client.Client, hotelIDs []string, inDat
 	ch := make(chan rateResults, 1)
 
 	go func() {
+		var ratePlans []*rate.RatePlan
 		res, err := rateClient.GetRates(ctx, &rate.Request{
 			HotelIds: hotelIDs,
 			InDate:   inDate,
 			OutDate:  outDate,
 		})
-		ch <- rateResults{res.RatePlans, err}
+		if res != nil {
+			ratePlans = append(ratePlans, res.RatePlans...)
+		}
+		ch <- rateResults{ratePlans, err}
 	}()
 
 	return ch
@@ -170,11 +174,15 @@ func getHotelProfiles(ctx context.Context, c client.Client, hotelIDs []string) c
 	ch := make(chan profileResults, 1)
 
 	go func() {
+		var hotels []*profile.Hotel
 		res, err := profileClient.GetProfiles(ctx, &profile.Request{
 			HotelIds: hotelIDs,
 			Locale:   "en",
 		})
-		ch <- profileResults{res.Hotels, err}
+		if res != nil {
+			hotels = append(hotels, res.Hotels...)
+		}
+		ch <- profileResults{hotels, err}
 	}()
 
 	return ch
@@ -192,6 +200,11 @@ func main() {
 	)
 
 	service.Init()
-	hotel.RegisterHotelHandler(service.Server(), &Hotel{service.Client()})
-	service.Run()
+	if err := hotel.RegisterHotelHandler(service.Server(), &Hotel{service.Client()}); err != nil {
+		log.Fatalln(err)
+	}
+
+	if err := service.Run(); err != nil {
+		log.Fatalln(err)
+	}
 }
