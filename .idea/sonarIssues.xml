@@ -33,6 +33,31 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/cmd/micro/booking/api/hotel/Dockerfile">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/cmd/micro/booking/srv/auth/Dockerfile">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/cmd/micro/booking/srv/geo/Dockerfile">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/cmd/micro/booking/srv/profile/Dockerfile">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/cmd/micro/booking/srv/rate/Dockerfile">
+          <value>
+            <set />
+          </value>
+        </entry>
       </map>
     </option>
   </component>

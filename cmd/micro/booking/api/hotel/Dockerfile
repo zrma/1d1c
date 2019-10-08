@@ -1,4 +1,7 @@
-FROM golang:latest AS builder
+FROM golang:1.13-alpine AS builder
+
+RUN apk add --update --no-cache ca-certificates git
+
 RUN mkdir /go/src/app
 ADD . /go/src/app/
 WORKDIR /go/src/app/
