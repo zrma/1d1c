@@ -102,7 +102,7 @@ func (s *Hotel) Rates(ctx context.Context, req *hotel.Request, res *hotel.Respon
 		return InternalServerError("api.hotel.rates", err.Error())
 	}
 
-	// make request for profiles and rates
+	// make requests for profiles and rates
 	profileCh := getHotelProfiles(ctx, s.Client, nearby.HotelIds)
 	rateCh := getRatePlans(ctx, s.Client, nearby.HotelIds, inDate, outDate)
 
