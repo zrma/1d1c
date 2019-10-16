@@ -28,12 +28,12 @@ func main() {
 		log.Fatalf("failed creating schema resources: %v", err)
 	}
 
-	u1, err := CreateUser(ctx, client)
+	u1, err := createUser(ctx, client)
 	if err != nil {
 		log.Fatalf("failed creating user: %v", err)
 	}
 
-	u2, err := QueryUser(ctx, client)
+	u2, err := queryUser(ctx, client)
 	if err != nil {
 		log.Fatalf("failed querying user: %v", err)
 	}
@@ -45,7 +45,7 @@ func main() {
 	log.Println("u1:", u1)
 	log.Println("u2:", u2)
 
-	u3, err := CreateCars(ctx, client)
+	u3, err := createCars(ctx, client)
 	if err != nil {
 		log.Fatalf("failed creating cars: %v", err)
 	}
@@ -55,14 +55,14 @@ func main() {
 	}
 	log.Println("u3:", u3)
 
-	if err := QueryCars(ctx, u1); err != nil {
+	if err := queryCars(ctx, u1); err != nil {
 		log.Fatalln(err)
 	}
 
 	log.Println("finished")
 }
 
-func CreateUser(ctx context.Context, client *ent.Client) (*ent.User, error) {
+func createUser(ctx context.Context, client *ent.Client) (*ent.User, error) {
 	u, err := client.User.
 		Create().
 		SetAge(30).
@@ -75,7 +75,7 @@ func CreateUser(ctx context.Context, client *ent.Client) (*ent.User, error) {
 	return u, nil
 }
 
-func QueryUser(ctx context.Context, client *ent.Client) (*ent.User, error) {
+func queryUser(ctx context.Context, client *ent.Client) (*ent.User, error) {
 	u, err := client.User.
 		Query().
 		Where(user.NameEQ("a8m")).
@@ -89,7 +89,7 @@ func QueryUser(ctx context.Context, client *ent.Client) (*ent.User, error) {
 	return u, nil
 }
 
-func CreateCars(ctx context.Context, client *ent.Client) (*ent.User, error) {
+func createCars(ctx context.Context, client *ent.Client) (*ent.User, error) {
 	// creating new car with model "Tesla".
 	tesla, err := client.Car.
 		Create().
@@ -111,7 +111,7 @@ func CreateCars(ctx context.Context, client *ent.Client) (*ent.User, error) {
 	}
 	log.Println("car was created: ", ford)
 
-	u, err := QueryUser(ctx, client)
+	u, err := queryUser(ctx, client)
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func CreateCars(ctx context.Context, client *ent.Client) (*ent.User, error) {
 	return a8m, nil
 }
 
-func QueryCars(ctx context.Context, a8m *ent.User) error {
+func queryCars(ctx context.Context, a8m *ent.User) error {
 	cars, err := a8m.QueryCars().All(ctx)
 	if err != nil {
 		return fmt.Errorf("failed querying user cars: %v", err)
