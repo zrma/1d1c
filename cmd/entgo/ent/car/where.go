@@ -357,6 +357,30 @@ func RegisteredAtLTE(v time.Time) predicate.Car {
 	)
 }
 
+// HasOwner applies the HasEdge predicate on the "owner" edge.
+func HasOwner() predicate.Car {
+	return predicate.Car(
+		func(s *sql.Selector) {
+			t1 := s.Table()
+			s.Where(sql.NotNull(t1.C(OwnerColumn)))
+		},
+	)
+}
+
+// HasOwnerWith applies the HasEdge predicate on the "owner" edge with a given conditions (other predicates).
+func HasOwnerWith(preds ...predicate.User) predicate.Car {
+	return predicate.Car(
+		func(s *sql.Selector) {
+			t1 := s.Table()
+			t2 := sql.Select(FieldID).From(sql.Table(OwnerInverseTable))
+			for _, p := range preds {
+				p(t2)
+			}
+			s.Where(sql.In(t1.C(OwnerColumn), t2))
+		},
+	)
+}
+
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.Car) predicate.Car {
 	return predicate.Car(

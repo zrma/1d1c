@@ -168,6 +168,19 @@ func (c *CarClient) GetX(ctx context.Context, id int) *Car {
 	return ca
 }
 
+// QueryOwner queries the owner edge of a Car.
+func (c *CarClient) QueryOwner(ca *Car) *UserQuery {
+	query := &UserQuery{config: c.config}
+	id := ca.ID
+	t1 := sql.Table(user.Table)
+	t2 := sql.Select(car.OwnerColumn).
+		From(sql.Table(car.OwnerTable)).
+		Where(sql.EQ(car.FieldID, id))
+	query.sql = sql.Select().From(t1).Join(t2).On(t1.C(user.FieldID), t2.C(car.OwnerColumn))
+
+	return query
+}
+
 // GroupClient is a client for the Group schema.
 type GroupClient struct {
 	config

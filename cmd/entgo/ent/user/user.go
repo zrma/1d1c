@@ -24,7 +24,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "car" package.
 	CarsInverseTable = "cars"
 	// CarsColumn is the table column denoting the cars relation/edge.
-	CarsColumn = "user_car_id"
+	CarsColumn = "owner_id"
 )
 
 // Columns holds all SQL columns are user fields.

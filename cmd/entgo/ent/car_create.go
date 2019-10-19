@@ -16,6 +16,7 @@ type CarCreate struct {
 	config
 	model         *string
 	registered_at *time.Time
+	owner         map[int]struct{}
 }
 
 // SetModel sets the model field.
@@ -30,6 +31,28 @@ func (cc *CarCreate) SetRegisteredAt(t time.Time) *CarCreate {
 	return cc
 }
 
+// SetOwnerID sets the owner edge to User by id.
+func (cc *CarCreate) SetOwnerID(id int) *CarCreate {
+	if cc.owner == nil {
+		cc.owner = make(map[int]struct{})
+	}
+	cc.owner[id] = struct{}{}
+	return cc
+}
+
+// SetNillableOwnerID sets the owner edge to User by id if the given value is not nil.
+func (cc *CarCreate) SetNillableOwnerID(id *int) *CarCreate {
+	if id != nil {
+		cc = cc.SetOwnerID(*id)
+	}
+	return cc
+}
+
+// SetOwner sets the owner edge to User.
+func (cc *CarCreate) SetOwner(u *User) *CarCreate {
+	return cc.SetOwnerID(u.ID)
+}
+
 // Save creates the Car in the database.
 func (cc *CarCreate) Save(ctx context.Context) (*Car, error) {
 	if cc.model == nil {
@@ -37,6 +60,9 @@ func (cc *CarCreate) Save(ctx context.Context) (*Car, error) {
 	}
 	if cc.registered_at == nil {
 		return nil, errors.New("ent: missing required field \"registered_at\"")
+	}
+	if len(cc.owner) > 1 {
+		return nil, errors.New("ent: multiple assignments on a unique edge \"owner\"")
 	}
 	return cc.sqlSave(ctx)
 }
@@ -77,6 +103,17 @@ func (cc *CarCreate) sqlSave(ctx context.Context) (*Car, error) {
 		return nil, rollback(tx, err)
 	}
 	c.ID = int(id)
+	if len(cc.owner) > 0 {
+		for eid := range cc.owner {
+			query, args := sql.Update(car.OwnerTable).
+				Set(car.OwnerColumn, eid).
+				Where(sql.EQ(car.FieldID, id)).
+				Query()
+			if err := tx.Exec(ctx, query, args, &res); err != nil {
+				return nil, rollback(tx, err)
+			}
+		}
+	}
 	if err := tx.Commit(); err != nil {
 		return nil, err
 	}

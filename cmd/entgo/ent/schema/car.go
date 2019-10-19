@@ -2,6 +2,7 @@ package schema
 
 import (
 	"github.com/facebookincubator/ent"
+	"github.com/facebookincubator/ent/schema/edge"
 	"github.com/facebookincubator/ent/schema/field"
 )
 
@@ -20,5 +21,7 @@ func (Car) Fields() []ent.Field {
 
 // Edges of the Car.
 func (Car) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.From("owner", User.Type).Ref("cars").Unique(),
+	}
 }

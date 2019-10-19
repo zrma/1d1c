@@ -11,6 +11,7 @@ import (
 	"github.com/facebookincubator/ent/dialect/sql"
 	"github.com/zrma/1d1c/cmd/entgo/ent/car"
 	"github.com/zrma/1d1c/cmd/entgo/ent/predicate"
+	"github.com/zrma/1d1c/cmd/entgo/ent/user"
 )
 
 // CarQuery is the builder for querying Car entities.
@@ -47,6 +48,19 @@ func (cq *CarQuery) Offset(offset int) *CarQuery {
 func (cq *CarQuery) Order(o ...Order) *CarQuery {
 	cq.order = append(cq.order, o...)
 	return cq
+}
+
+// QueryOwner chains the current query on the owner edge.
+func (cq *CarQuery) QueryOwner() *UserQuery {
+	query := &UserQuery{config: cq.config}
+	t1 := sql.Table(user.Table)
+	t2 := cq.sqlQuery()
+	t2.Select(t2.C(car.OwnerColumn))
+	query.sql = sql.Select(t1.Columns(user.Columns...)...).
+		From(t1).
+		Join(t2).
+		On(t1.C(user.FieldID), t2.C(car.OwnerColumn))
+	return query
 }
 
 // First returns the first Car entity in the query. Returns *ErrNotFound when no car was found.

@@ -42,6 +42,11 @@ func (c *Car) FromRows(rows *sql.Rows) error {
 	return nil
 }
 
+// QueryOwner queries the owner edge of the Car.
+func (c *Car) QueryOwner() *UserQuery {
+	return (&CarClient{c.config}).QueryOwner(c)
+}
+
 // Update returns a builder for updating this Car.
 // Note that, you need to call Car.Unwrap() before calling this method, if this Car
 // was returned from a transaction, and the transaction was committed or rolled back.

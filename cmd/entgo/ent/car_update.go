@@ -4,12 +4,14 @@ package ent
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
 	"github.com/facebookincubator/ent/dialect/sql"
 	"github.com/zrma/1d1c/cmd/entgo/ent/car"
 	"github.com/zrma/1d1c/cmd/entgo/ent/predicate"
+	"github.com/zrma/1d1c/cmd/entgo/ent/user"
 )
 
 // CarUpdate is the builder for updating Car entities.
@@ -17,6 +19,8 @@ type CarUpdate struct {
 	config
 	model         *string
 	registered_at *time.Time
+	owner         map[int]struct{}
+	clearedOwner  bool
 	predicates    []predicate.Car
 }
 
@@ -38,8 +42,39 @@ func (cu *CarUpdate) SetRegisteredAt(t time.Time) *CarUpdate {
 	return cu
 }
 
+// SetOwnerID sets the owner edge to User by id.
+func (cu *CarUpdate) SetOwnerID(id int) *CarUpdate {
+	if cu.owner == nil {
+		cu.owner = make(map[int]struct{})
+	}
+	cu.owner[id] = struct{}{}
+	return cu
+}
+
+// SetNillableOwnerID sets the owner edge to User by id if the given value is not nil.
+func (cu *CarUpdate) SetNillableOwnerID(id *int) *CarUpdate {
+	if id != nil {
+		cu = cu.SetOwnerID(*id)
+	}
+	return cu
+}
+
+// SetOwner sets the owner edge to User.
+func (cu *CarUpdate) SetOwner(u *User) *CarUpdate {
+	return cu.SetOwnerID(u.ID)
+}
+
+// ClearOwner clears the owner edge to User.
+func (cu *CarUpdate) ClearOwner() *CarUpdate {
+	cu.clearedOwner = true
+	return cu
+}
+
 // Save executes the query and returns the number of rows/vertices matched by this operation.
 func (cu *CarUpdate) Save(ctx context.Context) (int, error) {
+	if len(cu.owner) > 1 {
+		return 0, errors.New("ent: multiple assignments on a unique edge \"owner\"")
+	}
 	return cu.sqlSave(ctx)
 }
 
@@ -108,6 +143,26 @@ func (cu *CarUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			return 0, rollback(tx, err)
 		}
 	}
+	if cu.clearedOwner {
+		query, args := sql.Update(car.OwnerTable).
+			SetNull(car.OwnerColumn).
+			Where(sql.InInts(user.FieldID, ids...)).
+			Query()
+		if err := tx.Exec(ctx, query, args, &res); err != nil {
+			return 0, rollback(tx, err)
+		}
+	}
+	if len(cu.owner) > 0 {
+		for eid := range cu.owner {
+			query, args := sql.Update(car.OwnerTable).
+				Set(car.OwnerColumn, eid).
+				Where(sql.InInts(car.FieldID, ids...)).
+				Query()
+			if err := tx.Exec(ctx, query, args, &res); err != nil {
+				return 0, rollback(tx, err)
+			}
+		}
+	}
 	if err = tx.Commit(); err != nil {
 		return 0, err
 	}
@@ -120,6 +175,8 @@ type CarUpdateOne struct {
 	id            int
 	model         *string
 	registered_at *time.Time
+	owner         map[int]struct{}
+	clearedOwner  bool
 }
 
 // SetModel sets the model field.
@@ -134,8 +191,39 @@ func (cuo *CarUpdateOne) SetRegisteredAt(t time.Time) *CarUpdateOne {
 	return cuo
 }
 
+// SetOwnerID sets the owner edge to User by id.
+func (cuo *CarUpdateOne) SetOwnerID(id int) *CarUpdateOne {
+	if cuo.owner == nil {
+		cuo.owner = make(map[int]struct{})
+	}
+	cuo.owner[id] = struct{}{}
+	return cuo
+}
+
+// SetNillableOwnerID sets the owner edge to User by id if the given value is not nil.
+func (cuo *CarUpdateOne) SetNillableOwnerID(id *int) *CarUpdateOne {
+	if id != nil {
+		cuo = cuo.SetOwnerID(*id)
+	}
+	return cuo
+}
+
+// SetOwner sets the owner edge to User.
+func (cuo *CarUpdateOne) SetOwner(u *User) *CarUpdateOne {
+	return cuo.SetOwnerID(u.ID)
+}
+
+// ClearOwner clears the owner edge to User.
+func (cuo *CarUpdateOne) ClearOwner() *CarUpdateOne {
+	cuo.clearedOwner = true
+	return cuo
+}
+
 // Save executes the query and returns the updated entity.
 func (cuo *CarUpdateOne) Save(ctx context.Context) (*Car, error) {
+	if len(cuo.owner) > 1 {
+		return nil, errors.New("ent: multiple assignments on a unique edge \"owner\"")
+	}
 	return cuo.sqlSave(ctx)
 }
 
@@ -207,6 +295,26 @@ func (cuo *CarUpdateOne) sqlSave(ctx context.Context) (c *Car, err error) {
 		query, args := builder.Query()
 		if err := tx.Exec(ctx, query, args, &res); err != nil {
 			return nil, rollback(tx, err)
+		}
+	}
+	if cuo.clearedOwner {
+		query, args := sql.Update(car.OwnerTable).
+			SetNull(car.OwnerColumn).
+			Where(sql.InInts(user.FieldID, ids...)).
+			Query()
+		if err := tx.Exec(ctx, query, args, &res); err != nil {
+			return nil, rollback(tx, err)
+		}
+	}
+	if len(cuo.owner) > 0 {
+		for eid := range cuo.owner {
+			query, args := sql.Update(car.OwnerTable).
+				Set(car.OwnerColumn, eid).
+				Where(sql.InInts(car.FieldID, ids...)).
+				Query()
+			if err := tx.Exec(ctx, query, args, &res); err != nil {
+				return nil, rollback(tx, err)
+			}
 		}
 	}
 	if err = tx.Commit(); err != nil {
