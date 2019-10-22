@@ -254,6 +254,42 @@ func NameContainsFold(v string) predicate.Group {
 	)
 }
 
+// HasUsers applies the HasEdge predicate on the "users" edge.
+func HasUsers() predicate.Group {
+	return predicate.Group(
+		func(s *sql.Selector) {
+			t1 := s.Table()
+			s.Where(
+				sql.In(
+					t1.C(FieldID),
+					sql.Select(UsersPrimaryKey[0]).From(sql.Table(UsersTable)),
+				),
+			)
+		},
+	)
+}
+
+// HasUsersWith applies the HasEdge predicate on the "users" edge with a given conditions (other predicates).
+func HasUsersWith(preds ...predicate.User) predicate.Group {
+	return predicate.Group(
+		func(s *sql.Selector) {
+			t1 := s.Table()
+			t2 := sql.Table(UsersInverseTable)
+			t3 := sql.Table(UsersTable)
+			t4 := sql.Select(t3.C(UsersPrimaryKey[0])).
+				From(t3).
+				Join(t2).
+				On(t3.C(UsersPrimaryKey[1]), t2.C(FieldID))
+			t5 := sql.Select().From(t2)
+			for _, p := range preds {
+				p(t5)
+			}
+			t4.FromSelect(t5)
+			s.Where(sql.In(t1.C(FieldID), t4))
+		},
+	)
+}
+
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.Group) predicate.Group {
 	return predicate.Group(

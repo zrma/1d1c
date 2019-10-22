@@ -53,15 +53,27 @@ func ExampleGroup() {
 	defer drv.Close()
 	client := NewClient(Driver(drv))
 	// creating vertices for the group's edges.
+	u0 := client.User.
+		Create().
+		SetAge(1).
+		SetName("string").
+		SaveX(ctx)
+	log.Println("user created:", u0)
 
 	// create group vertex with its edges.
 	gr := client.Group.
 		Create().
 		SetName("string").
+		AddUsers(u0).
 		SaveX(ctx)
 	log.Println("group created:", gr)
 
 	// query edges.
+	u0, err = gr.QueryUsers().First(ctx)
+	if err != nil {
+		log.Fatalf("failed querying users: %v", err)
+	}
+	log.Println("users found:", u0)
 
 	// Output:
 }

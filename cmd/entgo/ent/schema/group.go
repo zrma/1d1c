@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	"github.com/facebookincubator/ent"
+	"github.com/facebookincubator/ent/schema/edge"
 	"github.com/facebookincubator/ent/schema/field"
 )
 
@@ -22,5 +23,7 @@ func (Group) Fields() []ent.Field {
 
 // Edges of the Group.
 func (Group) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		edge.To("users", User.Type),
+	}
 }

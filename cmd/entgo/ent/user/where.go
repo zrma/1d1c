@@ -386,6 +386,42 @@ func HasCarsWith(preds ...predicate.Car) predicate.User {
 	)
 }
 
+// HasGroups applies the HasEdge predicate on the "groups" edge.
+func HasGroups() predicate.User {
+	return predicate.User(
+		func(s *sql.Selector) {
+			t1 := s.Table()
+			s.Where(
+				sql.In(
+					t1.C(FieldID),
+					sql.Select(GroupsPrimaryKey[1]).From(sql.Table(GroupsTable)),
+				),
+			)
+		},
+	)
+}
+
+// HasGroupsWith applies the HasEdge predicate on the "groups" edge with a given conditions (other predicates).
+func HasGroupsWith(preds ...predicate.Group) predicate.User {
+	return predicate.User(
+		func(s *sql.Selector) {
+			t1 := s.Table()
+			t2 := sql.Table(GroupsInverseTable)
+			t3 := sql.Table(GroupsTable)
+			t4 := sql.Select(t3.C(GroupsPrimaryKey[1])).
+				From(t3).
+				Join(t2).
+				On(t3.C(GroupsPrimaryKey[0]), t2.C(FieldID))
+			t5 := sql.Select().From(t2)
+			for _, p := range preds {
+				p(t5)
+			}
+			t4.FromSelect(t5)
+			s.Where(sql.In(t1.C(FieldID), t4))
+		},
+	)
+}
+
 // And groups list of predicates with the AND operator between them.
 func And(predicates ...predicate.User) predicate.User {
 	return predicate.User(

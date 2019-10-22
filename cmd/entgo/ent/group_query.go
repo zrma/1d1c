@@ -11,6 +11,7 @@ import (
 	"github.com/facebookincubator/ent/dialect/sql"
 	"github.com/zrma/1d1c/cmd/entgo/ent/group"
 	"github.com/zrma/1d1c/cmd/entgo/ent/predicate"
+	"github.com/zrma/1d1c/cmd/entgo/ent/user"
 )
 
 // GroupQuery is the builder for querying Group entities.
@@ -47,6 +48,24 @@ func (gq *GroupQuery) Offset(offset int) *GroupQuery {
 func (gq *GroupQuery) Order(o ...Order) *GroupQuery {
 	gq.order = append(gq.order, o...)
 	return gq
+}
+
+// QueryUsers chains the current query on the users edge.
+func (gq *GroupQuery) QueryUsers() *UserQuery {
+	query := &UserQuery{config: gq.config}
+	t1 := sql.Table(user.Table)
+	t2 := gq.sqlQuery()
+	t2.Select(t2.C(group.FieldID))
+	t3 := sql.Table(group.UsersTable)
+	t4 := sql.Select(t3.C(group.UsersPrimaryKey[1])).
+		From(t3).
+		Join(t2).
+		On(t3.C(group.UsersPrimaryKey[0]), t2.C(group.FieldID))
+	query.sql = sql.Select().
+		From(t1).
+		Join(t4).
+		On(t1.C(user.FieldID), t4.C(group.UsersPrimaryKey[1]))
+	return query
 }
 
 // First returns the first Group entity in the query. Returns *ErrNotFound when no group was found.

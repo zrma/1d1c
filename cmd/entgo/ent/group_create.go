@@ -14,13 +14,34 @@ import (
 // GroupCreate is the builder for creating a Group entity.
 type GroupCreate struct {
 	config
-	name *string
+	name  *string
+	users map[int]struct{}
 }
 
 // SetName sets the name field.
 func (gc *GroupCreate) SetName(s string) *GroupCreate {
 	gc.name = &s
 	return gc
+}
+
+// AddUserIDs adds the users edge to User by ids.
+func (gc *GroupCreate) AddUserIDs(ids ...int) *GroupCreate {
+	if gc.users == nil {
+		gc.users = make(map[int]struct{})
+	}
+	for i := range ids {
+		gc.users[ids[i]] = struct{}{}
+	}
+	return gc
+}
+
+// AddUsers adds the users edges to User.
+func (gc *GroupCreate) AddUsers(u ...*User) *GroupCreate {
+	ids := make([]int, len(u))
+	for i := range u {
+		ids[i] = u[i].ID
+	}
+	return gc.AddUserIDs(ids...)
 }
 
 // Save creates the Group in the database.
@@ -66,6 +87,18 @@ func (gc *GroupCreate) sqlSave(ctx context.Context) (*Group, error) {
 		return nil, rollback(tx, err)
 	}
 	gr.ID = int(id)
+	if len(gc.users) > 0 {
+		for eid := range gc.users {
+
+			query, args := sql.Insert(group.UsersTable).
+				Columns(group.UsersPrimaryKey[0], group.UsersPrimaryKey[1]).
+				Values(id, eid).
+				Query()
+			if err := tx.Exec(ctx, query, args, &res); err != nil {
+				return nil, rollback(tx, err)
+			}
+		}
+	}
 	if err := tx.Commit(); err != nil {
 		return nil, err
 	}

@@ -15,9 +15,10 @@ import (
 // UserCreate is the builder for creating a User entity.
 type UserCreate struct {
 	config
-	age  *int
-	name *string
-	cars map[int]struct{}
+	age    *int
+	name   *string
+	cars   map[int]struct{}
+	groups map[int]struct{}
 }
 
 // SetAge sets the age field.
@@ -58,6 +59,26 @@ func (uc *UserCreate) AddCars(c ...*Car) *UserCreate {
 		ids[i] = c[i].ID
 	}
 	return uc.AddCarIDs(ids...)
+}
+
+// AddGroupIDs adds the groups edge to Group by ids.
+func (uc *UserCreate) AddGroupIDs(ids ...int) *UserCreate {
+	if uc.groups == nil {
+		uc.groups = make(map[int]struct{})
+	}
+	for i := range ids {
+		uc.groups[ids[i]] = struct{}{}
+	}
+	return uc
+}
+
+// AddGroups adds the groups edges to Group.
+func (uc *UserCreate) AddGroups(g ...*Group) *UserCreate {
+	ids := make([]int, len(g))
+	for i := range g {
+		ids[i] = g[i].ID
+	}
+	return uc.AddGroupIDs(ids...)
 }
 
 // Save creates the User in the database.
@@ -129,6 +150,18 @@ func (uc *UserCreate) sqlSave(ctx context.Context) (*User, error) {
 		}
 		if int(affected) < len(uc.cars) {
 			return nil, rollback(tx, &ErrConstraintFailed{msg: fmt.Sprintf("one of \"cars\" %v already connected to a different \"User\"", keys(uc.cars))})
+		}
+	}
+	if len(uc.groups) > 0 {
+		for eid := range uc.groups {
+
+			query, args := sql.Insert(user.GroupsTable).
+				Columns(user.GroupsPrimaryKey[1], user.GroupsPrimaryKey[0]).
+				Values(id, eid).
+				Query()
+			if err := tx.Exec(ctx, query, args, &res); err != nil {
+				return nil, rollback(tx, err)
+			}
 		}
 	}
 	if err := tx.Commit(); err != nil {
