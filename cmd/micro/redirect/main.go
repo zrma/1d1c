@@ -1,9 +1,9 @@
 package main
 
 import (
+	"context"
 	"log"
 
-	"context"
 	"github.com/micro/go-micro"
 	api "github.com/micro/micro/api/proto"
 )

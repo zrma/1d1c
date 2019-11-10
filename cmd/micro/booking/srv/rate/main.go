@@ -1,13 +1,14 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 
-	"context"
+	"golang.org/x/net/trace"
+
 	"github.com/zrma/1d1c/cmd/micro/booking/data"
 	"github.com/zrma/1d1c/cmd/micro/booking/srv/rate/proto"
-	"golang.org/x/net/trace"
 
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/metadata"

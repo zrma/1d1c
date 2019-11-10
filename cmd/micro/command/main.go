@@ -1,10 +1,10 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
-	"context"
 	"github.com/micro/go-micro"
 
 	proto "github.com/micro/go-micro/agent/proto"
