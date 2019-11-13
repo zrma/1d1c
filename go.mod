@@ -6,6 +6,8 @@ require (
 	github.com/Songmu/ghch v0.10.0 // indirect
 	github.com/Songmu/goxz v0.4.1 // indirect
 	github.com/emitter-io/go v1.0.0
+	github.com/facebookgo/inject v0.0.0-20180706035515-f23751cae28b
+	github.com/facebookgo/structtag v0.0.0-20150214074306-217e25fb9691 // indirect
 	github.com/facebookincubator/ent v0.0.0-20191013065242-9983309eacbb
 	github.com/go-openapi/inflect v0.19.0 // indirect
 	github.com/go-test/deep v1.0.1
