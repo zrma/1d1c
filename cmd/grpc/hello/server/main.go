@@ -2,13 +2,15 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"time"
 
-	"github.com/zrma/1d1c/cmd/grpc/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
+
+	"github.com/zrma/1d1c/cmd/grpc/hello/pb"
 )
 
 const (
@@ -24,12 +26,12 @@ func main() {
 	var opts []grpc.ServerOption
 	opts = append(opts,
 		grpc.KeepaliveParams(keepalive.ServerParameters{
-			MaxConnectionIdle: 30 * time.Second,
-			//MaxConnectionAge:      0,
-			//MaxConnectionAgeGrace: 0,
+			MaxConnectionIdle:     30 * time.Second,
+			MaxConnectionAge:      1 * time.Minute,
+			MaxConnectionAgeGrace: 5 * time.Second,
 			// pings the client to see if the transport is still alive.
 			Time:    20 * time.Second,
-			Timeout: 1 * time.Second,
+			Timeout: 5 * time.Second,
 		}),
 		grpc.KeepaliveEnforcementPolicy(keepalive.EnforcementPolicy{
 			MinTime:             12 * time.Second,
@@ -40,7 +42,7 @@ func main() {
 	go func() {
 		for i := 0; i < 1000000000; i++ {
 			time.Sleep(time.Second)
-			log.Printf(".")
+			fmt.Printf(".")
 		}
 	}()
 

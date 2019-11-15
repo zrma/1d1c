@@ -7,9 +7,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/zrma/1d1c/cmd/grpc/pb"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
+
+	"github.com/zrma/1d1c/cmd/grpc/hello/pb"
 )
 
 const (
@@ -25,7 +26,7 @@ func main() {
 		grpc.WithKeepaliveParams(keepalive.ClientParameters{
 			// keepalive settings - https://github.com/grpc/grpc/blob/master/doc/keepalive.md
 			Time:                10 * time.Second,
-			Timeout:             3 * time.Second,
+			Timeout:             5 * time.Second,
 			PermitWithoutStream: true,
 		}),
 	)
