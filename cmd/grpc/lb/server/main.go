@@ -2,8 +2,12 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"log"
+	"net"
 	"net/http"
+	"net/http/httputil"
+	"net/url"
 	"time"
 
 	"golang.org/x/net/http2"
@@ -15,7 +19,7 @@ import (
 )
 
 const (
-	port = ":12345"
+	host = ":12345"
 )
 
 type Handler struct {
@@ -33,6 +37,40 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
+	listener, err := net.Listen("tcp", host)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
+	}
+
+	endpoint, err := url.Parse("http://" + host)
+	if err != nil {
+		log.Fatalf("invliad url: %v", endpoint)
+	}
+	p := httputil.NewSingleHostReverseProxy(endpoint)
+	p.Transport = &http2.Transport{
+		AllowHTTP: true,
+		DialTLS: func(network, addr string, cfg *tls.Config) (net.Conn, error) {
+			log.Println("dialtls:", network, addr)
+			ta, err := net.ResolveTCPAddr(network, addr)
+			if err != nil {
+				return nil, err
+			}
+			return net.DialTCP(network, nil, ta)
+		},
+	}
+
+	s := &http.Server{
+		Addr:    host,
+		Handler: h2c.NewHandler(&Handler{opts: buildOpts()}, &http2.Server{}),
+	}
+
+	if err := s.Serve(listener); err != nil {
+		log.Fatalln(err)
+	}
+	log.Println("end")
+}
+
+func buildOpts() []grpc.ServerOption {
 	var opts []grpc.ServerOption
 	opts = append(opts,
 		grpc.KeepaliveParams(keepalive.ServerParameters{
@@ -48,14 +86,7 @@ func main() {
 			PermitWithoutStream: true,
 		}),
 	)
-
-	//if err := s.Serve(listener); err != nil {
-	//	log.Fatalf("failed to serve: %v", err)
-	//}
-
-	log.Fatalln(http.ListenAndServe(port,
-		h2c.NewHandler(&Handler{opts: opts}, &http2.Server{}),
-	))
+	return opts
 }
 
 type server struct {
