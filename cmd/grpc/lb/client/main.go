@@ -16,7 +16,7 @@ import (
 )
 
 const (
-	address     = "localhost:12345"
+	address     = ":12345"
 	defaultName = "world"
 )
 
@@ -62,7 +62,7 @@ func connect(ctx context.Context, idx int) {
 	ctx = metadata.NewOutgoingContext(ctx, md)
 
 	{
-		ctx, cancel := context.WithTimeout(ctx, time.Second)
+		ctx, cancel := context.WithTimeout(ctx, 10 * time.Second)
 		defer cancel()
 		r, err := c.SayHello(ctx, &pb.HelloRequest{Name: defaultName})
 		if err != nil {
