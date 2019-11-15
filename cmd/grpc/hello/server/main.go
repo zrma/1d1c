@@ -17,7 +17,7 @@ const (
 )
 
 func main() {
-	lis, err := net.Listen("tcp", port)
+	listener, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
@@ -40,7 +40,7 @@ func main() {
 
 	s := grpc.NewServer(opts...)
 	pb.RegisterGreeterServer(s, &server{})
-	if err := s.Serve(lis); err != nil {
+	if err := s.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
 }
