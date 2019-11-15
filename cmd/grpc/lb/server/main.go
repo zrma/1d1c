@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 
-	"github.com/zrma/1d1c/cmd/grpc/hello/pb"
+	"github.com/zrma/1d1c/cmd/grpc/lb/pb"
 )
 
 const (
@@ -54,7 +54,19 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRe
 	return &pb.HelloReply{Message: "Hello " + in.GetName()}, nil
 }
 
-// SayHelloAgain implements hello.GreeterServer
-func (s *server) SayHelloAgain(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
-	return &pb.HelloReply{Message: "Hello again " + in.Name}, nil
+func (s *server) SayHi(req *pb.HelloRequest, stream pb.Greeter_SayHiServer) error {
+	ticker := time.NewTicker(10 * time.Second)
+	defer ticker.Stop()
+
+	for stream.Context().Err() == nil {
+		select {
+		case <-ticker.C:
+			if err := stream.Send(&pb.HelloReply{
+				Message: req.GetName(),
+			}); err != nil {
+				log.Println("stream sending failed", err)
+			}
+		}
+	}
+	return nil
 }

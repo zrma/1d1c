@@ -7,8 +7,8 @@ service Greeter {
     // Sends a greeting
     rpc SayHello (HelloRequest) returns (HelloReply) {
     }
-    // Sends another greeting
-    rpc SayHelloAgain (HelloRequest) returns (HelloReply) {
+    // Request receive stream
+    rpc SayHi (HelloRequest) returns (stream HelloReply) {
     }
 }
 

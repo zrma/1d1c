@@ -3,14 +3,14 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
-	"os"
 	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 
-	"github.com/zrma/1d1c/cmd/grpc/hello/pb"
+	"github.com/zrma/1d1c/cmd/grpc/lb/pb"
 )
 
 const (
@@ -36,48 +36,42 @@ func main() {
 	defer conn.Close()
 	c := pb.NewGreeterClient(conn)
 
-	// Contact the server and print out its response.
-	name := defaultName
-	if len(os.Args) > 1 {
-		name = os.Args[1]
-	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
+	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: defaultName})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
 	log.Printf("Greeting: %s", r.GetMessage())
 
-	r, err = c.SayHelloAgain(ctx, &pb.HelloRequest{Name: name})
-	if err != nil {
-		log.Fatalf("could not greet again: %v", err)
-	}
-	log.Printf("Greeting again: %s", r.Message)
-
+	waitCh := make(chan struct{})
 	go func() {
-		for {
-			time.Sleep(60 * time.Second)
-			r, err := c.SayHello(context.Background(), &pb.HelloRequest{Name: name})
-			if err != nil {
-				log.Fatalf("could not greet: %v", err)
+		defer close(waitCh)
+
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		stream, err := c.SayHi(ctx, &pb.HelloRequest{
+			Name: defaultName,
+		})
+		if err != nil {
+			log.Printf("stream connection failed: %v", err)
+		}
+
+		for ctx.Err() == nil {
+			r, err := stream.Recv()
+			if err == io.EOF {
+				break
 			}
-			log.Printf("Greeting: %s", r.GetMessage())
+			if err != nil {
+				log.Println("stream recv err", err)
+				return
+			}
+			fmt.Println("recv", r.GetMessage())
 		}
 	}()
 
-	prev := conn.GetState()
-	for i := 0; i < 1000000000; i++ {
-		time.Sleep(time.Nanosecond)
-		if curr := conn.GetState(); curr != prev {
-			log.Println(curr)
-			prev = curr
-		}
-		if i%10000 == 0 {
-			fmt.Printf(".")
-		}
-	}
-
+	<-waitCh
 	log.Println("end")
 	time.Sleep(time.Second)
 }
