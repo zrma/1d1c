@@ -26,7 +26,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
 	defer cancel()
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 50; i++ {
 		wg.Add(1)
 		go func(idx int) {
 			time.Sleep(time.Second * time.Duration(idx))
@@ -62,7 +62,7 @@ func connect(ctx context.Context, idx int) {
 	ctx = metadata.NewOutgoingContext(ctx, md)
 
 	{
-		ctx, cancel := context.WithTimeout(ctx, 10 * time.Second)
+		ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
 		defer cancel()
 		r, err := c.SayHello(ctx, &pb.HelloRequest{Name: defaultName})
 		if err != nil {

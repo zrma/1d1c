@@ -20,8 +20,8 @@ require (
 	github.com/onsi/ginkgo v1.8.0
 	github.com/onsi/gomega v1.5.0
 	github.com/zrma/going v0.0.0-20190525123801-97b90ffce07c
-	golang.org/x/net v0.0.0-20190921015927-1a5e07d1ff72
+	golang.org/x/net v0.0.0-20191116160921-f9c825593386
 	golang.org/x/sys v0.0.0-20190921204832-2dccfee4fd3e // indirect
 	google.golang.org/genproto v0.0.0-20190916214212-f660b8655731 // indirect
-	google.golang.org/grpc v1.23.1
+	google.golang.org/grpc v1.25.1
 )
