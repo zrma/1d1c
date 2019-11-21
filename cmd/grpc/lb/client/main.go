@@ -26,7 +26,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Minute*5)
 	defer cancel()
 
-	for i := 0; i < 50; i++ {
+	for i := 0; i < 5; i++ {
 		wg.Add(1)
 		go func(idx int) {
 			time.Sleep(time.Second * time.Duration(idx))

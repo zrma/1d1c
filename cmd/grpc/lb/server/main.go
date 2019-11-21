@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strings"
 	"time"
 
 	"golang.org/x/net/http2"
@@ -23,7 +24,8 @@ const (
 )
 
 type Handler struct {
-	opts []grpc.ServerOption
+	proxy *httputil.ReverseProxy
+	opts  []grpc.ServerOption
 }
 
 func (h Handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
@@ -33,19 +35,20 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	s := grpc.NewServer(h.opts...)
 	pb.RegisterGreeterServer(s, &server{id: id})
 
-	s.ServeHTTP(w, req)
-}
-
-func main() {
-	listener, err := net.Listen("tcp", host)
+	listener, err := net.Listen("tcp", ":0")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	endpoint, err := url.Parse("http://" + host)
+	go s.Serve(listener)
+
+	tmp := strings.Split(listener.Addr().String(), ":")
+	addr := "http://localhost:" + tmp[len(tmp)-1]
+	endpoint, err := url.Parse(addr)
 	if err != nil {
 		log.Fatalf("invliad url: %v", endpoint)
 	}
+
 	p := httputil.NewSingleHostReverseProxy(endpoint)
 	p.Transport = &http2.Transport{
 		AllowHTTP: true,
@@ -57,6 +60,14 @@ func main() {
 			}
 			return net.DialTCP(network, nil, ta)
 		},
+	}
+	p.ServeHTTP(w, req)
+}
+
+func main() {
+	listener, err := net.Listen("tcp", host)
+	if err != nil {
+		log.Fatalf("failed to listen: %v", err)
 	}
 
 	s := &http.Server{
