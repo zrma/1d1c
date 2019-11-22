@@ -76,7 +76,7 @@ func main() {
 	//	Handler: h2c.NewHandler(&Handler{opts: buildOpts()}, &http2.Server{}),
 	//}
 
-	opts := buildOpts()
+	opts := buildFrontOpts()
 	opts = append(opts, grpc.CustomCodec(proxy.Codec()))
 
 	s := grpc.NewServer(opts...)
@@ -88,7 +88,7 @@ func main() {
 		if ok {
 			id := md["id"][0]
 
-			s := grpc.NewServer(buildOpts()...)
+			s := grpc.NewServer(buildBackOpts()...)
 			pb.RegisterGreeterServer(s, &server{id: id})
 
 			listener, err := net.Listen("tcp", ":0")
@@ -112,7 +112,7 @@ func main() {
 	log.Println("end")
 }
 
-func buildOpts() []grpc.ServerOption {
+func buildFrontOpts() []grpc.ServerOption {
 	var opts []grpc.ServerOption
 	opts = append(opts,
 		grpc.KeepaliveParams(keepalive.ServerParameters{
@@ -122,6 +122,22 @@ func buildOpts() []grpc.ServerOption {
 			// pings the client to see if the transport is still alive.
 			Time:    20 * time.Second,
 			Timeout: 5 * time.Second,
+		}),
+		grpc.KeepaliveEnforcementPolicy(keepalive.EnforcementPolicy{
+			MinTime:             12 * time.Second,
+			PermitWithoutStream: true,
+		}),
+	)
+	return opts
+}
+
+func buildBackOpts() []grpc.ServerOption {
+	var opts []grpc.ServerOption
+	opts = append(opts,
+		grpc.KeepaliveParams(keepalive.ServerParameters{
+			// pings the client to see if the transport is still alive.
+			Time:    30 * time.Second,
+			Timeout: 10 * time.Second,
 		}),
 		grpc.KeepaliveEnforcementPolicy(keepalive.EnforcementPolicy{
 			MinTime:             12 * time.Second,
