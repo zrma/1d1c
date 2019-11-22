@@ -11,10 +11,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/mwitkow/grpc-proxy/proxy"
 	"golang.org/x/net/http2"
-	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/keepalive"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 
 	"github.com/zrma/1d1c/cmd/grpc/lb/pb"
 )
@@ -68,10 +71,40 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	s := &http.Server{
-		Addr:    host,
-		Handler: h2c.NewHandler(&Handler{opts: buildOpts()}, &http2.Server{}),
-	}
+	//s := &http.Server{
+	//	Addr:    host,
+	//	Handler: h2c.NewHandler(&Handler{opts: buildOpts()}, &http2.Server{}),
+	//}
+
+	opts := buildOpts()
+	opts = append(opts, grpc.CustomCodec(proxy.Codec()))
+
+	s := grpc.NewServer(opts...)
+
+	proxy.RegisterService(s, func(ctx context.Context, fullMethodName string) (context.Context, *grpc.ClientConn, error) {
+		md, ok := metadata.FromIncomingContext(ctx)
+		outCtx := metadata.NewOutgoingContext(ctx, md.Copy())
+
+		if ok {
+			id := md["id"][0]
+
+			s := grpc.NewServer(buildOpts()...)
+			pb.RegisterGreeterServer(s, &server{id: id})
+
+			listener, err := net.Listen("tcp", ":0")
+			if err != nil {
+				log.Fatalf("failed to listen: %v", err)
+			}
+
+			go s.Serve(listener)
+
+			conn, err := grpc.DialContext(ctx, listener.Addr().String(), grpc.WithCodec(proxy.Codec()), grpc.WithInsecure())
+			return outCtx, conn, err
+		}
+		return nil, nil, status.Errorf(codes.Unimplemented, "Unknown method")
+	},
+		"Greeter",
+		pb.GetSvcDesc()...)
 
 	if err := s.Serve(listener); err != nil {
 		log.Fatalln(err)

@@ -77,13 +77,13 @@ func connect(ctx context.Context, idx int) {
 	go func() {
 		defer close(waitCh)
 
-		ctx, cancel := context.WithCancel(ctx)
-		defer cancel()
-
 		errCount := 0
 		const maxSleep = 30 * time.Second
 
 		for ctx.Err() == nil {
+			md := metadata.Pairs("id", fmt.Sprintf("%06d", idx))
+			ctx2 := metadata.NewOutgoingContext(context.Background(), md)
+
 			if errCount > 1 {
 				// 에러가 발생하는 경우 재시도 간격을 지수적으로 증가시킨다:
 				dur := time.Duration(1<<uint(errCount)) * 100 * time.Millisecond
@@ -93,18 +93,18 @@ func connect(ctx context.Context, idx int) {
 
 				select {
 				case <-time.After(dur):
-				case <-ctx.Done():
+				case <-ctx2.Done():
 				}
 			}
 
-			stream, err := c.SayHi(ctx, &pb.HelloRequest{
+			stream, err := c.SayHi(ctx2, &pb.HelloRequest{
 				Name: defaultName,
 			})
 			if err != nil {
 				log.Printf("stream connection failed: %v", err)
 			}
 
-			for ctx.Err() == nil {
+			for ctx2.Err() == nil {
 				r, err := stream.Recv()
 				if err == io.EOF {
 					break
@@ -113,8 +113,8 @@ func connect(ctx context.Context, idx int) {
 					errCount++
 					if statusCode := status.Code(err); statusCode != codes.Canceled {
 						log.Println("stream recv err", err)
-						return
 					}
+					break
 				}
 
 				fmt.Println("recv", r.GetMessage())
@@ -127,5 +127,28 @@ func connect(ctx context.Context, idx int) {
 	}()
 
 	<-waitCh
+
+	time.Sleep(time.Second * 3)
+	{
+		ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+		defer cancel()
+		r, err := c.SayHello(ctx, &pb.HelloRequest{Name: defaultName})
+		if err != nil {
+			log.Fatalf("could not greet: %v", err)
+		}
+		log.Printf("Greeting: %s", r.GetMessage())
+	}
+
+	time.Sleep(time.Second * 3)
+	{
+		ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+		defer cancel()
+		r, err := c.SayHello(ctx, &pb.HelloRequest{Name: defaultName})
+		if err != nil {
+			log.Fatalf("could not greet: %v", err)
+		}
+		log.Printf("Greeting: %s", r.GetMessage())
+	}
+
 	log.Println("client", idx, "closed")
 }
