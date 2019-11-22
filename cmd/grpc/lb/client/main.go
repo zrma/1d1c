@@ -9,8 +9,10 @@ import (
 	"time"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/keepalive"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 
 	"github.com/zrma/1d1c/cmd/grpc/lb/pb"
 )
@@ -78,27 +80,52 @@ func connect(ctx context.Context, idx int) {
 		ctx, cancel := context.WithCancel(ctx)
 		defer cancel()
 
-		stream, err := c.SayHi(ctx, &pb.HelloRequest{
-			Name: defaultName,
-		})
-		if err != nil {
-			log.Printf("stream connection failed: %v", err)
-		}
+		errCount := 0
+		const maxSleep = 30 * time.Second
 
 		for ctx.Err() == nil {
-			r, err := stream.Recv()
-			if err == io.EOF {
-				break
+			if errCount > 1 {
+				// 에러가 발생하는 경우 재시도 간격을 지수적으로 증가시킨다:
+				dur := time.Duration(1<<uint(errCount)) * 100 * time.Millisecond
+				if dur > maxSleep {
+					dur = maxSleep
+				}
+
+				select {
+				case <-time.After(dur):
+				case <-ctx.Done():
+				}
 			}
+
+			stream, err := c.SayHi(ctx, &pb.HelloRequest{
+				Name: defaultName,
+			})
 			if err != nil {
-				log.Println("stream recv err", err)
-				return
+				log.Printf("stream connection failed: %v", err)
 			}
-			fmt.Println("recv", r.GetMessage())
+
+			for ctx.Err() == nil {
+				r, err := stream.Recv()
+				if err == io.EOF {
+					break
+				}
+				if err != nil {
+					errCount++
+					if statusCode := status.Code(err); statusCode != codes.Canceled {
+						log.Println("stream recv err", err)
+						return
+					}
+				}
+
+				fmt.Println("recv", r.GetMessage())
+			}
+		}
+
+		if err := ctx.Err(); err != context.Canceled {
+			log.Println("ctx err:", err)
 		}
 	}()
 
 	<-waitCh
-
 	log.Println("client", idx, "closed")
 }

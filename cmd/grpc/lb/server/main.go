@@ -24,11 +24,10 @@ const (
 )
 
 type Handler struct {
-	proxy *httputil.ReverseProxy
-	opts  []grpc.ServerOption
+	opts []grpc.ServerOption
 }
 
-func (h Handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+func (h *Handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	id := req.Header.Get("id")
 	log.Println("id:", id)
 
@@ -42,25 +41,24 @@ func (h Handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 	go s.Serve(listener)
 
-	tmp := strings.Split(listener.Addr().String(), ":")
-	addr := "http://localhost:" + tmp[len(tmp)-1]
-	endpoint, err := url.Parse(addr)
+	port := strings.Split(listener.Addr().String(), ":")
+	addr := "http://localhost:" + port[len(port)-1]
+	u, err := url.Parse(addr)
 	if err != nil {
-		log.Fatalf("invliad url: %v", endpoint)
+		log.Fatalf("invliad url: %v", u)
 	}
 
-	p := httputil.NewSingleHostReverseProxy(endpoint)
+	p := httputil.NewSingleHostReverseProxy(u)
+	p.FlushInterval = -time.Second // default = 무한대, 설정 안 하면 stream send 내용을 클라로 전달하지 않게 됨.
 	p.Transport = &http2.Transport{
 		AllowHTTP: true,
 		DialTLS: func(network, addr string, cfg *tls.Config) (net.Conn, error) {
 			log.Println("dialtls:", network, addr)
-			ta, err := net.ResolveTCPAddr(network, addr)
-			if err != nil {
-				return nil, err
-			}
-			return net.DialTCP(network, nil, ta)
+			return net.Dial(network, addr)
 		},
 	}
+
+	w.Header().Set("X-Forwarded-For", req.Host)
 	p.ServeHTTP(w, req)
 }
 
