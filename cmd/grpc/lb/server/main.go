@@ -141,6 +141,14 @@ func buildFrontOpts() []grpc.ServerOption {
 			PermitWithoutStream: true,
 		}),
 	)
+
+	var f grpc.UnaryServerInterceptor = func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+		log.Println("method", info.FullMethod)
+
+		h, err := handler(ctx, req)
+		return h, err
+	}
+	opts = append(opts, grpc.UnaryInterceptor(f))
 	return opts
 }
 
