@@ -13,6 +13,7 @@ import (
 
 	"github.com/mwitkow/grpc-proxy/proxy"
 	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/keepalive"
@@ -26,11 +27,11 @@ const (
 	host = ":12345"
 )
 
-type Handler struct {
+type ProxyHandler struct {
 	opts []grpc.ServerOption
 }
 
-func (h *Handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+func (h *ProxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	id := req.Header.Get("id")
 	log.Println("id:", id)
 
@@ -65,22 +66,38 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	p.ServeHTTP(w, req)
 }
 
+type Server interface {
+	Serve(l net.Listener) error
+}
+
 func main() {
 	listener, err := net.Listen("tcp", host)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	//s := &http.Server{
-	//	Addr:    host,
-	//	Handler: h2c.NewHandler(&Handler{opts: buildOpts()}, &http2.Server{}),
-	//}
+	s := reverseProxyHTTP()
+	//s := reverseProxyGRPC()
 
+	if err := s.Serve(listener); err != nil {
+		log.Fatalln(err)
+	}
+
+	log.Println("end")
+}
+
+func reverseProxyHTTP() Server {
+	return &http.Server{
+		Addr:    host,
+		Handler: h2c.NewHandler(&ProxyHandler{opts: buildFrontOpts()}, &http2.Server{}),
+	}
+}
+
+func reverseProxyGRPC() Server {
 	opts := buildFrontOpts()
 	opts = append(opts, grpc.CustomCodec(proxy.Codec()))
 
 	s := grpc.NewServer(opts...)
-
 	proxy.RegisterService(s, func(ctx context.Context, fullMethodName string) (context.Context, *grpc.ClientConn, error) {
 		md, ok := metadata.FromIncomingContext(ctx)
 		outCtx := metadata.NewOutgoingContext(ctx, md.Copy())
@@ -105,11 +122,7 @@ func main() {
 	},
 		"Greeter",
 		pb.GetSvcDesc()...)
-
-	if err := s.Serve(listener); err != nil {
-		log.Fatalln(err)
-	}
-	log.Println("end")
+	return s
 }
 
 func buildFrontOpts() []grpc.ServerOption {
