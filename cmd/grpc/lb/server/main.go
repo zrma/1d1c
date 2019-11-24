@@ -62,7 +62,6 @@ func (h *ProxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		},
 	}
 
-	w.Header().Set("X-Forwarded-For", req.Host)
 	p.ServeHTTP(w, req)
 }
 
@@ -76,8 +75,8 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	s := reverseProxyHTTP()
-	//s := reverseProxyGRPC()
+	//s := reverseProxyHTTP()
+	s := reverseProxyGRPC()
 
 	if err := s.Serve(listener); err != nil {
 		log.Fatalln(err)
@@ -100,12 +99,12 @@ func reverseProxyGRPC() Server {
 	s := grpc.NewServer(opts...)
 	proxy.RegisterService(s, func(ctx context.Context, fullMethodName string) (context.Context, *grpc.ClientConn, error) {
 		md, ok := metadata.FromIncomingContext(ctx)
-		outCtx := metadata.NewOutgoingContext(ctx, md.Copy())
+		outCtx := metadata.NewOutgoingContext(context.Background(), md.Copy())
 
 		if ok {
 			id := md["id"][0]
 
-			s := grpc.NewServer(buildBackOpts()...)
+			s := grpc.NewServer()
 			pb.RegisterGreeterServer(s, &server{id: id})
 
 			listener, err := net.Listen("tcp", ":0")
@@ -115,7 +114,7 @@ func reverseProxyGRPC() Server {
 
 			go s.Serve(listener)
 
-			conn, err := grpc.DialContext(ctx, listener.Addr().String(), grpc.WithCodec(proxy.Codec()), grpc.WithInsecure())
+			conn, err := grpc.DialContext(outCtx, listener.Addr().String(), grpc.WithCodec(proxy.Codec()), grpc.WithInsecure())
 			return outCtx, conn, err
 		}
 		return nil, nil, status.Errorf(codes.Unimplemented, "Unknown method")
