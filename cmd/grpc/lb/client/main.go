@@ -63,15 +63,22 @@ func connect(ctx context.Context, idx int) {
 	md := metadata.Pairs("id", fmt.Sprintf("%06d", idx))
 	ctx = metadata.NewOutgoingContext(ctx, md)
 
-	{
-		ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
-		defer cancel()
-		r, err := c.SayHello(ctx, &pb.HelloRequest{Name: defaultName})
-		if err != nil {
-			log.Fatalf("could not greet: %v", err)
+	go func() {
+		for ctx.Err() == nil {
+			func() {
+				ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
+				defer cancel()
+
+				r, err := c.SayHello(ctx, &pb.HelloRequest{Name: defaultName})
+				if err != nil {
+					log.Fatalf("could not greet: %v", err)
+				}
+				log.Printf("Greeting: %s", r.GetMessage())
+
+				time.Sleep(time.Second * 10)
+			}()
 		}
-		log.Printf("Greeting: %s", r.GetMessage())
-	}
+	}()
 
 	waitCh := make(chan struct{})
 	go func() {
@@ -79,6 +86,7 @@ func connect(ctx context.Context, idx int) {
 
 		errCount := 0
 		const maxSleep = 30 * time.Second
+		var cnt int64
 
 		for ctx.Err() == nil {
 			md := metadata.Pairs("id", fmt.Sprintf("%06d", idx))
@@ -98,7 +106,8 @@ func connect(ctx context.Context, idx int) {
 			}
 
 			stream, err := c.SayHi(ctx2, &pb.HelloRequest{
-				Name: defaultName,
+				Name:     defaultName,
+				StartCnt: cnt,
 			})
 			if err != nil {
 				log.Printf("stream connection failed: %v", err)
@@ -117,7 +126,8 @@ func connect(ctx context.Context, idx int) {
 					break
 				}
 
-				fmt.Println("recv", r.GetMessage())
+				cnt = r.GetCnt()
+				fmt.Println("recv", r.GetMessage(), cnt)
 			}
 		}
 

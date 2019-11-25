@@ -9,6 +9,7 @@ import (
 	"net/http/httputil"
 	"net/url"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/mwitkow/grpc-proxy/proxy"
@@ -27,13 +28,24 @@ const (
 	host = ":12345"
 )
 
-type ProxyHandler struct {
+type proxyHandler struct {
 	opts []grpc.ServerOption
+
+	mutex   sync.Mutex
+	servers map[string]*httputil.ReverseProxy
 }
 
-func (h *ProxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+func (h *proxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	id := req.Header.Get("id")
 	log.Println("id:", id)
+
+	h.mutex.Lock()
+	defer h.mutex.Unlock()
+
+	if p, ok := h.servers[id]; ok {
+		p.ServeHTTP(w, req)
+		return
+	}
 
 	s := grpc.NewServer(h.opts...)
 	pb.RegisterGreeterServer(s, &server{id: id})
@@ -63,6 +75,9 @@ func (h *ProxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 
 	p.ServeHTTP(w, req)
+
+	log.Println("create server :", id)
+	h.servers[id] = p
 }
 
 type Server interface {
@@ -87,14 +102,20 @@ func main() {
 
 func reverseProxyHTTP() Server {
 	return &http.Server{
-		Addr:    host,
-		Handler: h2c.NewHandler(&ProxyHandler{opts: buildFrontOpts()}, &http2.Server{}),
+		Addr: host,
+		Handler: h2c.NewHandler(&proxyHandler{
+			opts:    buildFrontOpts(),
+			servers: make(map[string]*httputil.ReverseProxy),
+		}, &http2.Server{}),
 	}
 }
 
 func reverseProxyGRPC() Server {
 	opts := buildFrontOpts()
 	opts = append(opts, grpc.CustomCodec(proxy.Codec()))
+
+	var mutex sync.Mutex
+	servers := make(map[string]string)
 
 	s := grpc.NewServer(opts...)
 	proxy.RegisterService(s, func(ctx context.Context, fullMethodName string) (context.Context, *grpc.ClientConn, error) {
@@ -104,7 +125,15 @@ func reverseProxyGRPC() Server {
 		if ok {
 			id := md["id"][0]
 
-			s := grpc.NewServer()
+			mutex.Lock()
+			defer mutex.Unlock()
+
+			if endpoint, ok := servers[id]; ok {
+				conn, err := grpc.DialContext(outCtx, endpoint, grpc.WithCodec(proxy.Codec()), grpc.WithInsecure())
+				return outCtx, conn, err
+			}
+
+			s := grpc.NewServer(buildBackOpts()...)
 			pb.RegisterGreeterServer(s, &server{id: id})
 
 			listener, err := net.Listen("tcp", ":0")
@@ -114,7 +143,12 @@ func reverseProxyGRPC() Server {
 
 			go s.Serve(listener)
 
-			conn, err := grpc.DialContext(outCtx, listener.Addr().String(), grpc.WithCodec(proxy.Codec()), grpc.WithInsecure())
+			endpoint := listener.Addr().String()
+			conn, err := grpc.DialContext(outCtx, endpoint, grpc.WithCodec(proxy.Codec()), grpc.WithInsecure())
+
+			log.Println("create server :", id)
+
+			servers[id] = endpoint
 			return outCtx, conn, err
 		}
 		return nil, nil, status.Errorf(codes.Unimplemented, "Unknown method")
@@ -141,13 +175,19 @@ func buildFrontOpts() []grpc.ServerOption {
 		}),
 	)
 
-	var f grpc.UnaryServerInterceptor = func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
-		log.Println("method", info.FullMethod)
+	var unaryServerInterceptor grpc.UnaryServerInterceptor = func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+		log.Println("front method", info.FullMethod)
 
 		h, err := handler(ctx, req)
 		return h, err
 	}
-	opts = append(opts, grpc.UnaryInterceptor(f))
+	var streamServerInterceptor grpc.StreamServerInterceptor = func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+		log.Println("front stream", info.FullMethod, info.IsClientStream, info.IsServerStream)
+
+		return handler(srv, ss)
+	}
+	opts = append(opts, grpc.UnaryInterceptor(unaryServerInterceptor), grpc.StreamInterceptor(streamServerInterceptor))
+
 	return opts
 }
 
@@ -164,28 +204,46 @@ func buildBackOpts() []grpc.ServerOption {
 			PermitWithoutStream: true,
 		}),
 	)
+
+	var unaryServerInterceptor grpc.UnaryServerInterceptor = func(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp interface{}, err error) {
+		log.Println("back method", info.FullMethod)
+
+		h, err := handler(ctx, req)
+		return h, err
+	}
+	var streamServerInterceptor grpc.StreamServerInterceptor = func(srv interface{}, ss grpc.ServerStream, info *grpc.StreamServerInfo, handler grpc.StreamHandler) error {
+		log.Println("back stream", info.FullMethod, info.IsClientStream, info.IsServerStream)
+
+		return handler(srv, ss)
+	}
+	opts = append(opts, grpc.UnaryInterceptor(unaryServerInterceptor), grpc.StreamInterceptor(streamServerInterceptor))
+
 	return opts
 }
 
 type server struct {
-	id string
+	id  string
+	cnt int
 }
 
 // SayHello implements hello.GreeterServer
 func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
 	log.Printf("Received: %v", in.GetName())
-	return &pb.HelloReply{Message: "Hello " + in.GetName()}, nil
+	return &pb.HelloReply{Message: s.id + " Hello " + in.GetName()}, nil
 }
 
 func (s *server) SayHi(req *pb.HelloRequest, stream pb.Greeter_SayHiServer) error {
 	ticker := time.NewTicker(10 * time.Second)
 	defer ticker.Stop()
 
+	cnt := req.GetStartCnt()
 	for stream.Context().Err() == nil {
 		select {
 		case <-ticker.C:
+			cnt++
 			if err := stream.Send(&pb.HelloReply{
 				Message: "on " + s.id + ":" + req.GetName(),
+				Cnt:     cnt,
 			}); err != nil {
 				log.Println("stream sending failed", err)
 			}
