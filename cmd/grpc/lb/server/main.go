@@ -122,36 +122,41 @@ func reverseProxyGRPC() Server {
 		md, ok := metadata.FromIncomingContext(ctx)
 		outCtx := metadata.NewOutgoingContext(context.Background(), md.Copy())
 
-		if ok {
-			id := md["id"][0]
+		if !ok {
+			return nil, nil, status.Errorf(codes.Unimplemented, "Unknown method")
+		}
 
-			mutex.Lock()
-			defer mutex.Unlock()
+		idPair, ok := md["id"]
+		if !ok || len(idPair) == 0 {
+			return nil, nil, status.Errorf(codes.Unimplemented, "Unknown method")
+		}
+		id := idPair[0]
 
-			if endpoint, ok := servers[id]; ok {
-				conn, err := grpc.DialContext(outCtx, endpoint, grpc.WithCodec(proxy.Codec()), grpc.WithInsecure())
-				return outCtx, conn, err
-			}
+		mutex.Lock()
+		defer mutex.Unlock()
 
-			s := grpc.NewServer(buildBackOpts()...)
-			pb.RegisterGreeterServer(s, &server{id: id})
-
-			listener, err := net.Listen("tcp", ":0")
-			if err != nil {
-				log.Fatalf("failed to listen: %v", err)
-			}
-
-			go s.Serve(listener)
-
-			endpoint := listener.Addr().String()
+		if endpoint, ok := servers[id]; ok {
 			conn, err := grpc.DialContext(outCtx, endpoint, grpc.WithCodec(proxy.Codec()), grpc.WithInsecure())
-
-			log.Println("create server :", id)
-
-			servers[id] = endpoint
 			return outCtx, conn, err
 		}
-		return nil, nil, status.Errorf(codes.Unimplemented, "Unknown method")
+
+		s := grpc.NewServer(buildBackOpts()...)
+		pb.RegisterGreeterServer(s, &server{id: id})
+
+		listener, err := net.Listen("tcp", ":0")
+		if err != nil {
+			log.Fatalf("failed to listen: %v", err)
+		}
+
+		go s.Serve(listener)
+
+		endpoint := listener.Addr().String()
+		conn, err := grpc.DialContext(outCtx, endpoint, grpc.WithCodec(proxy.Codec()), grpc.WithInsecure())
+
+		log.Println("create server :", id)
+
+		servers[id] = endpoint
+		return outCtx, conn, err
 	},
 		"Greeter",
 		pb.GetSvcDesc()...)

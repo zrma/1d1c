@@ -149,16 +149,5 @@ func connect(ctx context.Context, idx int) {
 		log.Printf("Greeting: %s", r.GetMessage())
 	}
 
-	time.Sleep(time.Second * 3)
-	{
-		ctx, cancel := context.WithTimeout(ctx, 10*time.Second)
-		defer cancel()
-		r, err := c.SayHello(ctx, &pb.HelloRequest{Name: defaultName})
-		if err != nil {
-			log.Fatalf("could not greet: %v", err)
-		}
-		log.Printf("Greeting: %s", r.GetMessage())
-	}
-
 	log.Println("client", idx, "closed")
 }
