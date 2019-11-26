@@ -24,7 +24,7 @@ require (
 	github.com/onsi/ginkgo v1.8.0
 	github.com/onsi/gomega v1.5.0
 	github.com/zrma/going v0.0.0-20190525123801-97b90ffce07c
-	golang.org/x/lint v0.0.0-20190930215403-16217165b5de // indirect
+	golang.org/x/lint v0.0.0-20191125180803-fdd1cda4f05f // indirect
 	golang.org/x/net v0.0.0-20191116160921-f9c825593386
 	golang.org/x/sys v0.0.0-20190921204832-2dccfee4fd3e // indirect
 	google.golang.org/genproto v0.0.0-20190916214212-f660b8655731 // indirect
