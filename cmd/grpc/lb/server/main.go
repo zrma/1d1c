@@ -82,6 +82,7 @@ func (h *proxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 type Server interface {
 	Serve(l net.Listener) error
+	Close() error
 }
 
 func main() {
@@ -96,7 +97,8 @@ func main() {
 	if err := s.Serve(listener); err != nil {
 		log.Fatalln(err)
 	}
-
+	defer s.Close()
+	
 	log.Println("end")
 }
 
@@ -108,6 +110,15 @@ func reverseProxyHTTP() Server {
 			servers: make(map[string]*httputil.ReverseProxy),
 		}, &http2.Server{}),
 	}
+}
+
+type serverAdapter struct {
+	*grpc.Server
+}
+
+func (s *serverAdapter) Close() error {
+	s.GracefulStop()
+	return nil
 }
 
 func reverseProxyGRPC() Server {
@@ -160,7 +171,7 @@ func reverseProxyGRPC() Server {
 	},
 		"Greeter",
 		pb.GetSvcDesc()...)
-	return s
+	return &serverAdapter{s}
 }
 
 func buildFrontOpts() []grpc.ServerOption {
