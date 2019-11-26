@@ -98,7 +98,7 @@ func main() {
 		log.Fatalln(err)
 	}
 	defer s.Close()
-	
+
 	log.Println("end")
 }
 
