@@ -35,7 +35,7 @@ type proxyHandler struct {
 	servers map[string]*httputil.ReverseProxy
 }
 
-func (h *proxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+func (h *proxyHandler) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 	id := req.Header.Get("id")
 	log.Println("id:", id)
 
@@ -43,7 +43,7 @@ func (h *proxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	defer h.mutex.Unlock()
 
 	if p, ok := h.servers[id]; ok {
-		p.ServeHTTP(w, req)
+		p.ServeHTTP(res, req)
 		return
 	}
 
@@ -74,7 +74,7 @@ func (h *proxyHandler) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 		},
 	}
 
-	p.ServeHTTP(w, req)
+	p.ServeHTTP(res, req)
 
 	log.Println("create server :", id)
 	h.servers[id] = p
