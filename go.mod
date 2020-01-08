@@ -1,6 +1,6 @@
 module github.com/zrma/1d1c
 
-go 1.12
+go 1.13
 
 require (
 	github.com/Songmu/ghch v0.10.1 // indirect
@@ -20,13 +20,13 @@ require (
 	github.com/mattn/goveralls v0.0.4 // indirect
 	github.com/micro/go-micro v1.10.0
 	github.com/micro/micro v1.10.0
+	github.com/motemen/gobump v0.0.0-20191229024723-40a93df16ab5 // indirect
 	github.com/mwitkow/grpc-proxy v0.0.0-20181017164139-0f1106ef9c76
 	github.com/onsi/ginkgo v1.8.0
 	github.com/onsi/gomega v1.5.0
 	github.com/zrma/going v0.0.0-20190525123801-97b90ffce07c
 	golang.org/x/lint v0.0.0-20191125180803-fdd1cda4f05f // indirect
 	golang.org/x/net v0.0.0-20191116160921-f9c825593386
-	golang.org/x/sys v0.0.0-20190921204832-2dccfee4fd3e // indirect
 	google.golang.org/genproto v0.0.0-20190916214212-f660b8655731 // indirect
 	google.golang.org/grpc v1.25.1
 )
