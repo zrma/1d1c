@@ -12,3 +12,11 @@ func twoSum(nums []int, target int) []int {
 	}
 	return result
 }
+
+func twoSum2InputArrayIsSorted(nums []int, target int) []int {
+	result := twoSum(nums, target)
+	for i := range result {
+		result[i]++
+	}
+	return result
+}
