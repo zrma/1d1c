@@ -3,7 +3,7 @@ module github.com/zrma/1d1c
 go 1.13
 
 require (
-	github.com/Songmu/ghch v0.10.1 // indirect
+	github.com/Songmu/ghch v0.10.2 // indirect
 	github.com/Songmu/goxz v0.6.0 // indirect
 	github.com/alecthomas/gometalinter v3.0.0+incompatible // indirect
 	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d // indirect
@@ -32,7 +32,7 @@ require (
 	github.com/tsenart/deadcode v0.0.0-20160724212837-210d2dc333e9 // indirect
 	github.com/zrma/going v0.0.0-20190525123801-97b90ffce07c
 	golang.org/x/lint v0.0.0-20191125180803-fdd1cda4f05f // indirect
-	golang.org/x/net v0.0.0-20191116160921-f9c825593386
+	golang.org/x/net v0.0.0-20200114155413-6afb5195e5aa
 	google.golang.org/genproto v0.0.0-20190916214212-f660b8655731 // indirect
 	google.golang.org/grpc v1.25.1
 	gopkg.in/alecthomas/kingpin.v3-unstable v3.0.0-20171010053543-63abe20a23e2 // indirect
