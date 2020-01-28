@@ -11,7 +11,7 @@ func lengthOfLongestSubstring(s string) int {
 	maxLength := 1
 	prevIdx := 0
 
-	visited := make([]int, math.MaxUint8)
+	var visited [math.MaxUint8]int
 	for i := range visited {
 		visited[i] = -1
 	}
