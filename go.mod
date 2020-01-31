@@ -25,7 +25,7 @@ require (
 	github.com/onsi/gomega v1.5.0
 	github.com/x-motemen/gobump v0.2.0 // indirect
 	github.com/zrma/going v0.0.0-20190525123801-97b90ffce07c
-	golang.org/x/lint v0.0.0-20191125180803-fdd1cda4f05f // indirect
+	golang.org/x/lint v0.0.0-20200130185559-910be7a94367 // indirect
 	golang.org/x/net v0.0.0-20200114155413-6afb5195e5aa
 	google.golang.org/genproto v0.0.0-20190916214212-f660b8655731 // indirect
 	google.golang.org/grpc v1.25.1
