@@ -13,6 +13,7 @@ require (
 	github.com/facebookgo/subset v0.0.0-20150612182917-8dac2c3c4870 // indirect
 	github.com/facebookincubator/ent v0.0.0-20191013065242-9983309eacbb
 	github.com/go-test/deep v1.0.1
+	github.com/goccy/go-graphviz v0.0.0-20200206164517-da3e3d2f9a52
 	github.com/golang/protobuf v1.3.2
 	github.com/google/uuid v1.1.1
 	github.com/hailocab/go-geoindex v0.0.0-20160127134810-64631bfe9711
