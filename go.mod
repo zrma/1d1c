@@ -24,10 +24,14 @@ require (
 	github.com/mwitkow/grpc-proxy v0.0.0-20181017164139-0f1106ef9c76
 	github.com/onsi/ginkgo v1.8.0
 	github.com/onsi/gomega v1.5.0
+	github.com/panjf2000/ants/v2 v2.3.0
 	github.com/x-motemen/gobump v0.2.0 // indirect
 	github.com/zrma/going v0.0.0-20190525123801-97b90ffce07c
 	golang.org/x/lint v0.0.0-20200130185559-910be7a94367 // indirect
-	golang.org/x/net v0.0.0-20200114155413-6afb5195e5aa
+	golang.org/x/mod v0.2.0 // indirect
+	golang.org/x/net v0.0.0-20200219183655-46282727080f
+	golang.org/x/tools v0.0.0-20200220224806-8a925fa4c0df // indirect
+	golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 // indirect
 	google.golang.org/genproto v0.0.0-20190916214212-f660b8655731 // indirect
 	google.golang.org/grpc v1.25.1
 )
