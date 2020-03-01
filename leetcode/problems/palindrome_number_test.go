@@ -23,5 +23,6 @@ var _ = Describe("https://leetcode.com/problems/palindrome-number/", func() {
 		Entry("2", testData{10, false}),
 		Entry("3", testData{1234, false}),
 		Entry("4", testData{1234321, true}),
+		Entry("6", testData{0, true}),
 	)
 })
