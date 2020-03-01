@@ -8,8 +8,6 @@
 
 ----
 
-[![CodeScene Status](https://codescene.io/projects/6691/status.svg)](https://codescene.io/projects/6691/jobs/latest-successful/results)
-
 1 day 1 coding
 
 
