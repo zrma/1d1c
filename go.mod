@@ -27,7 +27,7 @@ require (
 	github.com/panjf2000/ants/v2 v2.3.0
 	github.com/x-motemen/gobump v0.2.0 // indirect
 	github.com/zrma/going v0.0.0-20190525123801-97b90ffce07c
-	golang.org/x/lint v0.0.0-20200130185559-910be7a94367 // indirect
+	golang.org/x/lint v0.0.0-20200302205851-738671d3881b // indirect
 	golang.org/x/net v0.0.0-20200219183655-46282727080f
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e // indirect
 	golang.org/x/sys v0.0.0-20200122134326-e047566fdf82 // indirect
