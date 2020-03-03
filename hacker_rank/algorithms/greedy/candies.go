@@ -1,6 +1,8 @@
 package greedy
 
-import "github.com/zrma/going/utils/integer"
+import (
+	"github.com/zrma/going/utils/integer"
+)
 
 func candies(n int32, arr []int32) int64 {
 	output := make([]int32, n)
