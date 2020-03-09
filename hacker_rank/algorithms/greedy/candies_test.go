@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"gotest.tools/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 type Done chan struct{}
@@ -37,17 +37,17 @@ func TestCandies(t *testing.T) {
 		waitCh := make(chan struct{})
 		go func(done Done) {
 			file, err := os.Open("./test_data/candies.csv")
-			assert.NilError(t, err)
+			assert.NoError(t, err)
 			defer file.Close()
 
 			r := csv.NewReader(bufio.NewReader(file))
 			rows, err := r.ReadAll()
-			assert.NilError(t, err)
+			assert.NoError(t, err)
 
 			var arr []int32
 			for _, col := range rows {
 				num, err := strconv.ParseInt(col[0], 10, 32)
-				assert.NilError(t, err)
+				assert.NoError(t, err)
 
 				arr = append(arr, int32(num))
 			}

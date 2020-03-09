@@ -3,7 +3,7 @@ package tutorial30daysofcode
 import (
 	"testing"
 
-	"gotest.tools/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestDivisorSum(t *testing.T) {

@@ -25,6 +25,7 @@ require (
 	github.com/onsi/ginkgo v1.8.0
 	github.com/onsi/gomega v1.5.0
 	github.com/panjf2000/ants/v2 v2.3.0
+	github.com/stretchr/testify v1.5.1
 	github.com/x-motemen/gobump v0.2.0 // indirect
 	github.com/zrma/going v0.0.0-20190525123801-97b90ffce07c
 	golang.org/x/lint v0.0.0-20200302205851-738671d3881b // indirect

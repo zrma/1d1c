@@ -3,7 +3,7 @@ package dp
 import (
 	"testing"
 
-	"gotest.tools/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSubstrings(t *testing.T) {

@@ -3,7 +3,7 @@ package problems
 import (
 	"testing"
 
-	"gotest.tools/assert"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestConvert(t *testing.T) {
