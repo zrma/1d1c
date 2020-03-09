@@ -6,12 +6,10 @@ import (
 	"os"
 	"strconv"
 	"testing"
-	"time"
 
 	"github.com/stretchr/testify/assert"
+	. "github.com/zrma/going/utils"
 )
-
-type Done chan struct{}
 
 func TestCandies(t *testing.T) {
 	t.Parallel()
@@ -32,10 +30,8 @@ func TestCandies(t *testing.T) {
 		}
 	})
 
-	t.Run("", func(t *testing.T) {
-		timeout := time.After(3 * time.Second)
-		waitCh := make(chan struct{})
-		go func(done Done) {
+	t.Run("performance measure", func(t *testing.T) {
+		RunUntil(t, func(done Done) {
 			file, err := os.Open("./test_data/candies.csv")
 			assert.NoError(t, err)
 			defer file.Close()
@@ -59,12 +55,6 @@ func TestCandies(t *testing.T) {
 			assert.Equal(t, actual, expected)
 
 			close(done)
-		}(waitCh)
-
-		select {
-		case <-timeout:
-			t.Fatal("timeout")
-		case <-waitCh:
-		}
+		}, 3)
 	})
 }
