@@ -32,6 +32,8 @@ func TestCandies(t *testing.T) {
 
 	t.Run("performance measure", func(t *testing.T) {
 		RunUntil(t, func(done Done) {
+			defer close(done)
+
 			file, err := os.Open("./test_data/candies.csv")
 			assert.NoError(t, err)
 			defer file.Close()
@@ -53,8 +55,6 @@ func TestCandies(t *testing.T) {
 			actual := candies(int32(len(arr)), arr)
 			var expected int64 = 160929
 			assert.Equal(t, actual, expected)
-
-			close(done)
 		}, 3)
 	})
 }
