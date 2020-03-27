@@ -1,14 +1,14 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-regex-patterns/problem", func() {
-	It("문제를 풀었다", func() {
-		//noinspection SpellCheckingInspection
+func TestFilter(t *testing.T) {
+	t.Run("https://www.hackerrank.com/challenges/30-regex-patterns/problem", func(t *testing.T) { //noinspection SpellCheckingInspection
 		err := utils.PrintTest(func() {
 			filter([][]string{
 				{"riya", "riya@gmail.com"},
@@ -25,6 +25,6 @@ var _ = Describe("https://www.hackerrank.com/challenges/30-regex-patterns/proble
 			"samantha",
 			"tanya",
 		})
-		Expect(err).ShouldNot(HaveOccurred())
+		assert.NoError(t, err)
 	})
-})
+}
