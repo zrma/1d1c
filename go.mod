@@ -3,6 +3,7 @@ module github.com/zrma/1d1c
 go 1.14
 
 require (
+	fyne.io/fyne v1.2.3
 	github.com/Songmu/ghch v0.10.2 // indirect
 	github.com/Songmu/goxz v0.6.0 // indirect
 	github.com/blang/semver v3.5.1+incompatible // indirect
