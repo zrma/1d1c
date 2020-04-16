@@ -1,13 +1,14 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-queues-stacks/problem", func() {
-	Context("문제를 풀었다", func() {
-		It("queue 구조체는 큐 자료구조의 기능을 충실히 수행한다.", func() {
+func TestQueue(t *testing.T) {
+	t.Run("https://www.hackerrank.com/challenges/30-queues-stacks/problem", func(t *testing.T) {
+		t.Run("queue 구조체는 큐 자료구조의 기능을 충실히 수행한다.", func(t *testing.T) {
 			q := queue{}
 
 			q.enqueue("a")
@@ -15,22 +16,22 @@ var _ = Describe("https://www.hackerrank.com/challenges/30-queues-stacks/problem
 			q.enqueue("c")
 
 			actual, ok := q.dequeue()
-			Expect(ok).Should(BeTrue())
-			Expect(actual).Should(Equal("a"))
+			assert.True(t, ok)
+			assert.Equal(t, "a", actual)
 
 			actual, ok = q.dequeue()
-			Expect(ok).Should(BeTrue())
-			Expect(actual).Should(Equal("b"))
+			assert.True(t, ok)
+			assert.Equal(t, "b", actual)
 
 			actual, ok = q.dequeue()
-			Expect(ok).Should(BeTrue())
-			Expect(actual).Should(Equal("c"))
+			assert.True(t, ok)
+			assert.Equal(t, "c", actual)
 
 			_, ok = q.dequeue()
-			Expect(ok).Should(BeFalse())
+			assert.False(t, ok)
 		})
 
-		It("stack 구조체는 스택 자료구조의 기능을 충실히 수행한다.", func() {
+		t.Run("stack 구조체는 스택 자료구조의 기능을 충실히 수행한다.", func(t *testing.T) {
 			s := stack{}
 
 			s.push("a")
@@ -38,19 +39,19 @@ var _ = Describe("https://www.hackerrank.com/challenges/30-queues-stacks/problem
 			s.push("c")
 
 			actual, ok := s.pop()
-			Expect(ok).Should(BeTrue())
-			Expect(actual).Should(Equal("c"))
+			assert.True(t, ok)
+			assert.Equal(t, "c", actual)
 
 			actual, ok = s.pop()
-			Expect(ok).Should(BeTrue())
-			Expect(actual).Should(Equal("b"))
+			assert.True(t, ok)
+			assert.Equal(t, "b", actual)
 
 			actual, ok = s.pop()
-			Expect(ok).Should(BeTrue())
-			Expect(actual).Should(Equal("a"))
+			assert.True(t, ok)
+			assert.Equal(t, "a", actual)
 
 			_, ok = s.pop()
-			Expect(ok).Should(BeFalse())
+			assert.False(t, ok)
 		})
 	})
-})
+}

@@ -1,13 +1,14 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-scope/problem", func() {
-	It("문제를 풀었다", func() {
+func TestNewDifference(t *testing.T) {
+	t.Run("https://www.hackerrank.com/challenges/30-scope/problem", func(t *testing.T) {
 		difference := newDifference([]int{1, 2, 5})
-		Expect(difference.computeDifference()).Should(BeNumerically("==", 4))
+		assert.Equal(t, 4, difference.computeDifference())
 	})
-})
+}

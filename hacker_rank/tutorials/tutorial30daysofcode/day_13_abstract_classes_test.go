@@ -1,14 +1,15 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
 //noinspection SpellCheckingInspection
-var _ = Describe("https://www.hackerrank.com/challenges/30-abstract-classes/problem", func() {
-	It("문제를 풀었다", func() {
+func TestAbstractClasses(t *testing.T) {
+	t.Run("https://www.hackerrank.com/challenges/30-abstract-classes/problem", func(t *testing.T) {
 		err := utils.PrintTest(func() {
 			abstractClasses("The Alchemist", "Paulo Coelho", 248)
 		}, []string{
@@ -16,6 +17,6 @@ var _ = Describe("https://www.hackerrank.com/challenges/30-abstract-classes/prob
 			"Author: Paulo Coelho",
 			"Price: 248",
 		})
-		Expect(err).ShouldNot(HaveOccurred())
+		assert.NoError(t, err)
 	})
-})
+}
