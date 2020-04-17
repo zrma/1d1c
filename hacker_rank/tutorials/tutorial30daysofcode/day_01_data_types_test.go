@@ -1,13 +1,14 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-data-types/problem", func() {
-	It("문제를 풀었다", func() {
+func TestDataType(t *testing.T) {
+	t.Run("https://www.hackerrank.com/challenges/30-data-types/problem", func(t *testing.T) {
 		err := utils.PrintTest(func() {
 			dataType(
 				4, 12,
@@ -19,6 +20,6 @@ var _ = Describe("https://www.hackerrank.com/challenges/30-data-types/problem", 
 			"8.0",
 			"HackerRank is the best place to learn and practice coding!",
 		})
-		Expect(err).ShouldNot(HaveOccurred())
+		assert.NoError(t, err)
 	})
-})
+}

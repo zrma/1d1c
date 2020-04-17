@@ -1,13 +1,14 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-loops/problem", func() {
-	It("문제를 풀었다", func() {
+func TestLoop(t *testing.T) {
+	t.Run("https://www.hackerrank.com/challenges/30-loops/problem", func(t *testing.T) {
 		err := utils.PrintTest(func() {
 			loop(2)
 		}, []string{
@@ -22,6 +23,6 @@ var _ = Describe("https://www.hackerrank.com/challenges/30-loops/problem", func(
 			"2 x 9 = 18",
 			"2 x 10 = 20",
 		})
-		Expect(err).ShouldNot(HaveOccurred())
+		assert.NoError(t, err)
 	})
-})
+}

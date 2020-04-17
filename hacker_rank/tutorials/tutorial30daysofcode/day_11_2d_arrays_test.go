@@ -1,13 +1,14 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-2d-arrays/problem", func() {
-	It("문제를 풀었다", func() {
+func TestHourGlassSum(t *testing.T) {
+	t.Run("https://www.hackerrank.com/challenges/30-2d-arrays/problem", func(t *testing.T) {
 		err := utils.PrintTest(func() {
 			arr := [][]int32{
 				{1, 1, 1, 0, 0, 0},
@@ -21,6 +22,6 @@ var _ = Describe("https://www.hackerrank.com/challenges/30-2d-arrays/problem", f
 		}, []string{
 			"19",
 		})
-		Expect(err).ShouldNot(HaveOccurred())
+		assert.NoError(t, err)
 	})
-})
+}
