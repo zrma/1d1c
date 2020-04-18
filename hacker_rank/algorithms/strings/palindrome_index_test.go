@@ -4,77 +4,77 @@ import (
 	"bufio"
 	"encoding/csv"
 	"os"
+	"testing"
 
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/ginkgo/extensions/table"
-	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/assert"
+	. "github.com/zrma/going/utils"
 )
 
-//noinspection SpellCheckingInspection
-var _ = Describe("https://www.hackerrank.com/challenges/palindrome-index/problem", func() {
-	type testData struct {
-		s        string
-		expected int32
-	}
-
-	DescribeTable("문제를 풀었다.",
-		func(data testData) {
+func TestPalindromeIndex(t *testing.T) {
+	//noinspection SpellCheckingInspection
+	t.Run("https://www.hackerrank.com/challenges/palindrome-index/problem", func(t *testing.T) {
+		for _, data := range []struct {
+			s        string
+			expected int32
+		}{
+			{"aaab", 3},
+			{"baa", 0},
+			{"aaa", -1},
+			{"a", -1},
+			{"abcadcdddaba", -1},
+			{"abcd", -1},
+			{"quyjjdcgsvvsgcdjjyq", 1},
+			{"hgygsvlfwcwnswtuhmyaljkqlqjjqlqkjlaymhutwsnwcflvsgygh", 8},
+			{"fgnfnidynhxebxxxfmxixhsruldhsaobhlcggchboashdlurshxixmfxxxbexhnydinfngf", 33},
+			{"bsyhvwfuesumsehmytqioswvpcbxyolapfywdxeacyuruybhbwxjmrrmjxwbhbyuruycaexdwyfpaloyxbcpwsoiqtymhesmuseufwvhysb", 23},
+			{"fvyqxqxynewuebtcuqdwyetyqqisappmunmnldmkttkmdlnmnumppasiqyteywdquctbeuwenyxqxqyvf", 25},
+			{"mmbiefhflbeckaecprwfgmqlydfroxrblulpasumubqhhbvlqpixvvxipqlvbhqbumusaplulbrxorfdylqmgfwrpceakceblfhfeibmm", 44},
+			{"tpqknkmbgasitnwqrqasvolmevkasccsakvemlosaqrqwntisagbmknkqpt", 20},
+			{"lhrxvssvxrhl", -1},
+			{"prcoitfiptvcxrvoalqmfpnqyhrubxspplrftomfehbbhefmotfrlppsxburhyqnpfmqlaorxcvtpiftiocrp", 14},
+			{"kjowoemiduaaxasnqghxbxkiccikxbxhgqnsaxaaudimeowojk", -1},
+		} {
 			actual := palindromeIndex(data.s)
-			Expect(actual).Should(BeNumerically("==", data.expected))
-		},
-		Entry("aaab", testData{"aaab", 3}),
-		Entry("baa", testData{"baa", 0}),
-		Entry("aaa", testData{"aaa", -1}),
-		Entry("a", testData{"a", -1}),
-		Entry("abcadcdddaba", testData{"abcadcdddaba", -1}),
-		Entry("abcd", testData{"abcd", -1}),
-		Entry("quyjjdcgsvvsgcdjjyq", testData{"quyjjdcgsvvsgcdjjyq", 1}),
-		Entry("hgygsvlfwcwnswtuhmyaljkqlqjjqlqkjlaymhutwsnwcflvsgygh", testData{"hgygsvlfwcwnswtuhmyaljkqlqjjqlqkjlaymhutwsnwcflvsgygh", 8}),
-		Entry("fgnfnidynhxebxxxfmxixhsruldhsaobhlcggchboashdlurshxixmfxxxbexhnydinfngf", testData{"fgnfnidynhxebxxxfmxixhsruldhsaobhlcggchboashdlurshxixmfxxxbexhnydinfngf", 33}),
-		Entry("bsyhvwfuesumsehmytqioswvpcbxyolapfywdxeacyuruybhbwxjmrrmjxwbhbyuruycaexdwyfpaloyxbcpwsoiqtymhesmuseufwvhysb", testData{"bsyhvwfuesumsehmytqioswvpcbxyolapfywdxeacyuruybhbwxjmrrmjxwbhbyuruycaexdwyfpaloyxbcpwsoiqtymhesmuseufwvhysb", 23}),
-		Entry("fvyqxqxynewuebtcuqdwyetyqqisappmunmnldmkttkmdlnmnumppasiqyteywdquctbeuwenyxqxqyvf", testData{"fvyqxqxynewuebtcuqdwyetyqqisappmunmnldmkttkmdlnmnumppasiqyteywdquctbeuwenyxqxqyvf", 25}),
-		Entry("mmbiefhflbeckaecprwfgmqlydfroxrblulpasumubqhhbvlqpixvvxipqlvbhqbumusaplulbrxorfdylqmgfwrpceakceblfhfeibmm", testData{"mmbiefhflbeckaecprwfgmqlydfroxrblulpasumubqhhbvlqpixvvxipqlvbhqbumusaplulbrxorfdylqmgfwrpceakceblfhfeibmm", 44}),
-		Entry("tpqknkmbgasitnwqrqasvolmevkasccsakvemlosaqrqwntisagbmknkqpt", testData{"tpqknkmbgasitnwqrqasvolmevkasccsakvemlosaqrqwntisagbmknkqpt", 20}),
-		Entry("lhrxvssvxrhl", testData{"lhrxvssvxrhl", -1}),
-		Entry("prcoitfiptvcxrvoalqmfpnqyhrubxspplrftomfehbbhefmotfrlppsxburhyqnpfmqlaorxcvtpiftiocrp", testData{"prcoitfiptvcxrvoalqmfpnqyhrubxspplrftomfehbbhefmotfrlppsxburhyqnpfmqlaorxcvtpiftiocrp", 14}),
-		Entry("kjowoemiduaaxasnqghxbxkiccikxbxhgqnsaxaaudimeowojk", testData{"kjowoemiduaaxasnqghxbxkiccikxbxhgqnsaxaaudimeowojk", -1}),
-	)
+			assert.Equal(t, data.expected, actual)
+		}
+	})
 
-	Context("equalPrefix 함수는", func() {
-		Context("1글자 문자열 두 개가", func() {
-			It("같으면 true를 반환한다.", func() {
+	t.Run("equalPrefix 함수는", func(t *testing.T) {
+		t.Run("1글자 문자열 두 개가", func(t *testing.T) {
+			{
 				actual := equalPrefix("a", "a")
-				Expect(actual).Should(BeTrue())
-			})
-
-			It("다르면 false를 반환한다.", func() {
+				assert.True(t, actual, "같으면 true 반환")
+			}
+			{
 				actual := equalPrefix("a", "b")
-				Expect(actual).Should(BeFalse())
-			})
+				assert.False(t, actual, "다르면 false 반환")
+			}
 		})
 
-		Context("2글자 이상의 길이의 문자열 두 개의 앞 2글자", func() {
-			It("같으면 true를 반환한다.", func() {
+		//noinspection SpellCheckingInspection
+		t.Run("2글자 이상의 길이의 문자열 두 개의 앞 2글자", func(t *testing.T) {
+			{
 				actual := equalPrefix("abcd", "abab")
-				Expect(actual).Should(BeTrue())
-			})
-
-			It("다르면 false를 반환한다.", func() {
+				assert.True(t, actual, "같으면 true 반환")
+			}
+			{
 				actual := equalPrefix("abc", "bbc")
-				Expect(actual).Should(BeFalse())
-			})
+				assert.False(t, actual, "다르면 false 반환")
+			}
 		})
 	})
 
-	Measure("성능 테스트", func(b Benchmarker) {
-		runtime := b.Time("long string", func() {
+	t.Run("performance measure", func(t *testing.T) {
+		RunUntil(t, func(done Done) {
+			defer close(done)
+
 			file, err := os.Open("./test_data/palindrome_index.csv")
-			Expect(err).ShouldNot(HaveOccurred())
+			assert.NoError(t, err)
 			defer file.Close()
 
 			r := csv.NewReader(bufio.NewReader(file))
 			rows, err := r.ReadAll()
-			Expect(err).ShouldNot(HaveOccurred())
+			assert.NoError(t, err)
 
 			var arr []string
 			for _, row := range rows {
@@ -89,13 +89,11 @@ var _ = Describe("https://www.hackerrank.com/challenges/palindrome-index/problem
 				46674,
 			}
 
-			Expect(len(arr)).Should(Equal(5))
+			assert.Equal(t, 5, len(arr))
 			for i, s := range arr {
 				actual := palindromeIndex(s)
-				Expect(actual).Should(BeNumerically("==", expected[i]))
+				assert.Equal(t, expected[i], actual)
 			}
-		})
-
-		Expect(runtime.Seconds()).Should(BeNumerically("<", 5), "시간 초과")
-	}, 3)
-})
+		}, 3)
+	})
+}
