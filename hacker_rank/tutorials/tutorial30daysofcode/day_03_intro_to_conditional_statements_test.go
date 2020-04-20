@@ -1,21 +1,16 @@
 package tutorial30daysofcode
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
-func TestCond(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/30-conditional-statements/problem", func(t *testing.T) {
-		{
-			actual := cond(3)
-			assert.Equal(t, weird, actual)
-		}
+var _ = Describe("https://www.hackerrank.com/challenges/30-conditional-statements/problem", func() {
+	It("문제를 풀었다", func() {
+		actual := cond(3)
+		Expect(actual).Should(Equal(weird))
 
-		{
-			actual := cond(24)
-			assert.Equal(t, notWeird, actual)
-		}
+		actual = cond(24)
+		Expect(actual).Should(Equal(notWeird))
 	})
-}
+})

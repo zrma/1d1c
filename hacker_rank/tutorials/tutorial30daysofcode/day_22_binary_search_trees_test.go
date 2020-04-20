@@ -1,20 +1,16 @@
 package tutorial30daysofcode
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
-func TestGetHeight(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/30-binary-search-trees/problem", func(t *testing.T) {
+var _ = Describe("https://www.hackerrank.com/challenges/30-binary-search-trees/problem", func() {
+	It("문제를 풀었다", func() {
 		var root *treeNode
 		for _, num := range []int{3, 5, 2, 1, 4, 6, 7} {
 			root = insert(root, num)
 		}
-
-		const expected int32 = 3
-		actual := getHeight(root)
-		assert.Equal(t, expected, actual)
+		Expect(getHeight(root)).Should(BeNumerically("==", 3))
 	})
-}
+})

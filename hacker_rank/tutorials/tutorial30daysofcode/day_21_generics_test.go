@@ -1,14 +1,13 @@
 package tutorial30daysofcode
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"github.com/zrma/going/utils"
 )
 
-func TestPrintArray(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/30-exceptions-string-to-integer/problem", func(t *testing.T) {
+var _ = Describe("https://www.hackerrank.com/challenges/30-exceptions-string-to-integer/problem", func() {
+	It("문제를 풀었다", func() {
 		err := utils.PrintTest(func() {
 			var arr []interface{}
 			for _, data := range []int{1, 2, 3} {
@@ -28,6 +27,6 @@ func TestPrintArray(t *testing.T) {
 			"Hello",
 			"World",
 		})
-		assert.NoError(t, err)
+		Expect(err).ShouldNot(HaveOccurred())
 	})
-}
+})

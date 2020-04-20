@@ -1,14 +1,14 @@
 package tree
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
-func TestBinarySearchTree(t *testing.T) {
-	t.Run("삽입, 조회가 잘 된다", func(t *testing.T) {
-		bst := binarySearchTree{}
+var _ = Describe("BST 자료 구조가 삽입, 조회를 잘 한다.", func() {
+	var bst *binarySearchTree
+	BeforeEach(func() {
+		bst = &binarySearchTree{}
 
 		bst.insert(9)
 		bst.insert(5)
@@ -21,36 +21,34 @@ func TestBinarySearchTree(t *testing.T) {
 			result = append(result, data)
 		})
 
-		assert.Equal(t, result, []int{1, 3, 5, 7, 9})
-
-		t.Run("정확한 위치에 잘 들어간다", func(t *testing.T) {
-			//           9
-			//       5
-			//    3    7
-			// 1
-			assert.Equal(t, bst.top.data, 9, "9")
-
-			assert.NotNil(t, bst.top.left, "5")
-			assert.Equal(t, bst.top.left.data, 5, "5")
-
-			assert.Nil(t, bst.top.right)
-
-			assert.NotNil(t, bst.top.left.left, "3")
-			assert.Equal(t, bst.top.left.left.data, 3, "3")
-
-			assert.NotNil(t, bst.top.left.right, "7")
-			assert.Equal(t, bst.top.left.right.data, 7, "7")
-
-			assert.NotNil(t, bst.top.left.left.left, "1")
-			assert.Equal(t, bst.top.left.left.left.data, 1, "1")
-
-			assert.Nil(t, bst.top.left.left.right, "nil")
-		})
+		Expect(result).Should(Equal([]int{1, 3, 5, 7, 9}))
 	})
 
-	t.Run("중복 입력해도 한 번만 입력", func(t *testing.T) {
-		bst := binarySearchTree{}
+	It("정확한 위치에 잘 들어 간다.", func() {
+		//           9
+		//       5
+		//    3    7
+		// 1
+		Expect(bst.top.data).Should(Equal(9), "9")
 
+		Expect(bst.top.left).ShouldNot(BeNil(), "5")
+		Expect(bst.top.left.data).Should(Equal(5), "5")
+
+		Expect(bst.top.right).Should(BeNil())
+
+		Expect(bst.top.left.left).ShouldNot(BeNil(), "3")
+		Expect(bst.top.left.left.data).Should(Equal(3), "3")
+
+		Expect(bst.top.left.right).ShouldNot(BeNil(), "7")
+		Expect(bst.top.left.right.data).Should(Equal(7), "7")
+
+		Expect(bst.top.left.left.left).ShouldNot(BeNil(), "1")
+		Expect(bst.top.left.left.left.data).Should(Equal(1), "1")
+
+		Expect(bst.top.left.left.right).Should(BeNil(), "nil")
+	})
+
+	It("중복 입력 해도 한 번만 들어 간다.", func() {
 		bst.insert(3)
 		bst.insert(1)
 		bst.insert(2)
@@ -64,6 +62,6 @@ func TestBinarySearchTree(t *testing.T) {
 			result = append(result, data)
 		})
 
-		assert.Equal(t, result, []int{1, 2, 3})
+		Expect(result).Should(Equal([]int{1, 2, 3, 5, 7, 9}))
 	})
-}
+})

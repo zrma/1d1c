@@ -1,19 +1,19 @@
 package tutorial30daysofcode
 
 import (
-	"testing"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
-func TestOperators(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/30-operators/problem", func(t *testing.T) {
+var _ = Describe("https://www.hackerrank.com/challenges/30-operators/problem", func() {
+	It("문제를 풀었다", func() {
 		err := utils.PrintTest(func() {
 			operators(12.00, 20, 8)
 		}, []string{
 			"15",
 		})
-		assert.NoError(t, err)
+		Expect(err).ShouldNot(HaveOccurred())
 	})
-}
+})

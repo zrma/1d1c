@@ -1,14 +1,13 @@
 package tutorial30daysofcode
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"github.com/zrma/going/utils"
 )
 
-func TestStringToInteger(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/30-exceptions-string-to-integer/problem", func(t *testing.T) {
+var _ = Describe("https://www.hackerrank.com/challenges/30-exceptions-string-to-integer/problem", func() {
+	It("문제를 풀었다", func() {
 		err := utils.PrintTest(func() {
 			stringToInteger("3")
 			stringToInteger("za")
@@ -16,6 +15,6 @@ func TestStringToInteger(t *testing.T) {
 			"3",
 			"Bad String",
 		})
-		assert.NoError(t, err)
+		Expect(err).ShouldNot(HaveOccurred())
 	})
-}
+})

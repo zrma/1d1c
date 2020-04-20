@@ -1,14 +1,13 @@
 package tutorial30daysofcode
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
-func TestQueue(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/30-queues-stacks/problem", func(t *testing.T) {
-		t.Run("queue 구조체는 큐 자료구조의 기능을 충실히 수행한다.", func(t *testing.T) {
+var _ = Describe("https://www.hackerrank.com/challenges/30-queues-stacks/problem", func() {
+	Context("문제를 풀었다", func() {
+		It("queue 구조체는 큐 자료구조의 기능을 충실히 수행한다.", func() {
 			q := queue{}
 
 			q.enqueue("a")
@@ -16,22 +15,22 @@ func TestQueue(t *testing.T) {
 			q.enqueue("c")
 
 			actual, ok := q.dequeue()
-			assert.True(t, ok)
-			assert.Equal(t, "a", actual)
+			Expect(ok).Should(BeTrue())
+			Expect(actual).Should(Equal("a"))
 
 			actual, ok = q.dequeue()
-			assert.True(t, ok)
-			assert.Equal(t, "b", actual)
+			Expect(ok).Should(BeTrue())
+			Expect(actual).Should(Equal("b"))
 
 			actual, ok = q.dequeue()
-			assert.True(t, ok)
-			assert.Equal(t, "c", actual)
+			Expect(ok).Should(BeTrue())
+			Expect(actual).Should(Equal("c"))
 
 			_, ok = q.dequeue()
-			assert.False(t, ok)
+			Expect(ok).Should(BeFalse())
 		})
 
-		t.Run("stack 구조체는 스택 자료구조의 기능을 충실히 수행한다.", func(t *testing.T) {
+		It("stack 구조체는 스택 자료구조의 기능을 충실히 수행한다.", func() {
 			s := stack{}
 
 			s.push("a")
@@ -39,19 +38,19 @@ func TestQueue(t *testing.T) {
 			s.push("c")
 
 			actual, ok := s.pop()
-			assert.True(t, ok)
-			assert.Equal(t, "c", actual)
+			Expect(ok).Should(BeTrue())
+			Expect(actual).Should(Equal("c"))
 
 			actual, ok = s.pop()
-			assert.True(t, ok)
-			assert.Equal(t, "b", actual)
+			Expect(ok).Should(BeTrue())
+			Expect(actual).Should(Equal("b"))
 
 			actual, ok = s.pop()
-			assert.True(t, ok)
-			assert.Equal(t, "a", actual)
+			Expect(ok).Should(BeTrue())
+			Expect(actual).Should(Equal("a"))
 
 			_, ok = s.pop()
-			assert.False(t, ok)
+			Expect(ok).Should(BeFalse())
 		})
 	})
-}
+})

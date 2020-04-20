@@ -1,40 +1,39 @@
 package problems
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
-func TestConvert(t *testing.T) {
-	t.Run("https://leetcode.com/problems/zigzag-conversion/", func(t *testing.T) {
-		t.Parallel()
-
+var _ = Describe("https://leetcode.com/problems/zigzag-conversion/", func() {
+	It("문제를 풀었다.", func() {
 		//noinspection SpellCheckingInspection
 		const inputString = "PAYPALISHIRING"
 
-		t.Run("case 1", func(t *testing.T) {
+		By("case 1", func() {
 			//noinspection SpellCheckingInspection
 			const expected = "PAHNAPLSIIGYIR"
 
 			actual := convert(inputString, 3)
-			assert.Equal(t, actual, expected)
+			Expect(actual).Should(Equal(expected))
 		})
 
-		t.Run("case 2", func(t *testing.T) {
+		By("case 2", func() {
 			//noinspection SpellCheckingInspection
 			const expected = "PINALSIGYAHRPI"
 
 			actual := convert(inputString, 4)
-			assert.Equal(t, actual, expected)
-		})
-
-		t.Run("it should not be panic", func(t *testing.T) {
-			//noinspection SpellCheckingInspection
-			const expected = "AB"
-
-			actual := convert("AB", 1)
-			assert.Equal(t, actual, expected)
+			Expect(actual).Should(Equal(expected))
 		})
 	})
-}
+
+	It("it should not be panic", func(done Done) {
+		defer close(done)
+
+		//noinspection SpellCheckingInspection
+		const expected = "AB"
+
+		actual := convert("AB", 1)
+		Expect(actual).Should(Equal(expected))
+	})
+})

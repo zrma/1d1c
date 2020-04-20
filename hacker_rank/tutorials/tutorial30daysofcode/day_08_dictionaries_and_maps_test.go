@@ -1,14 +1,13 @@
 package tutorial30daysofcode
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"github.com/zrma/going/utils"
 )
 
-func TestDictionariesAndMaps(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/30-dictionaries-and-maps/problem", func(t *testing.T) {
+var _ = Describe("https://www.hackerrank.com/challenges/30-dictionaries-and-maps/problem", func() {
+	It("문제를 풀었다", func() {
 		err := utils.PrintTest(func() {
 			dictionariesAndMaps(3, []string{
 				"sam 99912222",
@@ -23,6 +22,6 @@ func TestDictionariesAndMaps(t *testing.T) {
 			"Not found",
 			"harry=12299933",
 		})
-		assert.NoError(t, err)
+		Expect(err).ShouldNot(HaveOccurred())
 	})
-}
+})

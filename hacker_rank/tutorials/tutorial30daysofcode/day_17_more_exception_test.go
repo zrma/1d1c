@@ -1,14 +1,13 @@
 package tutorial30daysofcode
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"github.com/zrma/going/utils"
 )
 
-func TestMoreException(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/30-more-exceptions/problem", func(t *testing.T) {
+var _ = Describe("https://www.hackerrank.com/challenges/30-more-exceptions/problem", func() {
+	It("문제를 풀었다", func() {
 		err := utils.PrintTest(func() {
 			moreException(3, 5)
 			moreException(2, 4)
@@ -20,6 +19,6 @@ func TestMoreException(t *testing.T) {
 			"n and p should be non-negative",
 			"n and p should be non-negative",
 		})
-		assert.NoError(t, err)
+		Expect(err).ShouldNot(HaveOccurred())
 	})
-}
+})

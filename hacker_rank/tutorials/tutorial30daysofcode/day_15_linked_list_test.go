@@ -1,14 +1,13 @@
 package tutorial30daysofcode
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"github.com/zrma/going/utils"
 )
 
-func TestDisplayLinkedList(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/30-linked-list/problem", func(t *testing.T) {
+var _ = Describe("https://www.hackerrank.com/challenges/30-linked-list/problem", func() {
+	It("문제를 풀었다", func() {
 		err := utils.PrintTest(func() {
 			displayLinkedList([]int{2, 3, 4, 1})
 		}, []string{
@@ -17,6 +16,6 @@ func TestDisplayLinkedList(t *testing.T) {
 			"4",
 			"1",
 		})
-		assert.NoError(t, err)
+		Expect(err).ShouldNot(HaveOccurred())
 	})
-}
+})

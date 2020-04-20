@@ -1,14 +1,13 @@
 package tutorial30daysofcode
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"github.com/zrma/going/utils"
 )
 
-func TestClassAndInstance(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/30-class-vs-instance/problem", func(t *testing.T) {
+var _ = Describe("https://www.hackerrank.com/challenges/30-class-vs-instance/problem", func() {
+	It("문제를 풀었다", func() {
 		err := utils.PrintTest(func() {
 			classAndInstance(-1)
 			classAndInstance(10)
@@ -29,6 +28,6 @@ func TestClassAndInstance(t *testing.T) {
 			"You are old.",
 			"",
 		})
-		assert.NoError(t, err)
+		Expect(err).ShouldNot(HaveOccurred())
 	})
-}
+})

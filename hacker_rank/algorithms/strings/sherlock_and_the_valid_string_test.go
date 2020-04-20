@@ -1,26 +1,20 @@
 package strings
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
-func TestIsValid(t *testing.T) {
-	//noinspection SpellCheckingInspection
-	t.Run("https://www.hackerrank.com/challenges/sherlock-and-valid-string/problem", func(t *testing.T) {
-		for input, expected := range map[string]string{
-			"aabbcd":            "NO",
-			"aabbccddeefghi":    "NO",
-			"abbccc":            "NO",
-			"aaaabbcc":          "NO",
-			"aaaaabc":           "NO",
-			"aabbc":             "YES",
-			"aabbcc":            "YES",
-			"abcdefghhgfedecba": "YES",
-		} {
-			actual := isValid(input)
-			assert.Equal(t, expected, actual)
-		}
+//noinspection SpellCheckingInspection
+var _ = Describe("https://www.hackerrank.com/challenges/sherlock-and-valid-string/problem", func() {
+	It("문제를 풀었다", func() {
+		Expect(isValid("aabbcd")).Should(Equal("NO"))
+		Expect(isValid("aabbccddeefghi")).Should(Equal("NO"))
+		Expect(isValid("abbccc")).Should(Equal("NO"))
+		Expect(isValid("aaaabbcc")).Should(Equal("NO"))
+		Expect(isValid("aaaaabc")).Should(Equal("NO"))
+		Expect(isValid("aabbc")).Should(Equal("YES"))
+		Expect(isValid("aabbcc")).Should(Equal("YES"))
+		Expect(isValid("abcdefghhgfedecba")).Should(Equal("YES"))
 	})
-}
+})
