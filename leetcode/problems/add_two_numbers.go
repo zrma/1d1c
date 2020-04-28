@@ -30,19 +30,10 @@ func getNext(l *ListNode) *ListNode {
 	return l.Next
 }
 
-func add(l *ListNode, val int) {
-	prev := l
-	tail := getNext(l)
-	for tail != nil {
-		prev = tail
-		tail = getNext(tail)
-	}
-	prev.Next = &ListNode{Val: val}
-}
-
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	var carry int
 	res := &ListNode{}
+	cur := res
 	for {
 		val := getVal(l1) + getVal(l2) + carry
 		if val >= 10 {
@@ -51,7 +42,9 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 		} else {
 			carry = 0
 		}
-		add(res, val)
+
+		cur.Next = &ListNode{Val: val}
+		cur = cur.Next
 
 		if getNext(l1) == nil && getNext(l2) == nil {
 			break
@@ -59,7 +52,7 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 		l1, l2 = getNext(l1), getNext(l2)
 	}
 	if carry > 0 {
-		add(res, carry)
+		cur.Next = &ListNode{Val: carry}
 	}
 	return getNext(res)
 }

@@ -8,8 +8,10 @@ import (
 var _ = Describe("https://leetcode.com/problems/add-two-numbers/", func() {
 	build := func(arr []int) *ListNode {
 		l := &ListNode{}
+		cur := l
 		for _, n := range arr {
-			add(l, n)
+			cur.Next = &ListNode{Val: n}
+			cur = cur.Next
 		}
 		return getNext(l)
 	}
