@@ -32,4 +32,11 @@ var _ = Describe("ListNode", func() {
 			Expect(actual).Should(Equal("456123"))
 		})
 	})
+
+	//noinspection GoNilness
+	It("nil 예외 처리", func() {
+		var node *ListNode
+		Expect(node.GetVal()).Should(Equal(0))
+		Expect(node.GetNext().GetVal()).Should(Equal(0))
+	})
 })
