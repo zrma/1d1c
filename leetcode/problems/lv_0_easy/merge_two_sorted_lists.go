@@ -1,36 +1,8 @@
 package lv_0_easy
 
 import (
-	"strconv"
+	. "github.com/zrma/1d1c/leetcode/problems/common"
 )
-
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
-
-func (l *ListNode) traversal() string {
-	res := strconv.Itoa(getVal(l))
-	if getNext(l) == nil {
-		return res
-	}
-
-	return getNext(l).traversal() + res
-}
-
-func getVal(l *ListNode) int {
-	if l == nil {
-		return 0
-	}
-	return l.Val
-}
-
-func getNext(l *ListNode) *ListNode {
-	if l == nil {
-		return nil
-	}
-	return l.Next
-}
 
 func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	res := &ListNode{}
@@ -50,17 +22,17 @@ func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 			break
 		}
 
-		v1 := getVal(l1)
-		v2 := getVal(l2)
+		v1 := l1.GetVal()
+		v2 := l2.GetVal()
 		if v1 < v2 {
 			cur.Next = l1
 			cur = l1
-			l1 = getNext(l1)
+			l1 = l1.GetNext()
 		} else {
 			cur.Next = l2
 			cur = l2
-			l2 = getNext(l2)
+			l2 = l2.GetNext()
 		}
 	}
-	return getNext(res)
+	return res.GetNext()
 }

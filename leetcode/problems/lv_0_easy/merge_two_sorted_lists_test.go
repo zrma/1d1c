@@ -4,6 +4,8 @@ import (
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
+
+	. "github.com/zrma/1d1c/leetcode/problems/common"
 )
 
 var _ = Describe("https://leetcode.com/problems/merge-two-sorted-lists/", func() {
@@ -14,7 +16,7 @@ var _ = Describe("https://leetcode.com/problems/merge-two-sorted-lists/", func()
 			cur.Next = &ListNode{Val: n}
 			cur = cur.Next
 		}
-		return getNext(l)
+		return l.GetNext()
 	}
 
 	type testData struct {
@@ -27,7 +29,7 @@ var _ = Describe("https://leetcode.com/problems/merge-two-sorted-lists/", func()
 		l2 := build(data.l2)
 		expected := build(data.expected)
 		actual := mergeTwoLists(l1, l2)
-		Expect(actual.traversal()).Should(Equal(expected.traversal()))
+		Expect(actual.Traversal()).Should(Equal(expected.Traversal()))
 	},
 		Entry("정상 동작", testData{
 			l1:       []int{1, 2, 4},

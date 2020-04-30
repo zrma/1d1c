@@ -35,5 +35,10 @@ var _ = Describe("https://leetcode.com/problems/remove-element/", func() {
 			val:      3,
 			expected: []int{0, 0, 4, 5, 5},
 		}),
+		Entry("nil 방어", testData{
+			nums:     nil,
+			val:      3,
+			expected: nil,
+		}),
 	)
 })
