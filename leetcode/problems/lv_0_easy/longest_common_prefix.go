@@ -1,4 +1,4 @@
-package problems
+package lv_0_easy
 
 func longestCommonPrefix(stringArray []string) string {
 	if len(stringArray) == 0 {

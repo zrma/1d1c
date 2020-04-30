@@ -1,4 +1,4 @@
-package problems
+package lv_1_medium
 
 func convert(s string, numRows int) string {
 	if numRows == 1 {

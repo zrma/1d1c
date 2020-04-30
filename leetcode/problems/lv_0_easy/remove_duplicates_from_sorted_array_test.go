@@ -1,4 +1,4 @@
-package problems
+package lv_0_easy
 
 import (
 	. "github.com/onsi/ginkgo"

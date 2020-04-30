@@ -1,4 +1,36 @@
-package problems
+package lv_0_easy
+
+import (
+	"strconv"
+)
+
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
+func (l *ListNode) traversal() string {
+	res := strconv.Itoa(getVal(l))
+	if getNext(l) == nil {
+		return res
+	}
+
+	return getNext(l).traversal() + res
+}
+
+func getVal(l *ListNode) int {
+	if l == nil {
+		return 0
+	}
+	return l.Val
+}
+
+func getNext(l *ListNode) *ListNode {
+	if l == nil {
+		return nil
+	}
+	return l.Next
+}
 
 func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
 	res := &ListNode{}

@@ -1,4 +1,4 @@
-package problems_test
+package lv_2_hard_test
 
 import (
 	"testing"
@@ -7,7 +7,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestProblems(t *testing.T) {
+func TestLv2Hard(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Problems Suite")
+	RunSpecs(t, "Lv2Hard Suite")
 }

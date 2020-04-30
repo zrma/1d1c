@@ -1,4 +1,4 @@
-package problems
+package lv_0_easy
 
 func twoSum(nums []int, target int) []int {
 	result := make([]int, 2)

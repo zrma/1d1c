@@ -1,4 +1,4 @@
-package problems
+package lv_0_easy
 
 func removeElement(nums []int, val int) int {
 	if len(nums) == 0 {

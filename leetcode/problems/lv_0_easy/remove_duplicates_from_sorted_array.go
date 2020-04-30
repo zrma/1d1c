@@ -1,4 +1,4 @@
-package problems
+package lv_0_easy
 
 func removeDuplicates(nums []int) int {
 	if len(nums) == 0 {

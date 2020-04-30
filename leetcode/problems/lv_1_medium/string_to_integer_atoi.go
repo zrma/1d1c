@@ -1,4 +1,4 @@
-package problems
+package lv_1_medium
 
 import (
 	"math"
