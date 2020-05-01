@@ -18,7 +18,6 @@ require (
 	github.com/mattn/go-sqlite3 v1.10.0
 	github.com/micro/go-micro v1.10.0
 	github.com/micro/micro v1.10.0
-	github.com/mwitkow/grpc-proxy v0.0.0-20181017164139-0f1106ef9c76
 	github.com/onsi/ginkgo v1.12.0
 	github.com/onsi/gomega v1.9.0
 	github.com/panjf2000/ants/v2 v2.3.0
