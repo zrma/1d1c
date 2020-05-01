@@ -8,6 +8,7 @@ type ListNode struct {
 	Next *ListNode
 }
 
+// Traversal method concat all values of linked list as string
 func (l *ListNode) Traversal() string {
 	res := strconv.Itoa(l.GetVal())
 	if l.GetNext() == nil {
@@ -16,6 +17,7 @@ func (l *ListNode) Traversal() string {
 	return l.GetNext().Traversal() + res
 }
 
+// GetVal method return value of node
 func (l *ListNode) GetVal() int {
 	if l == nil {
 		return 0
@@ -23,6 +25,7 @@ func (l *ListNode) GetVal() int {
 	return l.Val
 }
 
+// GetNext method return pointer of next node
 func (l *ListNode) GetNext() *ListNode {
 	if l == nil {
 		return nil

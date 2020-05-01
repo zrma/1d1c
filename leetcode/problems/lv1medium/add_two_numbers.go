@@ -1,12 +1,12 @@
 package lv1medium
 
 import (
-	. "github.com/zrma/1d1c/leetcode/problems/common"
+	"github.com/zrma/1d1c/leetcode/problems/common"
 )
 
-func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
+func addTwoNumbers(l1 *common.ListNode, l2 *common.ListNode) *common.ListNode {
 	var carry int
-	res := &ListNode{}
+	res := &common.ListNode{}
 	cur := res
 	for {
 		val := l1.GetVal() + l2.GetVal() + carry
@@ -17,7 +17,7 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 			carry = 0
 		}
 
-		cur.Next = &ListNode{Val: val}
+		cur.Next = &common.ListNode{Val: val}
 		cur = cur.Next
 
 		if l1.GetNext() == nil && l2.GetNext() == nil {
@@ -26,7 +26,7 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 		l1, l2 = l1.GetNext(), l2.GetNext()
 	}
 	if carry > 0 {
-		cur.Next = &ListNode{Val: carry}
+		cur.Next = &common.ListNode{Val: carry}
 	}
 	return res.GetNext()
 }

@@ -1,11 +1,11 @@
 package lv0easy
 
 import (
-	. "github.com/zrma/1d1c/leetcode/problems/common"
+	"github.com/zrma/1d1c/leetcode/problems/common"
 )
 
-func mergeTwoLists(l1 *ListNode, l2 *ListNode) *ListNode {
-	res := &ListNode{}
+func mergeTwoLists(l1 *common.ListNode, l2 *common.ListNode) *common.ListNode {
+	res := &common.ListNode{}
 	cur := res
 	for {
 		if l1 == nil && l2 == nil {
