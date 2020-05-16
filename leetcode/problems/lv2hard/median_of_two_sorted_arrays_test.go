@@ -67,9 +67,4 @@ var _ = Describe("https://leetcode.com/problems/median-of-two-sorted-arrays/", f
 			expected: 2.0,
 		}),
 	)
-
-	It("mergeSortedArray", func() {
-		actual := mergeSortedArray([]int{1, 3, 4, 8}, []int{2, 4, 5, 7})
-		Expect(actual).Should(Equal([]int{1, 2, 3, 4, 4, 5, 7, 8}))
-	})
 })
