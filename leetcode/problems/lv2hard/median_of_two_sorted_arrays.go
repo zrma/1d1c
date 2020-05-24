@@ -2,8 +2,8 @@ package lv2hard
 
 import "math"
 
-func findTwoValuesNearMid(nums1 []int, nums2 []int, totalLength int) (prev, curr int) {
-	target := totalLength / 2
+func findTwoValuesNearMid(nums1 []int, nums2 []int, totLen int) (prev, curr int) {
+	target := totLen / 2
 	var idx1, idx2, idxTot int
 	for idx1 < len(nums1) && idx2 < len(nums2) {
 		prev = curr
@@ -42,57 +42,118 @@ func findTwoValuesNearMid(nums1 []int, nums2 []int, totalLength int) (prev, curr
 }
 
 func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
-	totalLength := len(nums1) + len(nums2)
-	val1, val2 := findTwoValuesNearMid(nums1, nums2, totalLength)
-	if totalLength%2 == 0 {
+	totLen := len(nums1) + len(nums2)
+	val1, val2 := findTwoValuesNearMid(nums1, nums2, totLen)
+	if totLen%2 == 0 {
 		return float64(val1+val2) / 2
 	}
 	return float64(val2)
 }
 
 func mergeSortedArray(nums1 []int, nums2 []int) []int {
-	totalLength := len(nums1) + len(nums2)
-	total := make([]int, totalLength)
+	totLen := len(nums1) + len(nums2)
+	totNums := make([]int, totLen)
 
 	var i, j, cur int
 	for i < len(nums1) && j < len(nums2) {
 		if nums1[i] < nums2[j] {
-			total[cur] = nums1[i]
+			totNums[cur] = nums1[i]
 			cur++
 			i++
 		} else {
-			total[cur] = nums2[j]
+			totNums[cur] = nums2[j]
 			cur++
 			j++
 
 		}
 	}
 	for i < len(nums1) {
-		total[cur] = nums1[i]
+		totNums[cur] = nums1[i]
 		cur++
 		i++
 
 	}
 	for j < len(nums2) {
-		total[cur] = nums2[j]
+		totNums[cur] = nums2[j]
 		cur++
 		j++
 
 	}
-	return total
+	return totNums
 }
 
 func findMedianSortedArraysWithMerge(nums1 []int, nums2 []int) float64 {
-	total := mergeSortedArray(nums1, nums2)
-	if len(total)%2 == 0 {
-		return float64(total[len(total)/2-1]+total[len(total)/2]) / 2
+	totNums := mergeSortedArray(nums1, nums2)
+	if len(totNums)%2 == 0 {
+		return float64(totNums[len(totNums)/2-1]+totNums[len(totNums)/2]) / 2
 	} else {
-		return float64(total[len(total)/2])
+		return float64(totNums[len(totNums)/2])
 	}
 
 }
 
 func findMedianSortedArraysWithBinSearch(nums1 []int, nums2 []int) float64 {
+	if len(nums1) > len(nums2) {
+		nums1, nums2 = nums2, nums1
+	}
+
+	totCnt := len(nums1) + len(nums2)
+	// range of binary search target in nums1
+	low, high := 0, len(nums1)
+	for low <= high {
+		// nums1:  1 2 4 | 5 6 7
+		// nums2:  3 5   | 8 9
+		//
+		// totCnt := 6 + 4
+		// cut1 := (0 + 6) / 2 = 3
+		// cut2 := (totCnt+1) / 2 - cut1 = 5 - 3 = 2
+		//
+		// 총 10개이므로 좌우측 중 한 쪽에서 5개씩 가져갈 수 있음
+		// totCnt 에 더해주는 +1 은 인덱스 계산을 편하게 하기 위한 sugar
+		// 좌측의 nums1에서 먼저 3개를 가져가면 nums2는 2개만 가져갈 수 있음
+		//
+		// it makes both side(left and right) being equal count
+		cut1 := (low + high) / 2
+		cut2 := (totCnt+1)/2 - cut1
+
+		maxLeft1 := math.MinInt32
+		if cut1 > 0 {
+			maxLeft1 = nums1[cut1-1]
+		}
+		minRight1 := math.MaxInt32
+		if cut1 < len(nums1) {
+			minRight1 = nums1[cut1]
+		}
+
+		maxLeft2 := math.MinInt32
+		if cut2 > 0 {
+			maxLeft2 = nums2[cut2-1]
+		}
+		minRight2 := math.MaxInt32
+		if cut2 < len(nums2) {
+			minRight2 = nums2[cut2]
+		}
+
+		if maxLeft1 <= minRight2 && maxLeft2 <= minRight1 {
+			maxLeft := math.Max(float64(maxLeft1), float64(maxLeft2))
+			if totCnt%2 == 0 {
+				minRight := math.Min(float64(minRight1), float64(minRight2))
+				return (maxLeft + minRight) / 2
+			} else {
+				return maxLeft
+			}
+		} else {
+			if maxLeft1 >= minRight2 {
+				high = cut1 - 1
+			} else {
+				low = cut1 + 1
+			}
+		}
+	}
+	return -1
+}
+
+func findMedianSortedArraysWithBinSearchSolution(nums1 []int, nums2 []int) float64 {
 	if len(nums1) > len(nums2) {
 		nums1, nums2 = nums2, nums1
 	}
