@@ -92,14 +92,15 @@ func findMedianSortedArraysWithMerge(nums1 []int, nums2 []int) float64 {
 
 }
 
-func findMedianSortedArraysWithBinSearch(nums1 []int, nums2 []int) float64 {
-	if len(nums1) > len(nums2) {
-		nums1, nums2 = nums2, nums1
-	}
+type side struct {
+	nums1 int
+	nums2 int
+}
 
-	totCnt := len(nums1) + len(nums2)
+func findBoundary(nums1 []int, nums2 []int, totCnt int) (leftMax, rightMin side) {
 	// range of binary search target in nums1
 	low, high := 0, len(nums1)
+
 	for low <= high {
 		// nums1:  1 2 4 | 5 6 7
 		// nums2:  3 5   | 8 9
@@ -116,41 +117,57 @@ func findMedianSortedArraysWithBinSearch(nums1 []int, nums2 []int) float64 {
 		cut1 := (low + high) / 2
 		cut2 := (totCnt+1)/2 - cut1
 
-		maxLeft1 := math.MinInt32
-		if cut1 > 0 {
-			maxLeft1 = nums1[cut1-1]
-		}
-		minRight1 := math.MaxInt32
-		if cut1 < len(nums1) {
-			minRight1 = nums1[cut1]
-		}
-
-		maxLeft2 := math.MinInt32
-		if cut2 > 0 {
-			maxLeft2 = nums2[cut2-1]
-		}
-		minRight2 := math.MaxInt32
-		if cut2 < len(nums2) {
-			minRight2 = nums2[cut2]
-		}
-
-		if maxLeft1 <= minRight2 && maxLeft2 <= minRight1 {
-			maxLeft := math.Max(float64(maxLeft1), float64(maxLeft2))
-			if totCnt%2 == 0 {
-				minRight := math.Min(float64(minRight1), float64(minRight2))
-				return (maxLeft + minRight) / 2
-			} else {
-				return maxLeft
-			}
+		if cut1 < 1 {
+			leftMax.nums1 = math.MinInt32
 		} else {
-			if maxLeft1 >= minRight2 {
+			leftMax.nums1 = nums1[cut1-1]
+		}
+
+		if cut1 >= len(nums1) {
+			rightMin.nums1 = math.MaxInt32
+		} else {
+			rightMin.nums1 = nums1[cut1]
+		}
+
+		if cut2 < 1 {
+			leftMax.nums2 = math.MinInt32
+		} else {
+			leftMax.nums2 = nums2[cut2-1]
+		}
+		if cut2 >= len(nums2) {
+			rightMin.nums2 = math.MaxInt32
+		} else {
+			rightMin.nums2 = nums2[cut2]
+		}
+
+		if leftMax.nums1 <= rightMin.nums2 && leftMax.nums2 <= rightMin.nums1 {
+			break
+		} else {
+			if leftMax.nums1 >= rightMin.nums2 {
 				high = cut1 - 1
 			} else {
 				low = cut1 + 1
 			}
 		}
 	}
-	return -1
+	return
+}
+
+func findMedianSortedArraysWithBinSearch(nums1 []int, nums2 []int) float64 {
+	if len(nums1) > len(nums2) {
+		nums1, nums2 = nums2, nums1
+	}
+
+	totCnt := len(nums1) + len(nums2)
+	leftMax, rightMin := findBoundary(nums1, nums2, totCnt)
+
+	leftMaxVal := math.Max(float64(leftMax.nums1), float64(leftMax.nums2))
+	if totCnt%2 == 0 {
+		rightMinVal := math.Min(float64(rightMin.nums1), float64(rightMin.nums2))
+		return (leftMaxVal + rightMinVal) / 2
+	} else {
+		return leftMaxVal
+	}
 }
 
 func findMedianSortedArraysWithBinSearchSolution(nums1 []int, nums2 []int) float64 {
