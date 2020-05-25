@@ -1,6 +1,7 @@
 package lv2hard
 
 import (
+	"math"
 	"math/rand"
 	"testing"
 
@@ -10,88 +11,109 @@ import (
 )
 
 var _ = Describe("https://leetcode.com/problems/median-of-two-sorted-arrays/", func() {
-	type testData struct {
-		arr1, arr2 []int
-		expected   float64
-	}
+	Context("함수 전체 테스트", func() {
+		type testData struct {
+			arr1, arr2 []int
+			expected   float64
+		}
 
-	DescribeTable("문제를 풀었다.", func(data testData) {
-		By("By merge", func() {
-			actual := findMedianSortedArraysWithMerge(data.arr1, data.arr2)
-			Expect(actual).Should(Equal(data.expected))
-		})
+		DescribeTable("문제를 풀었다.", func(data testData) {
+			By("By merge", func() {
+				actual := findMedianSortedArraysWithMerge(data.arr1, data.arr2)
+				Expect(actual).Should(Equal(data.expected))
+			})
 
-		By("By index", func() {
-			actual := findMedianSortedArrays(data.arr1, data.arr2)
-			Expect(actual).Should(Equal(data.expected))
-		})
+			By("By index", func() {
+				actual := findMedianSortedArrays(data.arr1, data.arr2)
+				Expect(actual).Should(Equal(data.expected))
+			})
 
-		By("By bin search", func() {
-			actual := findMedianSortedArraysWithBinSearch(data.arr1, data.arr2)
-			Expect(actual).Should(Equal(data.expected))
-		})
+			By("By bin search", func() {
+				actual := findMedianSortedArraysWithBinSearch(data.arr1, data.arr2)
+				Expect(actual).Should(Equal(data.expected))
+			})
 
-		By("By bin search solution", func() {
-			actual := findMedianSortedArraysWithBinSearchSolution(data.arr1, data.arr2)
+			By("By bin search solution", func() {
+				actual := findMedianSortedArraysWithBinSearchSolution(data.arr1, data.arr2)
+				Expect(actual).Should(Equal(data.expected))
+			})
+		},
+			Entry("0", testData{
+				arr1:     []int{1, 3},
+				arr2:     []int{2},
+				expected: 2.0,
+			}),
+			Entry("1", testData{
+				arr1:     []int{1, 2},
+				arr2:     []int{3, 4},
+				expected: 2.5,
+			}),
+			Entry("2", testData{
+				arr1:     []int{1, 2},
+				arr2:     []int{100},
+				expected: 2.0,
+			}),
+			Entry("3-0", testData{
+				arr1:     []int{1, 200},
+				arr2:     []int{10, 90},
+				expected: 50.0,
+			}),
+			Entry("3-1", testData{
+				arr1:     []int{1, 10, 200},
+				arr2:     []int{90},
+				expected: 50.0,
+			}),
+			Entry("4-0", testData{
+				arr1:     []int{1, 2, 2, 3},
+				arr2:     []int{100},
+				expected: 2.0,
+			}),
+			Entry("4-1", testData{
+				arr1:     []int{1, 2, 2, 3, 3, 3},
+				arr2:     []int{100},
+				expected: 3.0,
+			}),
+			Entry("5", testData{
+				arr1:     []int{2, 2, 3, 3, 3, 100},
+				arr2:     []int{1},
+				expected: 3.0,
+			}),
+			Entry("5-1", testData{
+				arr1:     []int{2, 2, 2, 2, 2, 2},
+				arr2:     []int{2},
+				expected: 2.0,
+			}),
+			Entry("5-2", testData{
+				arr1:     []int{2},
+				arr2:     []int{2, 2, 2, 2, 2, 2},
+				expected: 2.0,
+			}),
+			Entry("6", testData{
+				arr1:     []int{2, 3, 4, 4, 4, 4, 4, 4, 4},
+				arr2:     []int{1, 5, 5, 5},
+				expected: 4,
+			}),
+		)
+	})
+
+	Context("유틸 함수 테스트", func() {
+		nums := arr([]int{0, 1, 2, 3, 4})
+
+		type testData struct {
+			idx      int
+			expected int
+		}
+
+		DescribeTable("arr.getVal", func(data testData) {
+			actual := arr(nums).getVal(data.idx)
 			Expect(actual).Should(Equal(data.expected))
-		})
-	},
-		Entry("0", testData{
-			arr1:     []int{1, 3},
-			arr2:     []int{2},
-			expected: 2.0,
-		}),
-		Entry("1", testData{
-			arr1:     []int{1, 2},
-			arr2:     []int{3, 4},
-			expected: 2.5,
-		}),
-		Entry("2", testData{
-			arr1:     []int{1, 2},
-			arr2:     []int{100},
-			expected: 2.0,
-		}),
-		Entry("3-0", testData{
-			arr1:     []int{1, 200},
-			arr2:     []int{10, 90},
-			expected: 50.0,
-		}),
-		Entry("3-1", testData{
-			arr1:     []int{1, 10, 200},
-			arr2:     []int{90},
-			expected: 50.0,
-		}),
-		Entry("4-0", testData{
-			arr1:     []int{1, 2, 2, 3},
-			arr2:     []int{100},
-			expected: 2.0,
-		}),
-		Entry("4-1", testData{
-			arr1:     []int{1, 2, 2, 3, 3, 3},
-			arr2:     []int{100},
-			expected: 3.0,
-		}),
-		Entry("5", testData{
-			arr1:     []int{2, 2, 3, 3, 3, 100},
-			arr2:     []int{1},
-			expected: 3.0,
-		}),
-		Entry("5-1", testData{
-			arr1:     []int{2, 2, 2, 2, 2, 2},
-			arr2:     []int{2},
-			expected: 2.0,
-		}),
-		Entry("5-2", testData{
-			arr1:     []int{2},
-			arr2:     []int{2, 2, 2, 2, 2, 2},
-			expected: 2.0,
-		}),
-		Entry("6", testData{
-			arr1:     []int{2, 3, 4, 4, 4, 4, 4, 4, 4},
-			arr2:     []int{1, 5, 5, 5},
-			expected: 4,
-		}),
-	)
+		},
+			Entry("0", testData{idx: -1, expected: math.MinInt32}),
+			Entry("1", testData{idx: 0, expected: 0}),
+			Entry("2", testData{idx: 4, expected: 4}),
+			Entry("3", testData{idx: 5, expected: math.MaxInt32}),
+		)
+	})
 })
 
 //goos: linux

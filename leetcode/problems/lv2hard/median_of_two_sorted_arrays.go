@@ -97,6 +97,18 @@ type side struct {
 	nums2 int
 }
 
+type arr []int
+
+func (a arr) getVal(i int) int {
+	if i < 0 {
+		return math.MinInt32
+	}
+	if i >= len(a) {
+		return math.MaxInt32
+	}
+	return a[i]
+}
+
 func findBoundary(nums1 []int, nums2 []int, totCnt int) (leftMax, rightMin side) {
 	// range of binary search target in nums1
 	low, high := 0, len(nums1)
@@ -117,28 +129,10 @@ func findBoundary(nums1 []int, nums2 []int, totCnt int) (leftMax, rightMin side)
 		cut1 := (low + high) / 2
 		cut2 := (totCnt+1)/2 - cut1
 
-		if cut1 < 1 {
-			leftMax.nums1 = math.MinInt32
-		} else {
-			leftMax.nums1 = nums1[cut1-1]
-		}
-
-		if cut1 >= len(nums1) {
-			rightMin.nums1 = math.MaxInt32
-		} else {
-			rightMin.nums1 = nums1[cut1]
-		}
-
-		if cut2 < 1 {
-			leftMax.nums2 = math.MinInt32
-		} else {
-			leftMax.nums2 = nums2[cut2-1]
-		}
-		if cut2 >= len(nums2) {
-			rightMin.nums2 = math.MaxInt32
-		} else {
-			rightMin.nums2 = nums2[cut2]
-		}
+		leftMax.nums1 = arr(nums1).getVal(cut1 - 1)
+		leftMax.nums2 = arr(nums2).getVal(cut2 - 1)
+		rightMin.nums1 = arr(nums1).getVal(cut1)
+		rightMin.nums2 = arr(nums2).getVal(cut2)
 
 		if leftMax.nums1 <= rightMin.nums2 && leftMax.nums2 <= rightMin.nums1 {
 			break
