@@ -20,23 +20,22 @@ func findTwoValuesNearMid(nums1 []int, nums2 []int, totLen int) (prev, curr int)
 			return
 		}
 	}
-	for idx1 < len(nums1) {
-		prev = curr
-		curr = nums1[idx1]
-		idxTot++
-		idx1++
-		if idxTot == target+1 {
-			return
+
+	remain := target - idxTot
+	if idx1 < len(nums1) {
+		if idx1+remain > 0 {
+			prev = nums1[idx1+remain-1]
+		} else {
+			prev = nums2[idx2-1]
 		}
-	}
-	for idx2 < len(nums2) {
-		prev = curr
-		curr = nums2[idx2]
-		idxTot++
-		idx2++
-		if idxTot == target+1 {
-			return
+		curr = nums1[idx1+remain]
+	} else {
+		if idx2+remain > 0 {
+			prev = nums2[idx2+remain-1]
+		} else {
+			prev = nums1[idx1-1]
 		}
+		curr = nums2[idx2+remain]
 	}
 	return
 }

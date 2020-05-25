@@ -93,6 +93,21 @@ var _ = Describe("https://leetcode.com/problems/median-of-two-sorted-arrays/", f
 				arr2:     []int{1, 5, 5, 5},
 				expected: 4,
 			}),
+			Entry("6-1", testData{
+				arr1:     []int{3, 4},
+				arr2:     []int{1, 2},
+				expected: 2.5,
+			}),
+			Entry("6-2", testData{
+				arr1:     []int{1},
+				arr2:     []int{1},
+				expected: 1,
+			}),
+			Entry("6-2", testData{
+				arr1:     []int{1},
+				arr2:     []int{2, 3, 4},
+				expected: 2.5,
+			}),
 		)
 	})
 
