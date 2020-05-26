@@ -63,7 +63,6 @@ func mergeSortedArray(nums1 []int, nums2 []int) []int {
 			totNums[cur] = nums2[j]
 			cur++
 			j++
-
 		}
 	}
 	for i < len(nums1) {
@@ -76,7 +75,6 @@ func mergeSortedArray(nums1 []int, nums2 []int) []int {
 		totNums[cur] = nums2[j]
 		cur++
 		j++
-
 	}
 	return totNums
 }
@@ -88,7 +86,6 @@ func findMedianSortedArraysWithMerge(nums1 []int, nums2 []int) float64 {
 	} else {
 		return float64(totNums[len(totNums)/2])
 	}
-
 }
 
 type side struct {
@@ -135,12 +132,12 @@ func findBoundary(nums1 []int, nums2 []int, totCnt int) (leftMax, rightMin side)
 
 		if leftMax.nums1 <= rightMin.nums2 && leftMax.nums2 <= rightMin.nums1 {
 			break
+		}
+
+		if leftMax.nums1 >= rightMin.nums2 {
+			high = cut1 - 1
 		} else {
-			if leftMax.nums1 >= rightMin.nums2 {
-				high = cut1 - 1
-			} else {
-				low = cut1 + 1
-			}
+			low = cut1 + 1
 		}
 	}
 	return
