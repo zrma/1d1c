@@ -2,6 +2,7 @@ package tree
 
 import (
 	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
 )
 
@@ -63,5 +64,23 @@ var _ = Describe("BST 자료 구조가 삽입, 조회를 잘 한다.", func() {
 		})
 
 		Expect(result).Should(Equal([]int{1, 2, 3, 5, 7, 9}))
+	})
+
+	Context("exist 함수 검증", func() {
+		DescribeTable("원소가 있는지 잘 확인한다.", func(target int, expected bool) {
+			Expect(bst.exist(target)).Should(Equal(expected))
+		},
+			Entry("1", 1, true),
+			Entry("2", 2, false),
+			Entry("3", 3, true),
+			Entry("4", 4, false),
+		)
+
+		It("비어 있는 BST 자료구조에서 panic 하지 않음", func(done Done) {
+			defer close(done)
+
+			b := &binarySearchTree{}
+			Expect(b.exist(100)).Should(BeFalse())
+		})
 	})
 })

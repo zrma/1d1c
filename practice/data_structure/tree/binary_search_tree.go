@@ -36,6 +36,20 @@ func (n *node) traverse(callback func(int)) {
 	n.right.traverse(callback)
 }
 
+func (n *node) exist(data int) bool {
+	if n == nil {
+		return false
+	}
+	if n.data == data {
+		return true
+	}
+	if n.data > data {
+		return n.left.exist(data)
+	} else {
+		return n.right.exist(data)
+	}
+}
+
 type binarySearchTree struct {
 	top *node
 }
@@ -48,9 +62,9 @@ func (bst *binarySearchTree) insert(data int) {
 	bst.top.insert(data)
 }
 
-//func (bst *binarySearchTree) pop() int {
-//	return 0
-//}
+func (bst *binarySearchTree) exist(data int) bool {
+	return bst.top.exist(data)
+}
 
 func (bst *binarySearchTree) traverse(callback func(int)) {
 	bst.top.traverse(callback)
