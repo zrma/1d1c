@@ -16,6 +16,7 @@ require (
 	github.com/google/uuid v1.1.1
 	github.com/hailocab/go-geoindex v0.0.0-20160127134810-64631bfe9711
 	github.com/mattn/go-sqlite3 v1.10.0
+	github.com/mattn/goveralls v0.0.6 // indirect
 	github.com/micro/go-micro v1.10.0
 	github.com/micro/micro v1.10.0
 	github.com/onsi/ginkgo v1.12.0
@@ -24,7 +25,8 @@ require (
 	github.com/zrma/going v0.0.0-20200309124612-fa8efd414244
 	golang.org/x/crypto v0.0.0-20200204104054-c9f3fb736b72 // indirect
 	golang.org/x/image v0.0.0-20200119044424-58c23975cae1 // indirect
-	golang.org/x/net v0.0.0-20200219183655-46282727080f
+	golang.org/x/net v0.0.0-20200226121028-0de0cce0169b
+	golang.org/x/xerrors v0.0.0-20191204190536-9bdfabe68543 // indirect
 	google.golang.org/genproto v0.0.0-20190916214212-f660b8655731 // indirect
 	google.golang.org/grpc v1.25.1
 )
