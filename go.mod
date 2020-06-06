@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	fyne.io/fyne v1.2.3
+	github.com/alicebob/miniredis/v2 v2.11.4
 	github.com/emitter-io/go v1.0.0
 	github.com/facebookgo/ensure v0.0.0-20160127193407-b4ab57deab51 // indirect
 	github.com/facebookgo/inject v0.0.0-20180706035515-f23751cae28b
