@@ -8,15 +8,22 @@ import (
 // 그러지 않으면 성능 테스트 케이스 타임아웃에 걸린다.
 type brickCache map[int]map[int]int64
 
-func playSubGame(arr []int32, begin, end int, c brickCache) int64 {
-	if endData, ok := c[begin]; ok {
-		if result, ok := endData[end]; ok {
-			return result
-		}
-	} else {
-		c[begin] = make(map[int]int64)
+func (cache *brickCache) get(begin, end int) (int64, bool) {
+	if endData, ok := (*cache)[begin]; ok {
+		result, ok := endData[end]
+		return result, ok
 	}
 
+	(*cache)[begin] = make(map[int]int64)
+	return 0, false
+}
+
+func playSubGame(arr []int32, begin, end int, cache brickCache) int64 {
+	if result, ok := cache.get(begin, end); ok {
+		return result
+	}
+
+	// 재귀 함수 탈출 조건
 	if end-begin <= 3 {
 		var sum int64
 		for i := 0; begin+i <= end; i++ {
@@ -26,45 +33,36 @@ func playSubGame(arr []int32, begin, end int, c brickCache) int64 {
 			sum += int64(arr[begin+i])
 		}
 
-		c[begin][end] = sum
+		cache[begin][end] = sum
 		return sum
-	}
-
-	if end-begin == 4 {
-		result := integer.MaxInt64(
-			int64(arr[begin]+arr[begin+1]+arr[begin+2]),
-			int64(arr[begin]+arr[begin+4]),
-		)
-		c[begin][end] = result
-		return result
 	}
 
 	// 나는 최대한 점수를 많이 내려고 한다.
 	result := integer.MaxInt64(
 		// 상대방은 내 점수를 최대한 적게 내도록 한다.
 		integer.MinInt64(
-			int64(arr[begin])+playSubGame(arr, begin+2, end, c),
-			int64(arr[begin])+playSubGame(arr, begin+3, end, c),
-			int64(arr[begin])+playSubGame(arr, begin+4, end, c),
+			int64(arr[begin])+playSubGame(arr, begin+2, end, cache),
+			int64(arr[begin])+playSubGame(arr, begin+3, end, cache),
+			int64(arr[begin])+playSubGame(arr, begin+4, end, cache),
 		),
 		// 상대방은 내 점수를 최대한 적게 내도록 한다.
 		integer.MinInt64(
-			int64(arr[begin])+int64(arr[begin+1])+playSubGame(arr, begin+3, end, c),
-			int64(arr[begin])+int64(arr[begin+1])+playSubGame(arr, begin+4, end, c),
-			int64(arr[begin])+int64(arr[begin+1])+playSubGame(arr, begin+5, end, c),
+			int64(arr[begin])+int64(arr[begin+1])+playSubGame(arr, begin+3, end, cache),
+			int64(arr[begin])+int64(arr[begin+1])+playSubGame(arr, begin+4, end, cache),
+			int64(arr[begin])+int64(arr[begin+1])+playSubGame(arr, begin+5, end, cache),
 		),
 		// 상대방은 내 점수를 최대한 적게 내도록 한다.
 		integer.MinInt64(
-			int64(arr[begin])+int64(arr[begin+1])+int64(arr[begin+2])+playSubGame(arr, begin+4, end, c),
-			int64(arr[begin])+int64(arr[begin+1])+int64(arr[begin+2])+playSubGame(arr, begin+5, end, c),
-			int64(arr[begin])+int64(arr[begin+1])+int64(arr[begin+2])+playSubGame(arr, begin+6, end, c),
+			int64(arr[begin])+int64(arr[begin+1])+int64(arr[begin+2])+playSubGame(arr, begin+4, end, cache),
+			int64(arr[begin])+int64(arr[begin+1])+int64(arr[begin+2])+playSubGame(arr, begin+5, end, cache),
+			int64(arr[begin])+int64(arr[begin+1])+int64(arr[begin+2])+playSubGame(arr, begin+6, end, cache),
 		),
 	)
-	c[begin][end] = result
+	cache[begin][end] = result
 	return result
 }
 
 func bricksGame(arr []int32) int64 {
-	c := make(brickCache)
-	return playSubGame(arr, 0, len(arr)-1, c)
+	cache := make(brickCache)
+	return playSubGame(arr, 0, len(arr)-1, cache)
 }
