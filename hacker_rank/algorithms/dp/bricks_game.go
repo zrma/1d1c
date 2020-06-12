@@ -6,15 +6,17 @@ import (
 
 // 메모이제이션을 위해 캐시를 사용한다.
 // 그러지 않으면 성능 테스트 케이스 타임아웃에 걸린다.
-type brickCache map[int]map[int]int64
+type brickCache map[int]innerCache
+
+type innerCache map[int]int64
 
 func (cache *brickCache) get(begin, end int) (int64, bool) {
-	if endData, ok := (*cache)[begin]; ok {
-		result, ok := endData[end]
+	if inner, ok := (*cache)[begin]; ok {
+		result, ok := inner[end]
 		return result, ok
 	}
 
-	(*cache)[begin] = make(map[int]int64)
+	(*cache)[begin] = make(innerCache)
 	return 0, false
 }
 

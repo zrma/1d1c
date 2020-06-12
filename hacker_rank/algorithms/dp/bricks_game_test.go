@@ -7,26 +7,28 @@ import (
 	"strconv"
 
 	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("https://www.hackerrank.com/challenges/play-game/problem", func() {
-	It("문제를 풀었다", func() {
-		actual1 := bricksGame([]int32{1, 2, 3})
-		actual2 := bricksGame([]int32{1, 2, 3, 4})
-		actual3 := bricksGame([]int32{1, 2, 3, 4, 5})
-		Expect(actual1).Should(BeNumerically("==", 6))
-		Expect(actual1).Should(BeNumerically("==", actual2))
-		Expect(actual1).Should(BeNumerically("==", actual3))
+	Context("문제를 풀었다", func() {
+		type testData struct {
+			arr      []int32
+			expected int64
+		}
 
-		actual := bricksGame([]int32{999, 1, 1, 1, 0})
-		Expect(actual).Should(BeNumerically("==", 1001))
-		actual = bricksGame([]int32{0, 1, 1, 1, 999})
-		Expect(actual).Should(BeNumerically("==", 999))
-
-		actual = bricksGame([]int32{0, 1, 1, 1, 999, 999})
-		Expect(actual).Should(BeNumerically("==", 1001))
-
+		DescribeTable("문제를 풀었다.", func(data testData) {
+			actual := bricksGame(data.arr)
+			Expect(actual).Should(Equal(data.expected))
+		},
+			Entry("0-0", testData{[]int32{1, 2, 3}, 6}),
+			Entry("0-1", testData{[]int32{1, 2, 3, 4}, 6}),
+			Entry("0-2", testData{[]int32{1, 2, 3, 4, 5}, 6}),
+			Entry("1", testData{[]int32{999, 1, 1, 1, 0}, 1001}),
+			Entry("2", testData{[]int32{0, 1, 1, 1, 999}, 999}),
+			Entry("3", testData{[]int32{0, 1, 1, 1, 999, 999}, 1001}),
+		)
 	})
 
 	Measure("성능 테스트", func(b Benchmarker) {
