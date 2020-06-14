@@ -15,7 +15,7 @@ var _ = Describe("https://www.hackerrank.com/challenges/30-testing/problem", fun
 			Expect(actual).Should(BeNumerically("==", -1))
 		})
 
-		It("uniqueValues() 함수는 유니크한 값만 담고 있는 슬라이스를 반환한다.", func() {
+		It("uniqueValues() 함수는 유니크한 두 개 이상의 값을 담고 있는 슬라이스를 반환한다.", func() {
 			seq := uniqueValues()
 			Expect(len(seq)).Should(BeNumerically(">=", 2))
 
@@ -25,12 +25,15 @@ var _ = Describe("https://www.hackerrank.com/challenges/30-testing/problem", fun
 				Expect(ok).Should(BeFalse())
 				m[num] = nil
 			}
-			actual, err := minimumIndex(seq)
-			Expect(err).ShouldNot(HaveOccurred())
-			Expect(actual).Should(BeNumerically("==", 0))
+
+			By("해당 풀이에서는 minimumIndex가 0", func() {
+				actual, err := minimumIndex(seq)
+				Expect(err).ShouldNot(HaveOccurred())
+				Expect(actual).Should(BeNumerically("==", 0))
+			})
 		})
 
-		It("exactlyTwoDifferentMinimums() 함수는 가장 작은 정수 두 개와 임의의 다른 더 큰 정수들로 이뤄진 슬라이스를 반환한다.", func() {
+		It("exactlyTwoDifferentMinimums() 함수는 가장 작은 정수 두 개와 임의의 다른 더 큰 0개 이상의 정수로 이뤄진 슬라이스를 반환한다.", func() {
 			seq := exactlyTwoDifferentMinimums()
 			Expect(len(seq)).Should(BeNumerically(">=", 2))
 
@@ -42,9 +45,11 @@ var _ = Describe("https://www.hackerrank.com/challenges/30-testing/problem", fun
 			Expect(tmp[0]).Should(BeNumerically("==", tmp[1]))
 			Expect(len(tmp) == 2 || tmp[1] < tmp[2]).Should(BeTrue())
 
-			actual, err := minimumIndex(seq)
-			Expect(err).ShouldNot(HaveOccurred())
-			Expect(actual).Should(BeNumerically("==", 1))
+			By("해당 풀이에서는 minimumIndex가 1", func() {
+				actual, err := minimumIndex(seq)
+				Expect(err).ShouldNot(HaveOccurred())
+				Expect(actual).Should(BeNumerically("==", 1))
+			})
 		})
 	})
 })
