@@ -3,11 +3,12 @@ package dictionariesandhashmaps
 import (
 	"bufio"
 	"encoding/csv"
+	"os"
+	"strconv"
+
 	"github.com/go-test/deep"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	"os"
-	"strconv"
 )
 
 var _ = Describe("https://www.hackerrank.com/challenges/frequency-queries/problem", func() {
@@ -46,22 +47,22 @@ var _ = Describe("https://www.hackerrank.com/challenges/frequency-queries/proble
 		runtime := b.Time("long array", func() {
 			arr, err := readInputCSV("./test_data/frequency_queries_0.csv")
 			Expect(err).ShouldNot(HaveOccurred())
-			Expect(len(arr)).Should(Equal(1000000))
+			Expect(arr).Should(HaveLen(1000000))
 
 			result, err := readResultCSV("./test_data/frequency_queries_result_0.csv")
 			Expect(err).ShouldNot(HaveOccurred())
-			Expect(len(result)).Should(Equal(332855))
+			Expect(result).Should(HaveLen(332855))
 
 			diff := deep.Equal(freqQuery(arr), result)
 			Expect(diff).Should(BeNil())
 
 			arr, err = readInputCSV("./test_data/frequency_queries_1.csv")
 			Expect(err).ShouldNot(HaveOccurred())
-			Expect(len(arr)).Should(Equal(100000))
+			Expect(arr).Should(HaveLen(100000))
 
 			result, err = readResultCSV("./test_data/frequency_queries_result_1.csv")
 			Expect(err).ShouldNot(HaveOccurred())
-			Expect(len(result)).Should(Equal(33246))
+			Expect(result).Should(HaveLen(33246))
 
 			diff = deep.Equal(freqQuery(arr), result)
 			Expect(diff).Should(BeNil())

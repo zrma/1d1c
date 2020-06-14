@@ -37,11 +37,11 @@ var _ = Describe("Solve collect max diamond problem", func() {
 
 	It("combinations 함수 검증", func() {
 		actual := combinations(3, 2)
-		Expect(len(actual)).Should(BeNumerically("==", 3))
+		Expect(actual).Should(HaveLen(3))
 		actual = combinations(4, 2)
-		Expect(len(actual)).Should(BeNumerically("==", 6))
+		Expect(actual).Should(HaveLen(6))
 		actual = combinations(4, 3)
-		Expect(len(actual)).Should(BeNumerically("==", 4))
+		Expect(actual).Should(HaveLen(4))
 	})
 
 	It("find 함수 검증", func() {

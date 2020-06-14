@@ -66,7 +66,7 @@ var _ = Describe("https://www.hackerrank.com/challenges/ctci-bubble-sort/problem
 				arr = append(arr, int32(num))
 			}
 
-			Expect(len(arr)).Should(Equal(528))
+			Expect(arr).Should(HaveLen(528))
 			err = utils.PrintTest(func() {
 				countSwaps(arr)
 			}, []string{

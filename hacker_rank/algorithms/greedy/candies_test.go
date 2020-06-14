@@ -49,7 +49,7 @@ var _ = Describe("https://www.hackerrank.com/challenges/candies/problem", func()
 				arr = append(arr, int32(num))
 			}
 
-			Expect(len(arr)).Should(Equal(100000))
+			Expect(arr).Should(HaveLen(100000))
 
 			actual := candies(int32(len(arr)), arr)
 			Expect(actual).Should(BeNumerically("==", 160929))

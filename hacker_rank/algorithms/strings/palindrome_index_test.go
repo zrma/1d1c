@@ -92,7 +92,7 @@ var _ = Describe("https://www.hackerrank.com/challenges/palindrome-index/problem
 				46674,
 			}
 
-			Expect(len(arr)).Should(Equal(5))
+			Expect(arr).Should(HaveLen(5))
 			for i, s := range arr {
 				actual := palindromeIndex(s)
 				Expect(actual).Should(BeNumerically("==", expected[i]))

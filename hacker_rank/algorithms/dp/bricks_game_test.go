@@ -70,7 +70,10 @@ var _ = Describe("https://www.hackerrank.com/challenges/play-game/problem", func
 
 			arr = append(arr, arr2...)
 
-			expected := []struct{ l, e int64 }{
+			expected := []struct {
+				l int
+				e int64
+			}{
 				{1000, 249147},
 				{1000, 251633},
 				{1000, 249302},
@@ -81,9 +84,9 @@ var _ = Describe("https://www.hackerrank.com/challenges/play-game/problem", func
 				{100000, 250224672758},
 			}
 
-			Expect(len(arr)).Should(Equal(8))
+			Expect(arr).Should(HaveLen(8))
 			for i, arr := range arr {
-				Expect(len(arr)).Should(BeNumerically("==", expected[i].l))
+				Expect(arr).Should(HaveLen(expected[i].l))
 				actual := bricksGame(arr)
 				Expect(actual).Should(BeNumerically("==", expected[i].e))
 			}

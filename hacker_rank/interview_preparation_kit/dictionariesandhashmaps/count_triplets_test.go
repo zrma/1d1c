@@ -56,7 +56,7 @@ var _ = Describe("https://www.hackerrank.com/challenges/count-triplets-1/problem
 			}
 
 			Expect(ratio).Should(BeNumerically("==", 3))
-			Expect(len(arr)).Should(Equal(100000))
+			Expect(arr).Should(HaveLen(100000))
 			actual := countTriplets(arr, ratio)
 			Expect(actual).Should(BeNumerically("==", 2325652489))
 		})

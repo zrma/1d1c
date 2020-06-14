@@ -55,7 +55,7 @@ var _ = Describe("https://www.hackerrank.com/challenges/crush/problem", func() {
 				arr = append(arr, []int32{int32(begin), int32(end), int32(value)})
 			}
 
-			Expect(len(arr)).Should(Equal(100000))
+			Expect(arr).Should(HaveLen(100000))
 			actual := arrayManipulation(10000000, arr)
 			Expect(actual).Should(BeNumerically("==", 2506721627))
 		})
