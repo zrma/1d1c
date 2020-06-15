@@ -3,22 +3,21 @@ package implementation
 import "fmt"
 
 func countApplesAndOranges(s int32, t int32, a int32, b int32, apples []int32, oranges []int32) {
-	inside := func(offset, distance int32) bool {
-		return (s <= offset+distance) && (offset+distance <= t)
+	containFrom := func(origin int32) func(int32) bool {
+		return func(distance int32) bool {
+			return (s <= origin+distance) && (origin+distance <= t)
+		}
 	}
 
-	var sum int32
-	for _, apple := range apples {
-		if inside(a, apple) {
+	fmt.Println(count(apples, containFrom(a)))
+	fmt.Println(count(oranges, containFrom(b)))
+}
+
+func count(distances []int32, contain func(int32) bool) (sum int32) {
+	for _, distance := range distances {
+		if contain(distance) {
 			sum++
 		}
 	}
-	fmt.Println(sum)
-	sum = 0
-	for _, orange := range oranges {
-		if inside(b, orange) {
-			sum++
-		}
-	}
-	fmt.Println(sum)
+	return
 }
