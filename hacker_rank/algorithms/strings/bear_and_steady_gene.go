@@ -1,8 +1,9 @@
 package strings
 
 import (
-	"github.com/zrma/going/utils/integer"
 	"math"
+
+	"github.com/zrma/going/utils/integer"
 )
 
 type validateFunc func() bool
@@ -13,23 +14,27 @@ func calculators(l int) (increaseFunc, decreaseFunc, validateFunc) {
 	cnt := l / 4
 	var arr = [4]int{-cnt, -cnt, -cnt, -cnt}
 
-	calcArr := func(b byte, margin int) {
+	acc := func(b byte, positive bool) {
+		step := 1
+		if !positive {
+			step = -1
+		}
 		switch b {
 		case 'A':
-			arr[0] += margin
+			arr[0] += step
 		case 'C':
-			arr[1] += margin
+			arr[1] += step
 		case 'T':
-			arr[2] += margin
+			arr[2] += step
 		case 'G':
-			arr[3] += margin
+			arr[3] += step
 		}
 	}
 
 	return func(b byte) {
-			calcArr(b, 1)
+			acc(b, true)
 		}, func(b byte) {
-			calcArr(b, -1)
+			acc(b, false)
 		}, func() bool {
 			for _, num := range arr {
 				if num > 0 {
@@ -49,17 +54,17 @@ func steadyGene(gene string) int32 {
 	}
 
 	var begin, end int32
-	var minRange int32 = math.MaxInt32
+	var min int32 = math.MaxInt32
 	for end < int32(length-1) {
 		decrease(gene[end])
 		end++
 
 		for validate() {
-			minRange = integer.MinInt32(minRange, end-begin)
+			min = integer.MinInt32(min, end-begin)
 			increase(gene[begin])
 			begin++
 		}
 	}
 
-	return minRange
+	return min
 }
