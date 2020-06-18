@@ -1,20 +1,14 @@
 package strings
 
-func max(i, j int32) int32 {
-	if i > j {
-		return i
-	}
-
-	return j
-}
+import "github.com/zrma/going/utils/integer"
 
 // https://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 func commonChild(s1 string, s2 string) int32 {
 	l1 := len(s1) + 1
 	l2 := len(s2) + 1
-	var arr [][]int32
-	for i := 0; i < l2; i++ {
-		arr = append(arr, make([]int32, l1))
+	arr := make([][]int32, l2)
+	for i := range arr {
+		arr[i] = make([]int32, l2)
 	}
 
 	for i := 0; i < l1; i++ {
@@ -28,7 +22,7 @@ func commonChild(s1 string, s2 string) int32 {
 			if c1 == c2 {
 				arr[i+1][j+1] = arr[i][j] + 1
 			} else {
-				arr[i+1][j+1] = max(arr[i+1][j], arr[i][j+1])
+				arr[i+1][j+1] = integer.MaxInt32(arr[i+1][j], arr[i][j+1])
 			}
 		}
 	}
