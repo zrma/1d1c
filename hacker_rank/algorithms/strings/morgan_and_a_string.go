@@ -1,52 +1,54 @@
 package strings
 
+import "strings"
+
 func morganAndString(a string, b string) string {
 	var i, j int
-	var output []byte
+	output := strings.Builder{}
 	for i < len(a) && j < len(b) {
 		if a[i] < b[j] {
-			output = append(output, a[i])
+			output.WriteByte(a[i])
 			i++
 			continue
 		}
 
 		if a[i] > b[j] {
-			output = append(output, b[j])
+			output.WriteByte(b[j])
 			j++
 			continue
 		}
 
 		// 동률일 경우 다음 자리 비교
 		if compare(a, b, i+1, j+1) {
-			output, i = extend(a, output, i)
+			i = extend(a, &output, i)
 			continue
 		}
 
-		output, j = extend(b, output, j)
+		j = extend(b, &output, j)
 	}
 
 	if i < len(a) {
-		output = append(output, a[i:]...)
+		output.WriteString(a[i:])
 	}
 
 	if j < len(b) {
-		output = append(output, b[j:]...)
+		output.WriteString(b[j:])
 	}
 
-	return string(output)
+	return output.String()
 }
 
-func extend(in string, out []byte, i int) ([]byte, int) {
-	out = append(out, in[i])
+func extend(in string, out *strings.Builder, i int) int {
+	out.WriteByte(in[i])
 	i++
 
 	// 반복 문자열은 일괄 붙이기
 	for i < len(in) && in[i] == in[i-1] {
-		out = append(out, in[i])
+		out.WriteByte(in[i])
 		i++
 	}
 
-	return out, i
+	return i
 }
 
 func compare(a, b string, i, j int) bool {
