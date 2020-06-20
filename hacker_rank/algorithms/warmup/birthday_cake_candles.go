@@ -15,7 +15,6 @@ func birthdayCakeCandles(ar []int32) int32 {
 
 		if n == max {
 			cnt++
-			continue
 		}
 	}
 
