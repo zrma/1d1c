@@ -1,24 +1,20 @@
 package warmup
 
 func diagonalDifference(arr [][]int32) int32 {
-	var val1, val2, pos1, pos2 int32
-	pos2 = int32(len(arr[0]) - 1)
+	var val1, val2 int32
+	totLen := len(arr[0]) - 1
 
-	for _, row := range arr {
-		val1 += row[pos1]
-		pos1++
-
-		val2 += row[pos2]
-		pos2--
+	for pos, row := range arr {
+		val1 += row[pos]
+		val2 += row[totLen-pos]
 	}
 
-	abs := func(in int32) int32 {
-		if in < 0 {
-			return -in
+	abs := func(n int32) int32 {
+		if n < 0 {
+			return -n
 		}
 
-		return in
+		return n
 	}
-
 	return abs(val1 - val2)
 }
