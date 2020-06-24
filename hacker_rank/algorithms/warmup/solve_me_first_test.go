@@ -5,7 +5,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/simple-array-sum/problem", func() {
+var _ = Describe("https://www.hackerrank.com/challenges/solve-me-first/problem", func() {
 	It("문제를 풀었다", func() {
 		var a uint32 = 2
 		var b uint32 = 3
