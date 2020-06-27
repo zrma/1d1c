@@ -25,10 +25,11 @@ func playSubGame(arr []int32, begin, end int, cache brickCache) int64 {
 		return result
 	}
 
+	length := end - begin
 	// 재귀 함수 탈출 조건
-	if end-begin <= 3 {
+	if length <= 3 {
 		var sum int64
-		for i := 0; begin+i <= end; i++ {
+		for i := 0; i <= length; i++ {
 			if i == 3 {
 				break
 			}
