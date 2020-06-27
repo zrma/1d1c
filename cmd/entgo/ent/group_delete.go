@@ -6,8 +6,8 @@ import (
 	"context"
 
 	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/zrma/1d1c/cmd/entgo/ent/group"
-	"github.com/zrma/1d1c/cmd/entgo/ent/predicate"
+	"github.com/zrma/1d1go/cmd/entgo/ent/group"
+	"github.com/zrma/1d1go/cmd/entgo/ent/predicate"
 )
 
 // GroupDelete is the builder for deleting a Group entity.

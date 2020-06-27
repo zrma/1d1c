@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/zrma/1d1c/cmd/entgo/ent/car"
+	"github.com/zrma/1d1go/cmd/entgo/ent/car"
 )
 
 // CarCreate is the builder for creating a Car entity.

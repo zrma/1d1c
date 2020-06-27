@@ -10,8 +10,8 @@ import (
 	"github.com/micro/go-micro/metadata"
 	"golang.org/x/net/trace"
 
-	"github.com/zrma/1d1c/cmd/micro/booking/data"
-	auth "github.com/zrma/1d1c/cmd/micro/booking/srv/auth/proto"
+	"github.com/zrma/1d1go/cmd/micro/booking/data"
+	auth "github.com/zrma/1d1go/cmd/micro/booking/srv/auth/proto"
 )
 
 // Auth struct save customers information

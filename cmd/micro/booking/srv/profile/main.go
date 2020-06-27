@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"log"
 
-	"github.com/zrma/1d1c/cmd/micro/booking/data"
-	"github.com/zrma/1d1c/cmd/micro/booking/srv/profile/proto"
+	"github.com/zrma/1d1go/cmd/micro/booking/data"
+	"github.com/zrma/1d1go/cmd/micro/booking/srv/profile/proto"
 
 	"golang.org/x/net/trace"
 

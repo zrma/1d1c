@@ -2,7 +2,8 @@ package tutorial30daysofcode
 
 import (
 	"fmt"
-	"github.com/zrma/1d1c/hacker_rank/interview_preparation_kit/arrays"
+
+	"github.com/zrma/1d1go/hacker_rank/interview_preparation_kit/arrays"
 )
 
 func hourGlassSum(arr [][]int32) {

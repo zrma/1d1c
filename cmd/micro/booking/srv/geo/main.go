@@ -1,18 +1,17 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"log"
 
 	"github.com/hailocab/go-geoindex"
-	"github.com/zrma/1d1c/cmd/micro/booking/data"
-	geo "github.com/zrma/1d1c/cmd/micro/booking/srv/geo/proto"
-
-	"context"
-	"golang.org/x/net/trace"
-
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/metadata"
+	"golang.org/x/net/trace"
+
+	"github.com/zrma/1d1go/cmd/micro/booking/data"
+	geo "github.com/zrma/1d1go/cmd/micro/booking/srv/geo/proto"
 )
 
 const (

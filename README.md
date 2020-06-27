@@ -1,4 +1,4 @@
-# 1d1c  
+# 1d1go  
 
 [![Build Status](https://travis-ci.org/zrma/1d1c.svg?branch=master)](https://travis-ci.org/zrma/1d1c)
 [![Go Report Card](https://goreportcard.com/badge/github.com/zrma/1d1c)](https://goreportcard.com/report/github.com/zrma/1d1c)
@@ -8,7 +8,7 @@
 
 ----
 
-1 day 1 coding
+1 day 1 coding with Golang
 
 
 #### Requirement

@@ -1,4 +1,4 @@
-module github.com/zrma/1d1c
+module github.com/zrma/1d1go
 
 go 1.14
 

@@ -18,11 +18,11 @@ import (
 	. "github.com/micro/go-micro/errors"
 	"github.com/micro/go-micro/metadata"
 
-	"github.com/zrma/1d1c/cmd/micro/booking/api/hotel/proto"
-	"github.com/zrma/1d1c/cmd/micro/booking/srv/auth/proto"
-	"github.com/zrma/1d1c/cmd/micro/booking/srv/geo/proto"
-	"github.com/zrma/1d1c/cmd/micro/booking/srv/profile/proto"
-	"github.com/zrma/1d1c/cmd/micro/booking/srv/rate/proto"
+	"github.com/zrma/1d1go/cmd/micro/booking/api/hotel/proto"
+	"github.com/zrma/1d1go/cmd/micro/booking/srv/auth/proto"
+	"github.com/zrma/1d1go/cmd/micro/booking/srv/geo/proto"
+	"github.com/zrma/1d1go/cmd/micro/booking/srv/profile/proto"
+	"github.com/zrma/1d1go/cmd/micro/booking/srv/rate/proto"
 )
 
 const (

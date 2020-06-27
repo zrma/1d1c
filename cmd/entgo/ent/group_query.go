@@ -9,9 +9,9 @@ import (
 	"math"
 
 	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/zrma/1d1c/cmd/entgo/ent/group"
-	"github.com/zrma/1d1c/cmd/entgo/ent/predicate"
-	"github.com/zrma/1d1c/cmd/entgo/ent/user"
+	"github.com/zrma/1d1go/cmd/entgo/ent/group"
+	"github.com/zrma/1d1go/cmd/entgo/ent/predicate"
+	"github.com/zrma/1d1go/cmd/entgo/ent/user"
 )
 
 // GroupQuery is the builder for querying Group entities.

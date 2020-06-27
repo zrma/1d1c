@@ -8,10 +8,10 @@ import (
 
 	"github.com/go-test/deep"
 
-	"github.com/zrma/1d1c/cmd/entgo/ent"
-	"github.com/zrma/1d1c/cmd/entgo/ent/car"
-	"github.com/zrma/1d1c/cmd/entgo/ent/group"
-	"github.com/zrma/1d1c/cmd/entgo/ent/user"
+	"github.com/zrma/1d1go/cmd/entgo/ent"
+	"github.com/zrma/1d1go/cmd/entgo/ent/car"
+	"github.com/zrma/1d1go/cmd/entgo/ent/group"
+	"github.com/zrma/1d1go/cmd/entgo/ent/user"
 
 	_ "github.com/mattn/go-sqlite3"
 )

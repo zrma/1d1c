@@ -4,7 +4,7 @@ package user
 
 import (
 	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/zrma/1d1c/cmd/entgo/ent/predicate"
+	"github.com/zrma/1d1go/cmd/entgo/ent/predicate"
 )
 
 // ID filters vertices based on their identifier.

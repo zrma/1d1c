@@ -3,7 +3,7 @@
 package migrate
 
 import (
-	"github.com/zrma/1d1c/cmd/entgo/ent/user"
+	"github.com/zrma/1d1go/cmd/entgo/ent/user"
 
 	"github.com/facebookincubator/ent/dialect/sql/schema"
 	"github.com/facebookincubator/ent/schema/field"

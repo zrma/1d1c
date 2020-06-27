@@ -7,8 +7,8 @@ import (
 
 	"golang.org/x/net/trace"
 
-	"github.com/zrma/1d1c/cmd/micro/booking/data"
-	"github.com/zrma/1d1c/cmd/micro/booking/srv/rate/proto"
+	"github.com/zrma/1d1go/cmd/micro/booking/data"
+	"github.com/zrma/1d1go/cmd/micro/booking/srv/rate/proto"
 
 	"github.com/micro/go-micro"
 	"github.com/micro/go-micro/metadata"

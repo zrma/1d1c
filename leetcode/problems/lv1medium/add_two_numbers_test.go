@@ -5,7 +5,7 @@ import (
 	. "github.com/onsi/ginkgo/extensions/table"
 	. "github.com/onsi/gomega"
 
-	. "github.com/zrma/1d1c/leetcode/problems/common"
+	. "github.com/zrma/1d1go/leetcode/problems/common"
 )
 
 var _ = Describe("https://leetcode.com/problems/add-two-numbers/", func() {

@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/zrma/1d1c/cmd/interface/vehicle"
 	"log"
+
+	"github.com/zrma/1d1go/cmd/interface/vehicle"
 )
 
 type car struct {

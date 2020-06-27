@@ -133,7 +133,7 @@ var _ = Describe("https://leetcode.com/problems/median-of-two-sorted-arrays/", f
 
 //goos: linux
 //goarch: amd64
-//pkg: github.com/zrma/1d1c/leetcode/problems/lv2hard
+//pkg: github.com/zrma/1d1go/leetcode/problems/lv2hard
 //BenchmarkFindMedian1/By_merge-16                         127035747               9.02   ns/op
 //BenchmarkFindMedian1/By_index-16                        1000000000               0.929  ns/op
 //BenchmarkFindMedian1/By_bin_search-16                   1000000000               1.12   ns/op

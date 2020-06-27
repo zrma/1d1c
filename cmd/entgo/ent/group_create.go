@@ -8,7 +8,7 @@ import (
 	"fmt"
 
 	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/zrma/1d1c/cmd/entgo/ent/group"
+	"github.com/zrma/1d1go/cmd/entgo/ent/group"
 )
 
 // GroupCreate is the builder for creating a Group entity.

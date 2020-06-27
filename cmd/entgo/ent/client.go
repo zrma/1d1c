@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/zrma/1d1c/cmd/entgo/ent/migrate"
+	"github.com/zrma/1d1go/cmd/entgo/ent/migrate"
 
-	"github.com/zrma/1d1c/cmd/entgo/ent/car"
-	"github.com/zrma/1d1c/cmd/entgo/ent/group"
-	"github.com/zrma/1d1c/cmd/entgo/ent/user"
+	"github.com/zrma/1d1go/cmd/entgo/ent/car"
+	"github.com/zrma/1d1go/cmd/entgo/ent/group"
+	"github.com/zrma/1d1go/cmd/entgo/ent/user"
 
 	"github.com/facebookincubator/ent/dialect"
 	"github.com/facebookincubator/ent/dialect/sql"
