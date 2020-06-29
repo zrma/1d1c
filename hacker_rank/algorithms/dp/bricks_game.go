@@ -29,10 +29,7 @@ func playSubGame(arr []int32, begin, end int, cache brickCache) int64 {
 	// 재귀 함수 탈출 조건
 	if length <= 3 {
 		var sum int64
-		for i := 0; i <= length; i++ {
-			if i == 3 {
-				break
-			}
+		for i := 0; i <= integer.MinInt(length, 2); i++ {
 			sum += int64(arr[begin+i])
 		}
 
