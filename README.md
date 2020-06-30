@@ -12,8 +12,19 @@
 
 
 #### Requirement
+> [Git Large File Storage(GitLFS/git lfs)](https://git-lfs.github.com)  
 > [Go](https://golang.org) (v1.14+)
+
+
+#### Initialize
+> $ git clone https://github.com/zrma/1d1go.git  
+> $ git lfs install  
+> $ git lfs pull
 
 
 #### Test
 > $ make test
+
+
+#### Test on Docker
+> $ ./test.sh
