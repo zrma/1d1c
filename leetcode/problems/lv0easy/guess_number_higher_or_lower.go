@@ -20,15 +20,22 @@ func solveGuessNumber(n, expected int) int {
 func guessNumber(n int) int {
 	l, r := 1, n
 	for l <= r {
-		mid := l + (r-l)/2
-		v := guess(mid)
+		mid1 := l + (r-l)/3
+		mid2 := r - (r-l)/3
+		v1 := guess(mid1)
+		v2 := guess(mid2)
 		switch {
-		case v == 0:
-			return mid
-		case v < 0:
-			r = mid - 1
-		case v > 0:
-			l = mid + 1
+		case v1 == 0:
+			return mid1
+		case v2 == 0:
+			return mid2
+		case v1 < 0:
+			r = mid1 - 1
+		case v2 > 0:
+			l = mid2 + 1
+		default:
+			l = mid1 + 1
+			r = mid2 - 1
 		}
 	}
 	return -1
