@@ -2,11 +2,13 @@ package lv0easy
 
 var isBadVersion func(int) bool
 
-func solveFirstBadVersion(n, expected int) int {
+func solveFirstBadVersion(n, expected int) (int, int) {
+	var callCount int
 	isBadVersion = func(i int) bool {
+		callCount++
 		return i >= expected
 	}
-	return firstBadVersion(n)
+	return firstBadVersion(n), callCount
 }
 
 func firstBadVersion(n int) int {

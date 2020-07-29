@@ -2,8 +2,10 @@ package lv0easy
 
 var guess func(int) int
 
-func solveGuessNumber(n, expected int) int {
+func solveGuessNumber(n, expected int) (int, int) {
+	var callCount int
 	guess = func(i int) int {
+		callCount++
 		switch {
 		case expected < i:
 			return -1
@@ -14,7 +16,7 @@ func solveGuessNumber(n, expected int) int {
 		}
 		return 0
 	}
-	return guessNumber(n)
+	return guessNumber(n), callCount
 }
 
 func guessNumber(n int) int {
