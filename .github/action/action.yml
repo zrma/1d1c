@@ -1,0 +1,16 @@
+name: 'golang action'
+description: 'golang build tool action'
+inputs:
+  commands:  # id of input
+    description: 'go commands'
+    required: true
+    default: 'test'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.commands }}
+
+branding:
+  icon: 'package'
+  color: 'blue'
