@@ -34,7 +34,7 @@ func (d *DefaultLicenseCheck) CanDrive(p Person, v IVehicle) bool {
 // Car is ...
 type Car struct {
 	Log    ILog `inject:""`
-	engine string
+	// engine string
 	wheels int
 }
 
@@ -115,13 +115,13 @@ func (consoleLog *ConsoleLog) Log(info string) {
 var (
 	person = NewPerson(12)
 	car    = NewCar()
-	bike   = NewBike()
+	// bike   = NewBike()
 )
 
 func init() {
 	log := &ConsoleLog{}
 	licenseCheck := &DefaultLicenseCheck{}
-	inject.Populate(person, log, car, licenseCheck)
+	_ = inject.Populate(person, log, car, licenseCheck)
 }
 
 func main() {
@@ -163,7 +163,7 @@ func mockTest() {
 	licenseCheck := &MockILicenseCheck{WhatToReturn: true}
 	p := NewPerson(12)
 	b := NewBike()
-	inject.Populate(log, licenseCheck, b, p)
+	_ = inject.Populate(log, licenseCheck, b, p)
 	p.Drive()
 	fmt.Printf("Expect 1, actual %d\n", licenseCheck.timesCalled)
 	fmt.Printf("Expect false, actual %t\n", strings.HasPrefix(log.LastMessage, "Waah"))

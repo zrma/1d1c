@@ -1,4 +1,4 @@
-package book
+package main
 
 import (
 	"log"
@@ -41,12 +41,12 @@ func main() {
 	log.Println("starting injection example")
 	var graph inject.Graph
 	var service BookService
-	graph.Provide(
+	_ = graph.Provide(
 		&inject.Object{Value: &service},
 		&inject.Object{Value: Database{}},
 		&inject.Object{Value: Validator{}},
 	)
-	graph.Populate()
+	_ = graph.Populate()
 
 	log.Println("listing known objects..")
 	for _, obj := range graph.Objects() {

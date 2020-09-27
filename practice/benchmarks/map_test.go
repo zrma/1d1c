@@ -20,6 +20,7 @@ func benchmarkMakeSlice(i int64, b *testing.B) {
 	for i = 0; i < cnt; i++ {
 		arr = append(arr, i)
 	}
+	_ = arr
 }
 
 func benchmarkAppendSlice(i int64, b *testing.B) {
@@ -28,6 +29,7 @@ func benchmarkAppendSlice(i int64, b *testing.B) {
 	for i = 0; i < cnt; i++ {
 		arr[i] = i
 	}
+	_ = arr
 }
 
 func BenchmarkSliceConstruction1(b *testing.B)    { benchmarkSliceConstruction(1, b) }

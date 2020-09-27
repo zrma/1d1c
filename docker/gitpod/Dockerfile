@@ -19,4 +19,3 @@ ENV GO111MODULE on
 
 # Give back control
 USER root
-

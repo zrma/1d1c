@@ -36,7 +36,6 @@ func (b myBook) display() {
 }
 
 func abstractClasses(title, author string, price int) {
-	var v viewer
-	v = newMyBook(title, author, price)
+	v := newMyBook(title, author, price)
 	v.display()
 }

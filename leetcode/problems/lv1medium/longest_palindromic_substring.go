@@ -40,7 +40,6 @@ func checkByRange(opts *checkOptions) {
 			opts.max = end
 		}
 	}
-	return
 }
 
 func longestPalindrome(s string) string {
