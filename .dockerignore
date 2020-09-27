@@ -4,6 +4,7 @@
 .gitignore
 .gitpod.yml
 .travis.yml
+.idea
 *.md
 cover.sh
 docker-compose.test.yml

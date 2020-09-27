@@ -55,6 +55,6 @@ var _ = Describe("https://www.hackerrank.com/challenges/candies/problem", func()
 			Expect(actual).Should(BeNumerically("==", 160929))
 		})
 
-		Expect(runtime.Seconds()).Should(BeNumerically("<", 5), "시간 초과")
+		Expect(runtime.Seconds()).Should(BeNumerically("<", 10), "시간 초과")
 	}, 3)
 })

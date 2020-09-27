@@ -92,6 +92,6 @@ var _ = Describe("https://www.hackerrank.com/challenges/play-game/problem", func
 			}
 		})
 
-		Expect(runtime.Seconds()).Should(BeNumerically("<", 5), "시간 초과")
+		Expect(runtime.Seconds()).Should(BeNumerically("<", 10), "시간 초과")
 	}, 3)
 })

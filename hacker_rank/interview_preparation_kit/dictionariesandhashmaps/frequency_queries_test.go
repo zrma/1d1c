@@ -68,7 +68,7 @@ var _ = Describe("https://www.hackerrank.com/challenges/frequency-queries/proble
 			Expect(diff).Should(BeNil())
 		})
 
-		Expect(runtime.Seconds()).Should(BeNumerically("<", 5), "시간 초과")
+		Expect(runtime.Seconds()).Should(BeNumerically("<", 10), "시간 초과")
 	}, 1)
 })
 

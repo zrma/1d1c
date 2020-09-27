@@ -61,6 +61,6 @@ var _ = Describe("https://www.hackerrank.com/challenges/count-triplets-1/problem
 			Expect(actual).Should(BeNumerically("==", 2325652489))
 		})
 
-		Expect(runtime.Seconds()).Should(BeNumerically("<", 5), "시간 초과")
+		Expect(runtime.Seconds()).Should(BeNumerically("<", 10), "시간 초과")
 	}, 3)
 })

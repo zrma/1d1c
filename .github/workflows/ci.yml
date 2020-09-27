@@ -6,19 +6,58 @@ name: CI
 # events but only for the master and develop branch
 on:
   push:
-    branches: [ master, develop ]
+    branches:
+      - master
   pull_request:
-    branches: [ master, develop ]
+    types: [ opened, synchronize, reopened ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        go: [ '1.14', '1.15' ]
     name: action test
     steps:
       - uses: actions/checkout@v2
-      - name: action test
+      - uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ matrix.go }}-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-${{ matrix.go }}-
+      - name: Golang lint & test
         id: golang
         uses: ./.github/action/
+        env:
+          GO_VERSION: ${{ matrix.go }}
+      - uses: actions/upload-artifact@v2
         with:
-          commands: test
+          name: coverage
+          path: coverage.out
+
+  report:
+    needs: test
+    runs-on: ubuntu-latest
+    name: action report
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: coverage
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - uses: codecov/codecov-action@v1
+      - name: Install goveralls
+        env:
+          GO111MODULE: off
+        run: go get github.com/mattn/goveralls
+      - name: Send coverage
+        uses: shogo82148/actions-goveralls@v1
+        with:
+          path-to-profile: coverage.out

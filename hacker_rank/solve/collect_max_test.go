@@ -65,6 +65,6 @@ var _ = Describe("Solve collect max diamond problem", func() {
 			Expect(collectMax(data)).Should(BeNumerically("==", 23))
 		})
 
-		Expect(runtime.Seconds()).Should(BeNumerically("<", 5), "시간 초과")
+		Expect(runtime.Seconds()).Should(BeNumerically("<", 10), "시간 초과")
 	}, 3)
 })

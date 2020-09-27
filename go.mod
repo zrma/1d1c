@@ -18,6 +18,7 @@ require (
 	github.com/google/uuid v1.1.1
 	github.com/hailocab/go-geoindex v0.0.0-20160127134810-64631bfe9711
 	github.com/mattn/go-sqlite3 v1.10.0
+	github.com/mattn/goveralls v0.0.7 // indirect
 	github.com/micro/go-micro v1.10.0
 	github.com/micro/micro v1.10.0
 	github.com/onsi/ginkgo v1.12.0
