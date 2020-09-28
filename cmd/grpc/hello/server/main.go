@@ -38,8 +38,12 @@ func main() {
 		}),
 	)
 
+	svr := &server{}
 	s := grpc.NewServer(opts...)
-	pb.RegisterGreeterServer(s, &server{})
+	pb.RegisterGreeterService(s, &pb.GreeterService{
+		SayHello:      svr.SayHello,
+		SayHelloAgain: svr.SayHelloAgain,
+	})
 	if err := s.Serve(listener); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
