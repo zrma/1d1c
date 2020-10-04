@@ -6,13 +6,13 @@ import (
 )
 
 func main() {
-	app := app.New()
+	newApp := app.New()
 
-	w := app.NewWindow("Hello")
+	w := newApp.NewWindow("Hello")
 	w.SetContent(widget.NewVBox(
 		widget.NewLabel("Hello Fyne!"),
 		widget.NewButton("Quit", func() {
-			app.Quit()
+			newApp.Quit()
 		}),
 	))
 
