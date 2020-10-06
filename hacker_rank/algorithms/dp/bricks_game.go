@@ -20,7 +20,7 @@ func (cache *brickCache) get(begin, end int) (int64, bool) {
 	return 0, false
 }
 
-func playSubGame(arr []int32, begin, end int, cache brickCache) int64 {
+func playGameRecur(arr []int32, begin, end int, cache brickCache) int64 {
 	if result, ok := cache.get(begin, end); ok {
 		return result
 	}
@@ -41,28 +41,32 @@ func playSubGame(arr []int32, begin, end int, cache brickCache) int64 {
 	result := integer.MaxInt64(
 		// 상대방은 내 점수를 최대한 적게 내도록 한다.
 		integer.MinInt64(
-			int64(arr[begin])+playSubGame(arr, begin+2, end, cache),
-			int64(arr[begin])+playSubGame(arr, begin+3, end, cache),
-			int64(arr[begin])+playSubGame(arr, begin+4, end, cache),
+			int64(arr[begin])+playGameRecur(arr, begin+2, end, cache),
+			int64(arr[begin])+playGameRecur(arr, begin+3, end, cache),
+			int64(arr[begin])+playGameRecur(arr, begin+4, end, cache),
 		),
 		// 상대방은 내 점수를 최대한 적게 내도록 한다.
 		integer.MinInt64(
-			int64(arr[begin])+int64(arr[begin+1])+playSubGame(arr, begin+3, end, cache),
-			int64(arr[begin])+int64(arr[begin+1])+playSubGame(arr, begin+4, end, cache),
-			int64(arr[begin])+int64(arr[begin+1])+playSubGame(arr, begin+5, end, cache),
+			int64(arr[begin])+int64(arr[begin+1])+playGameRecur(arr, begin+3, end, cache),
+			int64(arr[begin])+int64(arr[begin+1])+playGameRecur(arr, begin+4, end, cache),
+			int64(arr[begin])+int64(arr[begin+1])+playGameRecur(arr, begin+5, end, cache),
 		),
 		// 상대방은 내 점수를 최대한 적게 내도록 한다.
 		integer.MinInt64(
-			int64(arr[begin])+int64(arr[begin+1])+int64(arr[begin+2])+playSubGame(arr, begin+4, end, cache),
-			int64(arr[begin])+int64(arr[begin+1])+int64(arr[begin+2])+playSubGame(arr, begin+5, end, cache),
-			int64(arr[begin])+int64(arr[begin+1])+int64(arr[begin+2])+playSubGame(arr, begin+6, end, cache),
+			int64(arr[begin])+int64(arr[begin+1])+int64(arr[begin+2])+playGameRecur(arr, begin+4, end, cache),
+			int64(arr[begin])+int64(arr[begin+1])+int64(arr[begin+2])+playGameRecur(arr, begin+5, end, cache),
+			int64(arr[begin])+int64(arr[begin+1])+int64(arr[begin+2])+playGameRecur(arr, begin+6, end, cache),
 		),
 	)
 	cache[begin][end] = result
 	return result
 }
 
-func bricksGame(arr []int32) int64 {
+func bricksGameRecur(arr []int32) int64 {
 	cache := make(brickCache)
-	return playSubGame(arr, 0, len(arr)-1, cache)
+	return playGameRecur(arr, 0, len(arr)-1, cache)
+}
+
+func bricksGameLoop(arr []int32) int64 {
+	panic("implement me")
 }

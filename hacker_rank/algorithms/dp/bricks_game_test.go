@@ -19,8 +19,20 @@ var _ = Describe("https://www.hackerrank.com/challenges/play-game/problem", func
 		}
 
 		DescribeTable("문제를 풀었다.", func(data testData) {
-			actual := bricksGame(data.arr)
-			Expect(actual).Should(Equal(data.expected))
+			By("재귀", func() {
+				actual := bricksGameRecur(data.arr)
+				Expect(actual).Should(Equal(data.expected))
+			})
+
+			defer func() {
+				r := recover()
+				Expect(r).ShouldNot(BeNil(), "The code did not panic")
+			}()
+
+			By("루프", func() {
+				actual := bricksGameLoop(data.arr)
+				Expect(actual).Should(Equal(data.expected))
+			})
 		},
 			Entry("0-0", testData{[]int32{1, 2, 3}, 6}),
 			Entry("0-1", testData{[]int32{1, 2, 3, 4}, 6}),
@@ -87,7 +99,7 @@ var _ = Describe("https://www.hackerrank.com/challenges/play-game/problem", func
 			Expect(arr).Should(HaveLen(8))
 			for i, arr := range arr {
 				Expect(arr).Should(HaveLen(expected[i].l))
-				actual := bricksGame(arr)
+				actual := bricksGameRecur(arr)
 				Expect(actual).Should(BeNumerically("==", expected[i].e))
 			}
 		})
