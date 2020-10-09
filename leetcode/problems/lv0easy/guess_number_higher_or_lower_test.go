@@ -37,4 +37,9 @@ var _ = Describe("https://leetcode.com/problems/guess-number-higher-or-lower/", 
 		Entry("3-2", testData{1024, 513}),
 		Entry("3-3", testData{1024, 1024}),
 	)
+
+	It("예외 처리", func() {
+		actual := guessNumber(0)
+		Expect(actual).Should(Equal(-1))
+	})
 })

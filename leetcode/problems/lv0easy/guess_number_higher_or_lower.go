@@ -9,12 +9,11 @@ func solveGuessNumber(n, expected int) (int, int) {
 		switch {
 		case expected < i:
 			return -1
-		case expected == i:
-			return 0
 		case expected > i:
 			return 1
+		default:
+			return 0
 		}
-		return 0
 	}
 	return guessNumber(n), callCount
 }
