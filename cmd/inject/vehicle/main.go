@@ -33,7 +33,7 @@ func (d *DefaultLicenseCheck) CanDrive(p Person, v IVehicle) bool {
 
 // Car is ...
 type Car struct {
-	Log    ILog `inject:""`
+	Log ILog `inject:""`
 	// engine string
 	wheels int
 }
