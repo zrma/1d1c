@@ -14,12 +14,13 @@ require (
 	github.com/facebookgo/subset v0.0.0-20150612182917-8dac2c3c4870 // indirect
 	github.com/facebookincubator/ent v0.0.0-20191013065242-9983309eacbb
 	github.com/go-test/deep v1.0.1
+	github.com/golang/mock v1.4.4
 	github.com/golang/protobuf v1.4.2
 	github.com/mattn/go-sqlite3 v1.10.0
 	github.com/onsi/ginkgo v1.12.0
 	github.com/onsi/gomega v1.9.0
 	github.com/panjf2000/ants/v2 v2.3.0
-	github.com/stretchr/testify v1.5.1 // indirect
+	github.com/stretchr/testify v1.5.1
 	github.com/zrma/going v0.0.0-20200629120819-ff54dafa1f7a
 	golang.org/x/image v0.0.0-20200119044424-58c23975cae1 // indirect
 	golang.org/x/mobile v0.0.0-20190806162312-597adff16ade // indirect
