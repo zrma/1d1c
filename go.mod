@@ -22,6 +22,7 @@ require (
 	github.com/panjf2000/ants/v2 v2.3.0
 	github.com/stretchr/testify v1.5.1
 	github.com/zrma/going v0.0.0-20200629120819-ff54dafa1f7a
+	go.uber.org/dig v1.10.0
 	golang.org/x/image v0.0.0-20200119044424-58c23975cae1 // indirect
 	golang.org/x/mobile v0.0.0-20190806162312-597adff16ade // indirect
 	golang.org/x/net v0.0.0-20200927032502-5d4f70055728 // indirect
