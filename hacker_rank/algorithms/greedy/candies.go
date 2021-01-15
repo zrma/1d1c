@@ -5,41 +5,41 @@ import (
 )
 
 func candies(n int32, arr []int32) int64 {
-	candies := make([]int32, n)
+	result := make([]int32, n)
 
-	candies = forward(candies, arr)
-	candies = backward(candies, arr)
+	result = forward(result, arr)
+	result = backward(result, arr)
 
 	var sum int64
-	for _, val := range candies {
+	for _, val := range result {
 		sum += int64(val)
 	}
 	return sum
 }
 
-func forward(candies, arr []int32) []int32 {
+func forward(result, arr []int32) []int32 {
 	var candy int32 = 1
-	candies[0] = candy
-	for i := 1; i < len(candies); i++ {
+	result[0] = candy
+	for i := 1; i < len(result); i++ {
 		if arr[i] > arr[i-1] {
 			candy++
 		} else {
 			candy = 1
 		}
-		candies[i] = candy
+		result[i] = candy
 	}
-	return candies
+	return result
 }
 
-func backward(candies, arr []int32) []int32 {
+func backward(result, arr []int32) []int32 {
 	var candy int32 = 1
-	for i := len(candies) - 2; i >= 0; i-- {
+	for i := len(result) - 2; i >= 0; i-- {
 		if arr[i] > arr[i+1] {
 			candy++
 		} else {
 			candy = 1
 		}
-		candies[i] = integer.MaxInt32(candies[i], candy)
+		result[i] = integer.MaxInt32(result[i], candy)
 	}
-	return candies
+	return result
 }
