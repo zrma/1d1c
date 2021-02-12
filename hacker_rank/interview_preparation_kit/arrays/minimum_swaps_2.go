@@ -1,6 +1,6 @@
 package arrays
 
-func find(arr []int32, target int32, offset int, l int) (int, bool) {
+func find(arr []int32, target int32, offset, l int) (int, bool) {
 	for i := offset; i < l; i++ {
 		if arr[i] == target {
 			return i, true

@@ -4,7 +4,7 @@ import (
 	"github.com/zrma/going/utils/str"
 )
 
-func twoStrings(s1 string, s2 string) string {
+func twoStrings(s1, s2 string) string {
 	s1 = str.Sort(s1)
 	s2 = str.Sort(s2)
 

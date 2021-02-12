@@ -4,7 +4,7 @@ import (
 	"github.com/zrma/1d1go/leetcode/problems/common"
 )
 
-func addTwoNumbers(l1 *common.ListNode, l2 *common.ListNode) *common.ListNode {
+func addTwoNumbers(l1, l2 *common.ListNode) *common.ListNode {
 	var carry int
 	res := &common.ListNode{}
 	cur := res

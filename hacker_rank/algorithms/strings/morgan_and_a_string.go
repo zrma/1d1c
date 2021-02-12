@@ -2,7 +2,7 @@ package strings
 
 import "strings"
 
-func morganAndString(a string, b string) string {
+func morganAndString(a, b string) string {
 	var i, j int
 	output := strings.Builder{}
 	for i < len(a) && j < len(b) {

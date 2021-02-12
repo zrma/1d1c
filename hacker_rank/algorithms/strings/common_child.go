@@ -3,7 +3,7 @@ package strings
 import "github.com/zrma/going/utils/integer"
 
 // https://en.wikipedia.org/wiki/Longest_common_subsequence_problem
-func commonChild(s1 string, s2 string) int32 {
+func commonChild(s1, s2 string) int32 {
 	l1 := len(s1) + 1
 	l2 := len(s2) + 1
 	arr := make([][]int32, l2)

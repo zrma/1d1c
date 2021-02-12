@@ -2,7 +2,7 @@ package lv2hard
 
 import "math"
 
-func findTwoValuesNearMid(nums1 []int, nums2 []int, totLen int) (prev, curr int) {
+func findTwoValuesNearMid(nums1, nums2 []int, totLen int) (prev, curr int) {
 	target := totLen / 2
 	var idx1, idx2, idxTot int
 	for idx1 < len(nums1) && idx2 < len(nums2) {
@@ -40,7 +40,7 @@ func findTwoValuesNearMid(nums1 []int, nums2 []int, totLen int) (prev, curr int)
 	return
 }
 
-func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+func findMedianSortedArrays(nums1, nums2 []int) float64 {
 	totLen := len(nums1) + len(nums2)
 	val1, val2 := findTwoValuesNearMid(nums1, nums2, totLen)
 	if totLen%2 == 0 {
@@ -49,7 +49,7 @@ func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
 	return float64(val2)
 }
 
-func mergeSortedArray(nums1 []int, nums2 []int) []int {
+func mergeSortedArray(nums1, nums2 []int) []int {
 	totLen := len(nums1) + len(nums2)
 	totNums := make([]int, totLen)
 
@@ -79,7 +79,7 @@ func mergeSortedArray(nums1 []int, nums2 []int) []int {
 	return totNums
 }
 
-func findMedianSortedArraysWithMerge(nums1 []int, nums2 []int) float64 {
+func findMedianSortedArraysWithMerge(nums1, nums2 []int) float64 {
 	totNums := mergeSortedArray(nums1, nums2)
 	if len(totNums)%2 == 0 {
 		return float64(totNums[len(totNums)/2-1]+totNums[len(totNums)/2]) / 2
@@ -105,7 +105,7 @@ func (a arr) getVal(i int) int {
 	return a[i]
 }
 
-func findBoundary(nums1 []int, nums2 []int, totCnt int) (leftMax, rightMin side) {
+func findBoundary(nums1, nums2 []int, totCnt int) (leftMax, rightMin side) {
 	// range of binary search target in nums1
 	low, high := 0, len(nums1)
 
@@ -143,7 +143,7 @@ func findBoundary(nums1 []int, nums2 []int, totCnt int) (leftMax, rightMin side)
 	return
 }
 
-func findMedianSortedArraysWithBinSearch(nums1 []int, nums2 []int) float64 {
+func findMedianSortedArraysWithBinSearch(nums1, nums2 []int) float64 {
 	if len(nums1) > len(nums2) {
 		nums1, nums2 = nums2, nums1
 	}
@@ -160,7 +160,7 @@ func findMedianSortedArraysWithBinSearch(nums1 []int, nums2 []int) float64 {
 	}
 }
 
-func findMedianSortedArraysWithBinSearchSolution(nums1 []int, nums2 []int) float64 {
+func findMedianSortedArraysWithBinSearchSolution(nums1, nums2 []int) float64 {
 	if len(nums1) > len(nums2) {
 		nums1, nums2 = nums2, nums1
 	}

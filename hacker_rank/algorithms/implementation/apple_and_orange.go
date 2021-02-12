@@ -2,7 +2,7 @@ package implementation
 
 import "fmt"
 
-func countApplesAndOranges(s int32, t int32, a int32, b int32, apples []int32, oranges []int32) {
+func countApplesAndOranges(s, t, a, b int32, apples, oranges []int32) {
 	containFrom := func(origin int32) func(int32) bool {
 		return func(distance int32) bool {
 			return (s <= origin+distance) && (origin+distance <= t)

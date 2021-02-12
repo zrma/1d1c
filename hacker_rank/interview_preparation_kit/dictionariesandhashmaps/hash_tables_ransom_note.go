@@ -2,12 +2,13 @@ package dictionariesandhashmaps
 
 import (
 	"fmt"
-	"github.com/zrma/going/utils/str"
 	"sort"
 	"strings"
+
+	"github.com/zrma/going/utils/str"
 )
 
-func checkMagazine(magazine []string, note []string) {
+func checkMagazine(magazine, note []string) {
 	sort.Sort(str.SortAdapter(magazine))
 	sort.Sort(str.SortAdapter(note))
 

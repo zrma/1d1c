@@ -4,7 +4,7 @@ import (
 	"github.com/zrma/1d1go/leetcode/problems/common"
 )
 
-func mergeTwoLists(l1 *common.ListNode, l2 *common.ListNode) *common.ListNode {
+func mergeTwoLists(l1, l2 *common.ListNode) *common.ListNode {
 	res := &common.ListNode{}
 	cur := res
 	for {
