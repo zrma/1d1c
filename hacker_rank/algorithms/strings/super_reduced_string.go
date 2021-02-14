@@ -3,7 +3,7 @@ package strings
 func superReducedString(s string) string {
 	const emptyString = "Empty String"
 
-	if len(s) == 0 {
+	if s == "" {
 		return emptyString
 	}
 

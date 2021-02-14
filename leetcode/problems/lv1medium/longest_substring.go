@@ -3,7 +3,7 @@ package lv1medium
 import "math"
 
 func lengthOfLongestSubstring(s string) int {
-	if len(s) == 0 {
+	if s == "" {
 		return 0
 	}
 

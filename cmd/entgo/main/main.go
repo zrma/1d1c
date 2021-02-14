@@ -214,7 +214,7 @@ func createGraph(ctx context.Context, client *ent.Client) error {
 		Create().
 		SetModel("Tesla").
 		SetRegisteredAt(time.Now()). // ignore the time in the graph.
-		SetOwner(a8m). // attach this graph to Ariel.
+		SetOwner(a8m).               // attach this graph to Ariel.
 		Save(ctx)
 	if err != nil {
 		return err
@@ -223,7 +223,7 @@ func createGraph(ctx context.Context, client *ent.Client) error {
 		Create().
 		SetModel("Mazda").
 		SetRegisteredAt(time.Now()). // ignore the time in the graph.
-		SetOwner(a8m). // attach this graph to Ariel.
+		SetOwner(a8m).               // attach this graph to Ariel.
 		Save(ctx)
 	if err != nil {
 		return err
@@ -232,7 +232,7 @@ func createGraph(ctx context.Context, client *ent.Client) error {
 		Create().
 		SetModel("Ford").
 		SetRegisteredAt(time.Now()). // ignore the time in the graph.
-		SetOwner(john). // attach this graph to Neta.
+		SetOwner(john).              // attach this graph to Neta.
 		Save(ctx)
 	if err != nil {
 		return err
@@ -262,8 +262,8 @@ func queryGithub(ctx context.Context, client *ent.Client) error {
 	cars, err := client.Group.
 		Query().
 		Where(group.Name("GitHub")). // (Group(Name=GitHub),)
-		QueryUsers(). // (User(Name=Ariel, Age=30),)
-		QueryCars(). // (Car(Model=Tesla, RegisteredAt=<Time>), Car(Model=Mazda, RegisteredAt=<Time>),)
+		QueryUsers().                // (User(Name=Ariel, Age=30),)
+		QueryCars().                 // (Car(Model=Tesla, RegisteredAt=<Time>), Car(Model=Mazda, RegisteredAt=<Time>),)
 		All(ctx)
 	if err != nil {
 		return fmt.Errorf("failed getting cars: %v", err)
@@ -283,10 +283,10 @@ func queryArielCars(ctx context.Context, client *ent.Client) error {
 		).
 		OnlyX(ctx)
 	cars, err := a8m. // Get the groups, that a8m is connected to:
-		QueryGroups(). // (Group(Name=GitHub), Group(Name=GitLab),)
-		QueryUsers(). // (User(Name=Ariel, Age=30), User(Name=Neta, Age=28),)
-		QueryCars(). //
-		Where( //
+				QueryGroups(). // (Group(Name=GitHub), Group(Name=GitLab),)
+				QueryUsers().  // (User(Name=Ariel, Age=30), User(Name=Neta, Age=28),)
+				QueryCars().   //
+				Where(         //
 			car.Not( //  Get John and Ariel cars, but filter out
 				car.ModelEQ("Mazda"), //  those who named "Mazda"
 			), //
