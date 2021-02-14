@@ -19,6 +19,12 @@ const (
 )
 
 func main() {
+	if err := run(); err != nil {
+		log.Fatalln(err)
+	}
+}
+
+func run() error {
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(
 		address,
@@ -31,9 +37,12 @@ func main() {
 		}),
 	)
 	if err != nil {
-		log.Fatalf("grpc connection failed: %v", err)
+		return fmt.Errorf("grpc connection failed: %v", err)
 	}
-	defer conn.Close()
+	defer func() {
+		_ = conn.Close()
+	}()
+
 	c := pb.NewGreeterClient(conn)
 
 	// Contact the server and print out its response.
@@ -43,15 +52,16 @@ func main() {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
 	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: name})
 	if err != nil {
-		log.Fatalf("could not greet: %v", err)
+		return fmt.Errorf("could not greet: %v", err)
 	}
 	log.Printf("Greeting: %s", r.GetMessage())
 
 	r, err = c.SayHelloAgain(ctx, &pb.HelloRequest{Name: name})
 	if err != nil {
-		log.Fatalf("could not greet again: %v", err)
+		return fmt.Errorf("could not greet again: %v", err)
 	}
 	log.Printf("Greeting again: %s", r.Message)
 
@@ -80,4 +90,5 @@ func main() {
 
 	log.Println("end")
 	time.Sleep(time.Second)
+	return nil
 }

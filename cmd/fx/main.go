@@ -58,6 +58,12 @@ func Register(mux *http.ServeMux, h http.Handler) {
 }
 
 func main() {
+	if err := run(); err != nil {
+		log.Fatalln(err)
+	}
+}
+
+func run() error {
 	app := fx.New(
 		fx.Provide(
 			NewLogger,
@@ -70,14 +76,13 @@ func main() {
 	startCtx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 	if err := app.Start(startCtx); err != nil {
-		log.Fatal(err)
+		return err
 	}
 
 	_, _ = http.Get("http://localhost:12345/")
 
 	stopCtx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
-	if err := app.Stop(stopCtx); err != nil {
-		log.Fatal(err)
-	}
+
+	return app.Stop(stopCtx)
 }

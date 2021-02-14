@@ -17,30 +17,38 @@ import (
 )
 
 func main() {
+	if err := run(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func run() error {
 	client, err := ent.Open("sqlite3", "file:ent?mode=memory&cache=shared&_fk=1")
 	if err != nil {
-		log.Fatalf("failed opening connection to sqlite: %v", err)
+		return fmt.Errorf("failed opening connection to sqlite: %v", err)
 	}
-	defer client.Close()
+	defer func() {
+		_ = client.Close()
+	}()
 
 	ctx := context.Background()
 	// run the auto migration tool.
 	if err := client.Schema.Create(ctx); err != nil {
-		log.Fatalf("failed creating schema resources: %v", err)
+		return fmt.Errorf("failed creating schema resources: %v", err)
 	}
 
 	u1, err := createUser(ctx, client)
 	if err != nil {
-		log.Fatalf("failed creating user: %v", err)
+		return fmt.Errorf("failed creating user: %v", err)
 	}
 
 	u2, err := queryUser(ctx, client)
 	if err != nil {
-		log.Fatalf("failed querying user: %v", err)
+		return fmt.Errorf("failed querying user: %v", err)
 	}
 
 	if diff := deep.Equal(u1, u2); diff != nil {
-		log.Fatalln(diff)
+		return fmt.Errorf("+%v", diff)
 	}
 
 	log.Println("u1:", u1)
@@ -48,39 +56,40 @@ func main() {
 
 	u3, err := createCars(ctx, client)
 	if err != nil {
-		log.Fatalf("failed creating cars: %v", err)
+		return fmt.Errorf("failed creating cars: %v", err)
 	}
 
 	if diff := deep.Equal(u1, u3); diff != nil {
-		log.Fatalln(diff)
+		return fmt.Errorf("%+v", diff)
 	}
 	log.Println("u3:", u3)
 
 	if err := queryCars(ctx, u1); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
 	if err := queryCarUsers(ctx, u1); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
 	if err := createGraph(ctx, client); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
 	if err := queryGithub(ctx, client); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
 	if err := queryArielCars(ctx, client); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
 	if err := queryGroupWithUsers(ctx, client); err != nil {
-		log.Fatalln(err)
+		return err
 	}
 
 	log.Println("finished")
+	return nil
 }
 
 func createUser(ctx context.Context, client *ent.Client) (*ent.User, error) {
@@ -205,7 +214,7 @@ func createGraph(ctx context.Context, client *ent.Client) error {
 		Create().
 		SetModel("Tesla").
 		SetRegisteredAt(time.Now()). // ignore the time in the graph.
-		SetOwner(a8m).               // attach this graph to Ariel.
+		SetOwner(a8m). // attach this graph to Ariel.
 		Save(ctx)
 	if err != nil {
 		return err
@@ -214,7 +223,7 @@ func createGraph(ctx context.Context, client *ent.Client) error {
 		Create().
 		SetModel("Mazda").
 		SetRegisteredAt(time.Now()). // ignore the time in the graph.
-		SetOwner(a8m).               // attach this graph to Ariel.
+		SetOwner(a8m). // attach this graph to Ariel.
 		Save(ctx)
 	if err != nil {
 		return err
@@ -223,7 +232,7 @@ func createGraph(ctx context.Context, client *ent.Client) error {
 		Create().
 		SetModel("Ford").
 		SetRegisteredAt(time.Now()). // ignore the time in the graph.
-		SetOwner(john).              // attach this graph to Neta.
+		SetOwner(john). // attach this graph to Neta.
 		Save(ctx)
 	if err != nil {
 		return err
@@ -253,8 +262,8 @@ func queryGithub(ctx context.Context, client *ent.Client) error {
 	cars, err := client.Group.
 		Query().
 		Where(group.Name("GitHub")). // (Group(Name=GitHub),)
-		QueryUsers().                // (User(Name=Ariel, Age=30),)
-		QueryCars().                 // (Car(Model=Tesla, RegisteredAt=<Time>), Car(Model=Mazda, RegisteredAt=<Time>),)
+		QueryUsers(). // (User(Name=Ariel, Age=30),)
+		QueryCars(). // (Car(Model=Tesla, RegisteredAt=<Time>), Car(Model=Mazda, RegisteredAt=<Time>),)
 		All(ctx)
 	if err != nil {
 		return fmt.Errorf("failed getting cars: %v", err)
@@ -274,10 +283,10 @@ func queryArielCars(ctx context.Context, client *ent.Client) error {
 		).
 		OnlyX(ctx)
 	cars, err := a8m. // Get the groups, that a8m is connected to:
-				QueryGroups(). // (Group(Name=GitHub), Group(Name=GitLab),)
-				QueryUsers().  // (User(Name=Ariel, Age=30), User(Name=Neta, Age=28),)
-				QueryCars().   //
-				Where(         //
+		QueryGroups(). // (Group(Name=GitHub), Group(Name=GitLab),)
+		QueryUsers(). // (User(Name=Ariel, Age=30), User(Name=Neta, Age=28),)
+		QueryCars(). //
+		Where( //
 			car.Not( //  Get John and Ariel cars, but filter out
 				car.ModelEQ("Mazda"), //  those who named "Mazda"
 			), //
