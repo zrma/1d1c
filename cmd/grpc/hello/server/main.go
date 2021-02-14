@@ -13,11 +13,11 @@ import (
 )
 
 const (
-	port = ":12345"
+	endpoint = "127.0.0.1:12345"
 )
 
 func main() {
-	listener, err := net.Listen("tcp", port)
+	listener, err := net.Listen("tcp", endpoint)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
