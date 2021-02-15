@@ -7,6 +7,9 @@
 [![Codecov Status](https://codecov.io/gh/zrma/1d1go/branch/master/graphs/badge.svg)](https://codecov.io/gh/zrma/1d1go)
 [![Gitpod ready-to-code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/zrma/1d1go)
 
+[![DeepSource](https://deepsource.io/gh/zrma/1d1go.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/zrma/1d1go/?ref=repository-badge)
+[![DeepSource](https://deepsource.io/gh/zrma/1d1go.svg/?label=resolved+issues&show_trend=true)](https://deepsource.io/gh/zrma/1d1go/?ref=repository-badge)
+
 ----
 
 1 day 1 coding with Golang
