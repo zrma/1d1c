@@ -9,13 +9,10 @@ RUN apt-get update && apt-get install -y \
         ca-certificates \
         libgl1-mesa-dev \
         xorg-dev \
-        gcc -y \
+        gcc \
+        docker \
+        docker-compose -y \
     && apt-get clean && rm -rf /var/cache/apt/* && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
-
-
-USER gitpod
-# Apply user-specific settings
-ENV GO111MODULE on
 
 # Give back control
 USER root
