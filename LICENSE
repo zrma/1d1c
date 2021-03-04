@@ -19,3 +19,45 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+--------------------------------------------------------------------------------
+
+gRPC-Go
+https://grpc.io/
+Apache License 2.0	
+
+gomock
+https://github.com/golang/mock
+Apache License 2.0	
+
+Go support for Protocol Buffers
+https://developers.google.com/protocol-buffers
+BSD 3-Clause "New" or "Revised" License	
+
+protobuf-go
+https://developers.google.com/protocol-buffers
+BSD 3-Clause "New" or "Revised" License	
+
+Eclipse Paho MQTT Go client
+https://github.com/eclipse/paho.mqtt.golang
+Eclipse Public License 1.0
+
+Deep Variable Equality for Humans
+https://github.com/go-test/deep
+MIT License	
+
+Ginkgo
+https://github.com/onsi/ginkgo
+MIT License	
+
+Gomega
+https://github.com/onsi/gomega
+MIT License	
+
+Testify
+https://github.com/stretchr/testify
+MIT License	
+
+go-sqlite3
+https://github.com/mattn/go-sqlite3
+MIT License	
