@@ -1,14 +1,22 @@
 package redis
 
 type Redis interface {
-	HGet(k string, f string) string
-	HSet(k string, fv ...string)
+	HGet(k string, v string) string
+	HSet(k string, kv ...string)
 }
 
-func HGet(redis Redis, hash, key string) string {
-	return redis.HGet(hash, key)
+func NewClient(client Redis) Redis {
+	return &redisClient{client: client}
 }
 
-func HSet(redis Redis, hash string, fv ...string) {
-	redis.HSet(hash, fv...)
+type redisClient struct {
+	client Redis
+}
+
+func (r redisClient) HGet(hash string, key string) string {
+	return r.client.HGet(hash, key)
+}
+
+func (r redisClient) HSet(hash string, kv ...string) {
+	r.client.HSet(hash, kv...)
 }

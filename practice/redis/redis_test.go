@@ -1,33 +1,30 @@
 package redis
 
 import (
+	"testing"
+
 	"github.com/alicebob/miniredis/v2"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("redis 테스트", func() {
-	var mockRedis *miniredis.Miniredis
+func TestRedisHGetHSet(t *testing.T) {
+	mock, err := miniredis.Run()
+	assert.NoError(t, err)
+	assert.NotNil(t, mock)
 
-	BeforeEach(func() {
-		var err error
-		mockRedis, err = miniredis.Run()
-		Expect(err).ShouldNot(HaveOccurred())
+	t.Cleanup(func() {
+		mock.Close()
 	})
 
-	AfterEach(func() {
-		mockRedis.Close()
-	})
+	const (
+		hash = "hash123"
+		key  = "key1"
+		want = "val2"
+	)
 
-	It("HGet, HSet", func() {
-		const (
-			hash = "hash123"
-			key  = "key1"
-			val  = "val2"
-		)
+	client := NewClient(mock)
+	client.HSet(hash, key, want)
 
-		HSet(mockRedis, hash, key, val)
-		actual := HGet(mockRedis, hash, key)
-		Expect(actual).Should(Equal(val))
-	})
-})
+	got := client.HGet(hash, key)
+	assert.Equal(t, want, got)
+}
