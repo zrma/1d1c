@@ -1,16 +1,17 @@
 package implementation
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/between-two-sets/problem", func() {
-	It("문제를 풀었다.", func() {
-		expected := getTotalX([]int32{2, 4}, []int32{16, 32, 96})
-		Expect(expected).Should(BeNumerically("==", 3))
+func TestGetTotalX(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/between-two-sets/problem")
 
-		expected = getTotalX([]int32{3, 4}, []int32{24, 48})
-		Expect(expected).Should(BeNumerically("==", 2))
-	})
-})
+	got := getTotalX([]int32{2, 4}, []int32{16, 32, 96})
+	assert.EqualValues(t, 3, got)
+
+	got = getTotalX([]int32{3, 4}, []int32{24, 48})
+	assert.EqualValues(t, 2, got)
+}

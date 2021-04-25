@@ -5,18 +5,20 @@ type Redis interface {
 	HSet(k string, kv ...string)
 }
 
-func NewClient(client Redis) Redis {
-	return &redisClient{client: client}
+func NewClient(client Redis) *impl {
+	return &impl{client: client}
 }
 
-type redisClient struct {
+type impl struct {
 	client Redis
 }
 
-func (r redisClient) HGet(hash string, key string) string {
-	return r.client.HGet(hash, key)
+const hash = "this_is_sparta"
+
+func (i *impl) Save(k, v string) {
+	i.client.HSet(hash, k, v)
 }
 
-func (r redisClient) HSet(hash string, kv ...string) {
-	r.client.HSet(hash, kv...)
+func (i *impl) Load(k string) string {
+	return i.client.HGet(hash, k)
 }

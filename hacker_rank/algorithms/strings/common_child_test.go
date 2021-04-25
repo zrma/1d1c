@@ -1,22 +1,26 @@
 package strings
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-//noinspection SpellCheckingInspection
-var _ = Describe("https://www.hackerrank.com/challenges/common-child/problem", func() {
-	It("문제를 풀었다", func() {
-		actual := commonChild("ABCD", "ABDC")
-		Expect(actual).Should(BeNumerically("==", 3))
-		actual = commonChild("HARRY", "SALLY")
-		Expect(actual).Should(BeNumerically("==", 2))
-		actual = commonChild("AA", "BB")
-		Expect(actual).Should(BeNumerically("==", 0))
-		actual = commonChild("SHINCHAN", "NOHARAAA")
-		Expect(actual).Should(BeNumerically("==", 3))
-		actual = commonChild("ABCDEF", "FBDAMN")
-		Expect(actual).Should(BeNumerically("==", 2))
-	})
-})
+func TestCommonChild(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/common-child/problem")
+
+	got := commonChild("ABCD", "ABDC")
+	assert.EqualValues(t, 3, got)
+
+	got = commonChild("HARRY", "SALLY")
+	assert.EqualValues(t, 2, got)
+
+	got = commonChild("AA", "BB")
+	assert.EqualValues(t, 0, got)
+
+	got = commonChild("SHINCHAN", "NOHARAAA")
+	assert.EqualValues(t, 3, got)
+
+	got = commonChild("ABCDEF", "FBDAMN")
+	assert.EqualValues(t, 2, got)
+}

@@ -5,56 +5,76 @@ import (
 	"encoding/csv"
 	"os"
 	"strconv"
+	"testing"
+	"time"
 
-	. "github.com/onsi/ginkgo/extensions/table"
-
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/candies/problem", func() {
-	type testData struct {
-		arr      []int32
-		expected int64
-	}
+func TestCanDies(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/candies/problem")
 
-	DescribeTable("문제를 풀었다",
-		func(data testData) {
-
-			actual := candies(int32(len(data.arr)), data.arr)
-			Expect(actual).Should(BeNumerically("==", data.expected))
+	for _, tc := range []struct {
+		description string
+		given       []int32
+		want        int64
+	}{
+		{
+			description: "test_0",
+			given:       []int32{1, 2, 2},
+			want:        4,
 		},
-		Entry("test_0", testData{[]int32{1, 2, 2}, 4}),
-		Entry("test_1", testData{[]int32{2, 4, 2, 6, 1, 7, 8, 9, 2, 1}, 19}),
-		Entry("test_2", testData{[]int32{2, 4, 3, 5, 2, 6, 4, 5}, 12}),
-		Entry("test_3", testData{[]int32{1, 3, 3, 3, 2, 1}, 10}),
-		Entry("test_4", testData{[]int32{1, 3, 3, 3, 2, 2, 2, 3, 3, 3, 1}, 15}),
-	)
+		{
+			description: "test_1",
+			given:       []int32{2, 4, 2, 6, 1, 7, 8, 9, 2, 1},
+			want:        19,
+		},
+		{
+			description: "test_2",
+			given:       []int32{2, 4, 3, 5, 2, 6, 4, 5},
+			want:        12,
+		},
+		{
+			description: "test_3",
+			given:       []int32{1, 3, 3, 3, 2, 1},
+			want:        10,
+		},
+		{
+			description: "test_4",
+			given:       []int32{1, 3, 3, 3, 2, 2, 2, 3, 3, 3, 1},
+			want:        15,
+		},
+	} {
+		got := candies(int32(len(tc.given)), tc.given)
+		assert.Equal(t, tc.want, got)
+	}
+}
 
-	Measure("성능 테스트", func(b Benchmarker) {
-		runtime := b.Time("long array", func() {
-			file, err := os.Open("./test_data/candies.csv")
-			Expect(err).ShouldNot(HaveOccurred())
-			defer file.Close()
+func TestCandiesPerformance(t *testing.T) {
+	assert.Eventually(t, func() bool {
+		file, err := os.Open("./test_data/candies.csv")
+		assert.NoError(t, err)
+		defer func() {
+			_ = file.Close()
+		}()
 
-			r := csv.NewReader(bufio.NewReader(file))
-			rows, err := r.ReadAll()
-			Expect(err).ShouldNot(HaveOccurred())
+		r := csv.NewReader(bufio.NewReader(file))
+		rows, err := r.ReadAll()
+		assert.NoError(t, err)
 
-			var arr []int32
-			for _, col := range rows {
-				num, err := strconv.ParseInt(col[0], 10, 32)
-				Expect(err).ShouldNot(HaveOccurred())
+		var given []int32
+		for _, col := range rows {
+			num, err := strconv.ParseInt(col[0], 10, 32)
+			assert.NoError(t, err)
 
-				arr = append(arr, int32(num))
-			}
+			given = append(given, int32(num))
+		}
 
-			Expect(arr).Should(HaveLen(100000))
+		assert.Len(t, given, 100000)
 
-			actual := candies(int32(len(arr)), arr)
-			Expect(actual).Should(BeNumerically("==", 160929))
-		})
+		got := candies(int32(len(given)), given)
 
-		Expect(runtime.Seconds()).Should(BeNumerically("<", 10), "시간 초과")
-	}, 3)
-})
+		const want = 160929
+		return assert.EqualValues(t, want, got)
+	}, time.Second, time.Millisecond*100, "시간 초과")
+}

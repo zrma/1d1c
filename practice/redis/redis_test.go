@@ -17,14 +17,13 @@ func TestRedisHGetHSet(t *testing.T) {
 	})
 
 	const (
-		hash = "hash123"
 		key  = "key1"
 		want = "val2"
 	)
 
 	client := NewClient(mock)
-	client.HSet(hash, key, want)
+	client.Save(key, want)
 
-	got := client.HGet(hash, key)
+	got := client.Load(key)
 	assert.Equal(t, want, got)
 }

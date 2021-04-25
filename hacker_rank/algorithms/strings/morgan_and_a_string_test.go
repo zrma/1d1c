@@ -1,27 +1,28 @@
 package strings
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/ginkgo/extensions/table"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/morgan-and-a-string/problem", func() {
-	type testData struct {
-		jack, daniel string
-		expected     string
-	}
+func TestMorganAndString(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/morgan-and-a-string/problem")
 
-	//noinspection SpellCheckingInspection
-	DescribeTable("문제를 풀었다",
-		func(data testData) {
-			actual := morganAndString(data.jack, data.daniel)
-			Expect(actual).Should(Equal(data.expected))
-		},
-		Entry("test_0", testData{"ACA", "BCF", "ABCACF"}),
-		Entry("test_1", testData{"JACK", "DANIEL", "DAJACKNIEL"}),
-		Entry("test_2", testData{"ABACABA", "ABACABA", "AABABACABACABA"}),
-		Entry("test_3", testData{"AAAAB", "AAAAC", "AAAAAAAABC"}),
-		Entry("test_3", testData{"AAAAC", "AAAAB", "AAAAAAAABC"}),
-	)
-})
+	for i, tc := range []struct {
+		jack, daniel string
+		want         string
+	}{
+		{"ACA", "BCF", "ABCACF"},
+		{"JACK", "DANIEL", "DAJACKNIEL"},
+		{"ABACABA", "ABACABA", "AABABACABACABA"},
+		{"AAAAB", "AAAAC", "AAAAAAAABC"},
+		{"AAAAC", "AAAAB", "AAAAAAAABC"},
+	} {
+		t.Run(fmt.Sprintf("%d - %s %s", i, tc.jack, tc.daniel), func(t *testing.T) {
+			got := morganAndString(tc.jack, tc.daniel)
+			assert.Equal(t, tc.want, got)
+		})
+	}
+}
