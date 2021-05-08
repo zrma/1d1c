@@ -21,7 +21,7 @@ func TestRedisHGetHSet(t *testing.T) {
 		want = "val2"
 	)
 
-	client := NewClient(mock)
+	client := New(mock)
 	client.Save(key, want)
 
 	got := client.Load(key)

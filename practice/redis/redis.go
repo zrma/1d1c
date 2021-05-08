@@ -5,7 +5,12 @@ type Redis interface {
 	HSet(k string, kv ...string)
 }
 
-func NewClient(client Redis) *impl {
+type Client interface {
+	Save(k, v string)
+	Load(k string) string
+}
+
+func New(client Redis) Client {
 	return &impl{client: client}
 }
 
