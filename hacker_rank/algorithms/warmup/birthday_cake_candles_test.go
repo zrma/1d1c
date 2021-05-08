@@ -1,15 +1,16 @@
 package warmup
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/birthday-cake-candles/problem", func() {
-	arr := []int32{3, 2, 1, 3}
+func TestBirthdayCakeCandles(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/birthday-cake-candles/problem")
 
-	It("문제를 풀었다", func() {
-		actual := birthdayCakeCandles(arr)
-		Expect(actual).Should(BeNumerically("==", 2))
-	})
-})
+	given := []int32{3, 2, 1, 3}
+	got := birthdayCakeCandles(given)
+	const want = 2
+	assert.EqualValues(t, want, got)
+}

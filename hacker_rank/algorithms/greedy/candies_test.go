@@ -5,6 +5,7 @@ import (
 	"encoding/csv"
 	"os"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -64,7 +65,7 @@ func TestCandiesPerformance(t *testing.T) {
 
 		var given []int32
 		for _, col := range rows {
-			num, err := strconv.ParseInt(col[0], 10, 32)
+			num, err := strconv.ParseInt(strings.TrimSpace(col[0]), 10, 32)
 			assert.NoError(t, err)
 
 			given = append(given, int32(num))

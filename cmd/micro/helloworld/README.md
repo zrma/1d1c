@@ -57,11 +57,13 @@ make build
 ```
 
 Run the service
+
 ```
 ./helloworld
 ```
 
 Build a docker image
+
 ```
 make docker
 ```

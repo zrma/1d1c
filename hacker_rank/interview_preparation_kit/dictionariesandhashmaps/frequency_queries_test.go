@@ -5,6 +5,7 @@ import (
 	"encoding/csv"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/go-test/deep"
 	. "github.com/onsi/ginkgo"
@@ -89,7 +90,7 @@ func readInputCSV(fileName string) ([][]int32, error) {
 	for _, row := range rows {
 		var cols []int32
 		for _, col := range row {
-			num, err := strconv.ParseInt(col, 10, 32)
+			num, err := strconv.ParseInt(strings.TrimSpace(col), 10, 32)
 			if err != nil {
 				return nil, err
 			}
@@ -115,7 +116,7 @@ func readResultCSV(fileName string) ([]int32, error) {
 
 	var arr []int32
 	for _, row := range rows {
-		num, err := strconv.ParseInt(row[0], 10, 32)
+		num, err := strconv.ParseInt(strings.TrimSpace(row[0]), 10, 32)
 		if err != nil {
 			return nil, err
 		}

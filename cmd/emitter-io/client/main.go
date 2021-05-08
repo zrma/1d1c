@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/emitter-io/go"
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/emitter-io/go"
 )
 
 func main() {

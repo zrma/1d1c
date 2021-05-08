@@ -5,6 +5,7 @@ import (
 	"encoding/csv"
 	"os"
 	"strconv"
+	"strings"
 
 	. "github.com/onsi/ginkgo/extensions/table"
 
@@ -44,12 +45,12 @@ var _ = Describe("https://www.hackerrank.com/challenges/count-triplets-1/problem
 
 			row := rows[0]
 			var ratio int64
-			ratio, err = strconv.ParseInt(row[0], 10, 64)
+			ratio, err = strconv.ParseInt(strings.TrimSpace(row[0]), 10, 64)
 			Expect(err).ShouldNot(HaveOccurred())
 
 			var arr []int64
 			for _, col := range row[1:] {
-				num, err := strconv.ParseInt(col, 10, 64)
+				num, err := strconv.ParseInt(strings.TrimSpace(col), 10, 64)
 				Expect(err).ShouldNot(HaveOccurred())
 
 				arr = append(arr, num)

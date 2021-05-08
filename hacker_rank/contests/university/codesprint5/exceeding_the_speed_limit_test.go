@@ -1,22 +1,28 @@
 package codesprint5
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
-var _ = Describe("https://www.hackerrank.com/contests/university-codesprint-5/challenges/exceeding-speed-limit", func() {
-	It("문제를 풀었다", func() {
-		err := utils.PrintTest(func() {
-			exceedingTheSpeedLimit(100)
-			exceedingTheSpeedLimit(140)
-			exceedingTheSpeedLimit(85)
-		}, []string{
-			"3000 Warning",
-			"25000 License removed",
-			"0 No punishment",
+func TestExceedingTheSpeedLimit(t *testing.T) {
+	for _, tt := range []struct {
+		given int32
+		want  string
+	}{
+		{100, "3000 Warning"},
+		{140, "25000 License removed"},
+		{85, "0 No punishment"},
+	} {
+		t.Run(fmt.Sprintf("%d", tt.given), func(t *testing.T) {
+			want := []string{tt.want}
+			err := utils.PrintTest(func() {
+				exceedingTheSpeedLimit(tt.given)
+			}, want)
+			assert.NoError(t, err)
 		})
-		Expect(err).ShouldNot(HaveOccurred())
-	})
-})
+	}
+}

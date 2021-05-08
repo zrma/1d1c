@@ -7,9 +7,19 @@ import (
 )
 
 func TestStringConstruction(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/string-construction/problem", func(t *testing.T) {
-		assert.EqualValues(t, 4, stringConstruction("abcd"))
-		assert.EqualValues(t, 2, stringConstruction("abab"))
-		assert.EqualValues(t, 3, stringConstruction("abcabc"))
-	})
+	t.Log("https://www.hackerrank.com/challenges/string-construction/problem")
+
+	for _, tt := range []struct {
+		given string
+		want  int32
+	}{
+		{"abcd", 4},
+		{"abab", 2},
+		{"abcabc", 3},
+	} {
+		t.Run(tt.given, func(t *testing.T) {
+			got := stringConstruction(tt.given)
+			assert.Equal(t, tt.want, got)
+		})
+	}
 }

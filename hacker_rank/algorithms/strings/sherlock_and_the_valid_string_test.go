@@ -7,14 +7,24 @@ import (
 )
 
 func TestIsValid(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/sherlock-and-valid-string/problem", func(t *testing.T) {
-		assert.Equal(t, "NO", isValid("aabbcd"))
-		assert.Equal(t, "NO", isValid("aabbccddeefghi"))
-		assert.Equal(t, "NO", isValid("abbccc"))
-		assert.Equal(t, "NO", isValid("aaaabbcc"))
-		assert.Equal(t, "NO", isValid("aaaaabc"))
-		assert.Equal(t, "YES", isValid("aabbc"))
-		assert.Equal(t, "YES", isValid("aabbcc"))
-		assert.Equal(t, "YES", isValid("abcdefghhgfedecba"))
-	})
+	t.Log("https://www.hackerrank.com/challenges/sherlock-and-valid-string/problem")
+
+	for _, tt := range []struct {
+		given string
+		want  string
+	}{
+		{"aabbcd", "NO"},
+		{"aabbccddeefghi", "NO"},
+		{"abbccc", "NO"},
+		{"aaaabbcc", "NO"},
+		{"aaaaabc", "NO"},
+		{"aabbc", "YES"},
+		{"aabbcc", "YES"},
+		{"abcdefghhgfedecba", "YES"},
+	} {
+		t.Run(tt.given, func(t *testing.T) {
+			got := isValid(tt.given)
+			assert.Equal(t, tt.want, got)
+		})
+	}
 }

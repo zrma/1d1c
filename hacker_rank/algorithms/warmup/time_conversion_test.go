@@ -1,20 +1,26 @@
 package warmup
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/time-conversion/problem", func() {
-	It("문제를 풀었다", func() {
-		s := "07:05:45PM"
-		actual := timeConversion(s)
-		Expect(actual).Should(Equal("19:05:45"))
-	})
+func TestTimeConversion(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/time-conversion/problem")
 
-	It("예외에도 정상적으로 동작한다.", func() {
-		s := "AB:12:34AM"
-		actual := timeConversion(s)
-		Expect(actual).Should(Equal("00:12:34"))
-	})
-})
+	for _, tt := range []struct {
+		given string
+		want  string
+	}{
+		{"07:05:45PM", "19:05:45"},
+		{"AB:12:34AM", "00:12:34"},
+	} {
+		t.Run(tt.given, func(t *testing.T) {
+			assert.NotPanics(t, func() {
+				got := timeConversion(tt.given)
+				assert.Equal(t, tt.want, got)
+			})
+		})
+	}
+}

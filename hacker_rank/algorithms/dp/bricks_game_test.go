@@ -5,6 +5,7 @@ import (
 	"encoding/csv"
 	"os"
 	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -75,7 +76,7 @@ func TestBricksGamePerformance(t *testing.T) {
 		for _, row := range rows {
 			var cols []int32
 			for _, col := range row {
-				num, err := strconv.ParseInt(col, 10, 32)
+				num, err := strconv.ParseInt(strings.TrimSpace(col), 10, 32)
 				if err != nil {
 					return nil, err
 

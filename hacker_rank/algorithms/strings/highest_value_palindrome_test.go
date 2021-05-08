@@ -10,7 +10,7 @@ import (
 func TestHighestValuePalindrom(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/richie-rich/problem")
 
-	for i, tc := range []struct {
+	for i, tt := range []struct {
 		s    string
 		n, k int32
 		want string
@@ -34,8 +34,8 @@ func TestHighestValuePalindrom(t *testing.T) {
 		{extremelyLongS, 77543, 58343, extremelyLongWant},
 	} {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
-			got := highestValuePalindrome(tc.s, tc.n, tc.k)
-			assert.Equal(t, tc.want, got, tc.s)
+			got := highestValuePalindrome(tt.s, tt.n, tt.k)
+			assert.Equal(t, tt.want, got, tt.s)
 		})
 	}
 }

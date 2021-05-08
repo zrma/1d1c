@@ -1,23 +1,24 @@
 package warmup
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/staircase/problem", func() {
-	It("문제를 풀었다", func() {
-		err := utils.PrintTest(func() {
-			staircase(6)
-		}, []string{
-			"     #",
-			"    ##",
-			"   ###",
-			"  ####",
-			" #####",
-			"######",
-		})
-		Expect(err).ShouldNot(HaveOccurred())
+func TestStaircase(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/staircase/problem")
+
+	err := utils.PrintTest(func() {
+		staircase(6)
+	}, []string{
+		"     #",
+		"    ##",
+		"   ###",
+		"  ####",
+		" #####",
+		"######",
 	})
-})
+	assert.NoError(t, err)
+}

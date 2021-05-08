@@ -10,7 +10,7 @@ import (
 func TestMorganAndString(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/morgan-and-a-string/problem")
 
-	for i, tc := range []struct {
+	for i, tt := range []struct {
 		jack, daniel string
 		want         string
 	}{
@@ -20,9 +20,9 @@ func TestMorganAndString(t *testing.T) {
 		{"AAAAB", "AAAAC", "AAAAAAAABC"},
 		{"AAAAC", "AAAAB", "AAAAAAAABC"},
 	} {
-		t.Run(fmt.Sprintf("%d - %s %s", i, tc.jack, tc.daniel), func(t *testing.T) {
-			got := morganAndString(tc.jack, tc.daniel)
-			assert.Equal(t, tc.want, got)
+		t.Run(fmt.Sprintf("%d - %s %s", i, tt.jack, tt.daniel), func(t *testing.T) {
+			got := morganAndString(tt.jack, tt.daniel)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }

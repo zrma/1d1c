@@ -1,14 +1,16 @@
 package arrays
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/arrays-ds/problem", func() {
-	It("문제를 풀었다", func() {
-		arr := []int32{1, 4, 3, 2}
-		actual := reverseArray(arr)
-		Expect(actual).Should(Equal([]int32{2, 3, 4, 1}))
-	})
-})
+func TestReverseArray(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/arrays-ds/problem")
+
+	given := []int32{1, 4, 3, 2}
+	got := reverseArray(given)
+	want := []int32{2, 3, 4, 1}
+	assert.Equal(t, want, got)
+}

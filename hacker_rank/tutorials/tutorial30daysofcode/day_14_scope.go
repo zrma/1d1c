@@ -1,8 +1,9 @@
 package tutorial30daysofcode
 
 import (
-	"github.com/zrma/going/utils/integer"
 	"math"
+
+	"github.com/zrma/going/utils/integer"
 )
 
 type difference struct {

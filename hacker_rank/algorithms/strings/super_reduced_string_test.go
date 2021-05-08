@@ -7,12 +7,22 @@ import (
 )
 
 func TestSuperReducedString(t *testing.T) {
-	t.Run("https://www.hackerrank.com/challenges/reduced-string/problem", func(t *testing.T) {
-		assert.Equal(t, "abd", superReducedString("aaabccddd"))
-		assert.Equal(t, "Empty String", superReducedString("aa"))
-		assert.Equal(t, "Empty String", superReducedString("baab"))
-		assert.Equal(t, "abab", superReducedString("abab"))
-		assert.Equal(t, "Empty String", superReducedString("abccba"))
-		assert.Equal(t, "Empty String", superReducedString(""))
-	})
+	t.Log("https://www.hackerrank.com/challenges/reduced-string/problem")
+
+	for _, tt := range []struct {
+		given string
+		want  string
+	}{
+		{"aaabccddd", "abd"},
+		{"aa", "Empty String"},
+		{"baab", "Empty String"},
+		{"abab", "abab"},
+		{"abccba", "Empty String"},
+		{"", "Empty String"},
+	} {
+		t.Run(tt.given, func(t *testing.T) {
+			got := superReducedString(tt.given)
+			assert.Equal(t, tt.want, got)
+		})
+	}
 }

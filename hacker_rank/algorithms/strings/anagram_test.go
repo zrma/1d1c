@@ -9,7 +9,7 @@ import (
 func TestAnagram(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/anagram/problem")
 
-	for _, tc := range []struct {
+	for _, tt := range []struct {
 		given string
 		want  int32
 	}{
@@ -31,9 +31,9 @@ func TestAnagram(t *testing.T) {
 		{"xtnipeqhxvafqaggqoanvwkmthtfirwhmjrbphlmeluvoa", 13},
 		{"gqdvlchavotcykafyjzbbgmnlajiqlnwctrnvznspiwquxxsiwuldizqkkaawpyyisnftdzklwagv", -1},
 	} {
-		t.Run(tc.given, func(t *testing.T) {
-			got := anagram(tc.given)
-			assert.Equal(t, tc.want, got)
+		t.Run(tt.given, func(t *testing.T) {
+			got := anagram(tt.given)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }

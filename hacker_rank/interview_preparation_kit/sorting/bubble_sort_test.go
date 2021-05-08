@@ -5,6 +5,7 @@ import (
 	"encoding/csv"
 	"os"
 	"strconv"
+	"strings"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -60,7 +61,7 @@ var _ = Describe("https://www.hackerrank.com/challenges/ctci-bubble-sort/problem
 			var arr []int32
 			var num int64
 			for _, row := range rows {
-				num, err = strconv.ParseInt(row[0], 10, 32)
+				num, err = strconv.ParseInt(strings.TrimSpace(row[0]), 10, 32)
 				Expect(err).ShouldNot(HaveOccurred())
 
 				arr = append(arr, int32(num))
