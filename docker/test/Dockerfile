@@ -28,4 +28,5 @@ WORKDIR /go/src/app
 COPY ./ /go/src/app
 
 RUN golangci-lint run --timeout 10m
-RUN go test -race ./...
+
+RUN go test -race -covermode=atomic $(go list ./... | grep -v /cmd/)
