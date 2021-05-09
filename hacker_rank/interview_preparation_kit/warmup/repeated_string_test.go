@@ -1,25 +1,29 @@
 package warmup
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/repeated-string/problem", func() {
-	It("문제를 풀었다", func() {
-		actual := repeatedString("aba", 10)
-		Expect(actual).Should(BeNumerically("==", 7))
+func TestRepeatedString(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/repeated-string/problem")
 
-		actual = repeatedString("a", 1000000000000)
-		Expect(actual).Should(BeNumerically("==", 1000000000000))
-
-		actual = repeatedString("afternoon after", 3)
-		Expect(actual).Should(BeNumerically("==", 1))
-
-		actual = repeatedString("school hometown", 5)
-		Expect(actual).Should(BeNumerically("==", 0))
-
-		actual = repeatedString("", 5)
-		Expect(actual).Should(BeNumerically("==", 0))
-	})
-})
+	for _, tt := range []struct {
+		s    string
+		n    int64
+		want int64
+	}{
+		{"aba", 10, 7},
+		{"a", 1000000000000, 1000000000000},
+		{"afternoon after", 3, 1},
+		{"school hometown", 5, 0},
+		{"", 5, 0},
+	} {
+		t.Run(fmt.Sprintf("%s %d", tt.s, tt.n), func(t *testing.T) {
+			got := repeatedString(tt.s, tt.n)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}

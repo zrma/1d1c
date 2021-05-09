@@ -1,21 +1,28 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
-//noinspection SpellCheckingInspection
-var _ = Describe("https://www.hackerrank.com/challenges/30-abstract-classes/problem", func() {
-	It("문제를 풀었다", func() {
-		err := utils.PrintTest(func() {
-			abstractClasses("The Alchemist", "Paulo Coelho", 248)
-		}, []string{
-			"Title: The Alchemist",
-			"Author: Paulo Coelho",
-			"Price: 248",
-		})
-		Expect(err).ShouldNot(HaveOccurred())
+func TestAbstractClasses(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/30-abstract-classes/problem")
+
+	const (
+		title  = "The Alchemist"
+		author = "Paulo Coelho"
+		price  = 248
+	)
+
+	err := utils.PrintTest(func() {
+		abstractClasses(title, author, price)
+	}, []string{
+		fmt.Sprintf("Title: %s", title),
+		fmt.Sprintf("Author: %s", author),
+		fmt.Sprintf("Price: %d", price),
 	})
-})
+	assert.NoError(t, err)
+}

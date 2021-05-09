@@ -114,6 +114,7 @@ func TestBricksGamePerformance(t *testing.T) {
 
 		for i, arr := range arr {
 			assert.Len(t, arr, want[i].l)
+
 			got := bricksGame(arr)
 			assert.EqualValues(t, want[i].e, got)
 		}

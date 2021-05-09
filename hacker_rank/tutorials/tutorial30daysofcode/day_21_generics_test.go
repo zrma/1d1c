@@ -1,32 +1,34 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-exceptions-string-to-integer/problem", func() {
-	It("문제를 풀었다", func() {
-		err := utils.PrintTest(func() {
-			var arr []interface{}
-			for _, data := range []int{1, 2, 3} {
-				arr = append(arr, data)
-			}
-			printArray(arr...)
+func TestPrintArray(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/30-exceptions-string-to-integer/problem")
 
-			arr = arr[:0]
-			for _, data := range []string{"Hello", "World"} {
-				arr = append(arr, data)
-			}
-			printArray(arr...)
-		}, []string{
-			"1",
-			"2",
-			"3",
-			"Hello",
-			"World",
+	for i, tt := range []struct {
+		given []interface{}
+		want  []string
+	}{
+		{
+			given: []interface{}{1, 2, 3},
+			want:  []string{"1", "2", "3"},
+		},
+		{
+			given: []interface{}{"Hello", "World"},
+			want:  []string{"Hello", "World"},
+		},
+	} {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			err := utils.PrintTest(func() {
+				printArray(tt.given...)
+			}, tt.want)
+			assert.NoError(t, err)
 		})
-		Expect(err).ShouldNot(HaveOccurred())
-	})
-})
+	}
+}

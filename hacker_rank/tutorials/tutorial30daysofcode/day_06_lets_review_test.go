@@ -1,20 +1,21 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-loops/problem", func() {
-	It("문제를 풀었다", func() {
-		err := utils.PrintTest(func() {
-			letsReview("Hacker")
-			letsReview("Rank")
-		}, []string{
-			"Hce akr",
-			"Rn ak",
-		})
-		Expect(err).ShouldNot(HaveOccurred())
+func TestLetsReview(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/30-loops/problem")
+
+	err := utils.PrintTest(func() {
+		letsReview("Hacker")
+		letsReview("Rank")
+	}, []string{
+		"Hce akr",
+		"Rn ak",
 	})
-})
+	assert.NoError(t, err)
+}

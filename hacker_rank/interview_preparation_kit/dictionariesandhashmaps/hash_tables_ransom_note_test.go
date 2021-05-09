@@ -1,31 +1,41 @@
 package dictionariesandhashmaps
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/ctci-ransom-note/problem", func() {
-	It("문제를 풀었다", func() {
-		err := utils.PrintTest(func() {
-			checkMagazine(
-				[]string{"give", "me", "one", "grand", "today", "night"},
-				[]string{"give", "one", "grand", "today"},
-			)
-			checkMagazine(
-				[]string{"two", "times", "three", "is", "not", "four"},
-				[]string{"two", "times", "two", "is", "four"},
-			)
-			checkMagazine(
-				[]string{"ive", "got", "a", "lovely", "brunch", "of", "coconuts"},
-				[]string{"ive", "got", "some", "coconuts"},
-			)
-		}, []string{
-			"Yes",
-			"No",
-			"No",
+func TestCheckMagazine(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/ctci-ransom-note/problem")
+
+	for i, tt := range []struct {
+		magazine, note []string
+		want           string
+	}{
+		{
+			magazine: []string{"give", "me", "one", "grand", "today", "night"},
+			note:     []string{"give", "one", "grand", "today"},
+			want:     "Yes",
+		},
+		{
+			magazine: []string{"two", "times", "three", "is", "not", "four"},
+			note:     []string{"two", "times", "two", "is", "four"},
+			want:     "No",
+		},
+		{
+			magazine: []string{"ive", "got", "a", "lovely", "brunch", "of", "coconuts"},
+			note:     []string{"ive", "got", "some", "coconuts"},
+			want:     "No",
+		},
+	} {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			err := utils.PrintTest(func() {
+				checkMagazine(tt.magazine, tt.note)
+			}, []string{tt.want})
+			assert.NoError(t, err)
 		})
-		Expect(err).ShouldNot(HaveOccurred())
-	})
-})
+	}
+}

@@ -11,7 +11,8 @@ func TestSolveMeFirst(t *testing.T) {
 
 	var a uint32 = 2
 	var b uint32 = 3
-	got := solveMeFirst(a, b)
 	const want = 5
+
+	got := solveMeFirst(a, b)
 	assert.EqualValues(t, want, got)
 }

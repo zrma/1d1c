@@ -1,16 +1,31 @@
 package dictionariesandhashmaps
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/two-strings/problem", func() {
-	It("문제를 풀었다", func() {
-		actual := twoStrings("hello", "world")
-		Expect(actual).Should(Equal("YES"))
+func TestTwoStrings(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/two-strings/problem")
 
-		actual = twoStrings("hi", "world")
-		Expect(actual).Should(Equal("NO"))
-	})
-})
+	for _, tt := range []struct {
+		s1, s2 string
+		want   string
+	}{
+		{
+			s1: "hello", s2: "world",
+			want: "YES",
+		},
+		{
+			s1: "hi", s2: "world",
+			want: "NO",
+		},
+	} {
+		t.Run(fmt.Sprintf("%s, %s", tt.s1, tt.s2), func(t *testing.T) {
+			got := twoStrings(tt.s1, tt.s2)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}

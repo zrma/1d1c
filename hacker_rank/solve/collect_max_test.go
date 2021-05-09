@@ -1,70 +1,107 @@
 package solve
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/ginkgo/extensions/table"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("Solve collect max diamond problem", func() {
-	type testData struct {
-		data     [][]int
-		expected int
-	}
+func TestCollectMax(t *testing.T) {
+	t.Log("collect max diamond problem")
 
-	DescribeTable("문제를 풀었다.", func(d testData) {
-		actual := collectMax(d.data)
-		Expect(actual).Should(BeNumerically("==", d.expected))
-	},
-		Entry("test0", testData{[][]int{
-			{0, 1, -1},
-			{1, 0, -1},
-			{1, 1, 1},
-		}, 5}),
-		Entry("test1", testData{[][]int{
-			{0, 1, 1},
-			{1, 0, 1},
-			{1, 1, 1},
-		}, 7}),
-		Entry("test2", testData{[][]int{
-			{0, 1, 1},
-			{1, 0, -1},
-			{1, 1, -1},
-		}, 0}),
-		Entry("test3_0", testData{[][]int{{}, {}}, 0}),
-		Entry("test3_1", testData{[][]int{}, 0}),
-	)
-
-	It("combinations 함수 검증", func() {
-		actual := combinations(3, 2)
-		Expect(actual).Should(HaveLen(3))
-		actual = combinations(4, 2)
-		Expect(actual).Should(HaveLen(6))
-		actual = combinations(4, 3)
-		Expect(actual).Should(HaveLen(4))
-	})
-
-	It("find 함수 검증", func() {
-		Expect(array([]int{1, 2, 3}).find(1)).Should(BeTrue())
-		Expect(array([]int{1, 2, 3}).find(4)).Should(BeFalse())
-		Expect(array([]int{}).find(1)).Should(BeFalse())
-	})
-
-	Measure("성능 테스트", func(b Benchmarker) {
-		runtime := b.Time("long string", func() {
-			data := [][]int{
-				{1, 1, 1, 1, 1, 1},
-				{1, 1, 1, 2, 1, 1},
-				{1, 1, 1, 1, 1, 1},
-				{1, 1, 1, 1, 1, 1},
-				{1, 1, 1, 1, 1, 1},
-				{1, 1, 1, 1, 1, 1},
-				{1, 1, 1, 1, 1, 1},
-			}
-
-			Expect(collectMax(data)).Should(BeNumerically("==", 23))
+	for i, tt := range []struct {
+		given [][]int
+		want  int
+	}{
+		{
+			given: [][]int{
+				{0, 1, -1},
+				{1, 0, -1},
+				{1, 1, 1},
+			},
+			want: 5,
+		},
+		{
+			given: [][]int{
+				{0, 1, 1},
+				{1, 0, 1},
+				{1, 1, 1},
+			},
+			want: 7,
+		},
+		{
+			given: [][]int{
+				{0, 1, 1},
+				{1, 0, -1},
+				{1, 1, -1},
+			},
+			want: 0,
+		},
+		{
+			given: [][]int{{}, {}},
+			want:  0,
+		},
+		{
+			given: [][]int{},
+			want:  0,
+		},
+	} {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			got := collectMax(tt.given)
+			assert.Equal(t, tt.want, got)
 		})
+	}
+}
 
-		Expect(runtime.Seconds()).Should(BeNumerically("<", 10), "시간 초과")
-	}, 3)
-})
+func TestCombinations(t *testing.T) {
+	for _, tt := range []struct {
+		tot, num int
+		want     int
+	}{
+		{3, 2, 3},
+		{4, 2, 6},
+		{4, 3, 4},
+	} {
+		t.Run(fmt.Sprintf("%d %d", tt.tot, tt.num), func(t *testing.T) {
+			got := combinations(tt.tot, tt.num)
+			assert.Len(t, got, tt.want)
+		})
+	}
+}
+
+func TestArrayFind(t *testing.T) {
+	for i, tt := range []struct {
+		arr  []int
+		n    int
+		want bool
+	}{
+		{[]int{1, 2, 3}, 1, true},
+		{[]int{1, 2, 3}, 4, false},
+		{[]int{}, 1, false},
+	} {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			got := array(tt.arr).find(tt.n)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
+func TestCollectMaxPerformance(t *testing.T) {
+	assert.Eventually(t, func() bool {
+		data := [][]int{
+			{1, 1, 1, 1, 1, 1},
+			{1, 1, 1, 2, 1, 1},
+			{1, 1, 1, 1, 1, 1},
+			{1, 1, 1, 1, 1, 1},
+			{1, 1, 1, 1, 1, 1},
+			{1, 1, 1, 1, 1, 1},
+			{1, 1, 1, 1, 1, 1},
+		}
+		const want = 23
+
+		got := collectMax(data)
+		return assert.Equal(t, want, got)
+	}, time.Second*10, time.Millisecond*100, "시간 초과")
+}

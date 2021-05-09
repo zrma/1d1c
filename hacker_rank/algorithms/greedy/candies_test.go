@@ -56,7 +56,8 @@ func TestCandiesPerformance(t *testing.T) {
 		file, err := os.Open("./test_data/candies.csv")
 		assert.NoError(t, err)
 		defer func() {
-			_ = file.Close()
+			err := file.Close()
+			assert.NoError(t, err)
 		}()
 
 		r := csv.NewReader(bufio.NewReader(file))
@@ -72,10 +73,9 @@ func TestCandiesPerformance(t *testing.T) {
 		}
 
 		assert.Len(t, given, 100000)
+		const want = 160929
 
 		got := candies(int32(len(given)), given)
-
-		const want = 160929
 		return assert.EqualValues(t, want, got)
 	}, time.Second, time.Millisecond*100, "시간 초과")
 }

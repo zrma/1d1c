@@ -1,16 +1,26 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-interfaces/problem", func() {
-	It("문제를 풀었다", func() {
-		c := &calculator{}
+func TestDivisorSum(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/30-interfaces/problem")
 
-		Expect(divisorSum(c, 1)).Should(BeNumerically("==", 1))
-		Expect(divisorSum(c, 6)).Should(BeNumerically("==", 12))
-		Expect(divisorSum(c, 20)).Should(BeNumerically("==", 42))
-	})
-})
+	for _, tt := range []struct {
+		given int
+		want  int
+	}{
+		{1, 1},
+		{6, 12},
+		{20, 42},
+	} {
+		t.Run(fmt.Sprintf("%d", tt.given), func(t *testing.T) {
+			got := divisorSum(&calculator{}, tt.given)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}

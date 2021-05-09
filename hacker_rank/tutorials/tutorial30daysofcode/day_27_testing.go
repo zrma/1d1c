@@ -2,9 +2,14 @@ package tutorial30daysofcode
 
 import "errors"
 
+const (
+	errMsg     = "cannot get the minimum value index from an empty sequence"
+	invalidIdx = -1
+)
+
 func minimumIndex(seq []int) (int, error) {
 	if len(seq) == 0 {
-		return -1, errors.New("cannot get the minimum value index from an empty sequence")
+		return invalidIdx, errors.New(errMsg)
 	}
 	var minIdx = 0
 	for i := 1; i < len(seq); i++ {

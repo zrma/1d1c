@@ -1,27 +1,34 @@
 package warmup
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/counting-valleys/problem", func() {
-	It("문제를 풀었다", func() {
-		//noinspection SpellCheckingInspection
-		s := "UDDDUDUU"
-		actual := countingValleys(int32(len(s)), s)
-		Expect(actual).Should(BeNumerically("==", 1))
+func TestCountingValleys(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/counting-valleys/problem")
 
-		s = ""
-		actual = countingValleys(int32(len(s)), s)
-		Expect(actual).Should(BeNumerically("==", 0))
+	for _, tt := range []struct {
+		given string
+		want  int32
+	}{
+		{"UDDDUDUU", 1},
+		{"", 0},
+		{"ABC", 0},
+	} {
+		t.Run(tt.given, func(t *testing.T) {
+			got := countingValleys(int32(len(tt.given)), tt.given)
+			assert.Equal(t, tt.want, got)
+		})
+	}
 
-		s = "ABC"
-		actual = countingValleys(int32(len(s)), s)
-		Expect(actual).Should(BeNumerically("==", 0))
-
-		s = "ABC"
-		actual = countingValleys(int32(len(s)+1), s)
-		Expect(actual).Should(BeNumerically("==", 0))
+	assert.NotPanics(t, func() {
+		const (
+			given = "ABC"
+			want  = 0
+		)
+		got := countingValleys(int32(len(given))+123, given)
+		assert.EqualValues(t, want, got)
 	})
-})
+}

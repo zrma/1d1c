@@ -1,15 +1,17 @@
 package warmup
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/sock-merchant/problem", func() {
-	arr := []int32{10, 20, 20, 10, 10, 30, 50, 10, 20}
+func TestSockMerchant(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/sock-merchant/problem")
 
-	It("문제를 풀었다", func() {
-		actual := sockMerchant(arr)
-		Expect(actual).Should(BeNumerically("==", 3))
-	})
-})
+	given := []int32{10, 20, 20, 10, 10, 30, 50, 10, 20}
+	const want = 3
+
+	got := sockMerchant(given)
+	assert.EqualValues(t, want, got)
+}

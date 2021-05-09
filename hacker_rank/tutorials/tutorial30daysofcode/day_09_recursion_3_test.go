@@ -1,16 +1,25 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-recursion/problem", func() {
-	It("문제를 풀었다", func() {
-		actual := factorial(3)
-		Expect(actual).Should(BeNumerically("==", 6))
+func TestFactorial(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/30-recursion/problem")
 
-		actual = factorial(10)
-		Expect(actual).Should(BeNumerically("==", 3628800))
-	})
-})
+	for _, tt := range []struct {
+		given int32
+		want  int32
+	}{
+		{3, 6},
+		{10, 3628800},
+	} {
+		t.Run(fmt.Sprintf("%d", tt.given), func(t *testing.T) {
+			got := factorial(tt.given)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}

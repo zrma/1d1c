@@ -1,30 +1,30 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 	"github.com/zrma/going/utils"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-regex-patterns/problem", func() {
-	It("문제를 풀었다", func() {
-		//noinspection SpellCheckingInspection
-		err := utils.PrintTest(func() {
-			filter([][]string{
-				{"riya", "riya@gmail.com"},
-				{"julia", "julia@julia.me"},
-				{"julia", "sjulia@gmail.com"},
-				{"julia", "julia@gmail.com"},
-				{"samantha", "samantha@gmail.com"},
-				{"tanya", "tanya@gmail.com"},
-			})
-		}, []string{
-			"julia",
-			"julia",
-			"riya",
-			"samantha",
-			"tanya",
+func TestFilter(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/30-regex-patterns/problem")
+
+	err := utils.PrintTest(func() {
+		filter([][]string{
+			{"riya", "riya@gmail.com"},
+			{"julia", "julia@julia.me"},
+			{"julia", "sjulia@gmail.com"},
+			{"julia", "julia@gmail.com"},
+			{"samantha", "samantha@gmail.com"},
+			{"tanya", "tanya@gmail.com"},
 		})
-		Expect(err).ShouldNot(HaveOccurred())
+	}, []string{
+		"julia",
+		"julia",
+		"riya",
+		"samantha",
+		"tanya",
 	})
-})
+	assert.NoError(t, err)
+}

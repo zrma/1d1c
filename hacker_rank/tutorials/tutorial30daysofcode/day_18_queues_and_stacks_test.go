@@ -1,56 +1,60 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-queues-stacks/problem", func() {
-	Context("문제를 풀었다", func() {
-		It("queue 구조체는 큐 자료구조의 기능을 충실히 수행한다.", func() {
-			q := queue{}
+func TestQueue(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/30-queues-stacks/problem")
 
-			q.enqueue("a")
-			q.enqueue("b")
-			q.enqueue("c")
+	q := queue{}
 
-			actual, ok := q.dequeue()
-			Expect(ok).Should(BeTrue())
-			Expect(actual).Should(Equal("a"))
+	q.enqueue("a")
+	q.enqueue("b")
+	q.enqueue("c")
 
-			actual, ok = q.dequeue()
-			Expect(ok).Should(BeTrue())
-			Expect(actual).Should(Equal("b"))
-
-			actual, ok = q.dequeue()
-			Expect(ok).Should(BeTrue())
-			Expect(actual).Should(Equal("c"))
-
-			_, ok = q.dequeue()
-			Expect(ok).Should(BeFalse())
+	for i, tt := range []struct {
+		ok   bool
+		want string
+	}{
+		{true, "a"},
+		{true, "b"},
+		{true, "c"},
+		{false, ""},
+	} {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			got, ok := q.dequeue()
+			assert.Equal(t, tt.ok, ok)
+			assert.Equal(t, tt.want, got)
 		})
+	}
+}
 
-		It("stack 구조체는 스택 자료구조의 기능을 충실히 수행한다.", func() {
-			s := stack{}
+func TestStack(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/30-queues-stacks/problem")
 
-			s.push("a")
-			s.push("b")
-			s.push("c")
+	s := stack{}
 
-			actual, ok := s.pop()
-			Expect(ok).Should(BeTrue())
-			Expect(actual).Should(Equal("c"))
+	s.push("a")
+	s.push("b")
+	s.push("c")
 
-			actual, ok = s.pop()
-			Expect(ok).Should(BeTrue())
-			Expect(actual).Should(Equal("b"))
-
-			actual, ok = s.pop()
-			Expect(ok).Should(BeTrue())
-			Expect(actual).Should(Equal("a"))
-
-			_, ok = s.pop()
-			Expect(ok).Should(BeFalse())
+	for i, tt := range []struct {
+		ok   bool
+		want string
+	}{
+		{true, "c"},
+		{true, "b"},
+		{true, "a"},
+		{false, ""},
+	} {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			got, ok := s.pop()
+			assert.Equal(t, tt.ok, ok)
+			assert.Equal(t, tt.want, got)
 		})
-	})
-})
+	}
+}

@@ -1,40 +1,41 @@
 package tutorial30daysofcode
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 
 	"github.com/zrma/going/utils"
 )
 
-var _ = Describe("https://www.hackerrank.com/challenges/30-linked-list-deletion/problem", func() {
-	It("문제를 풀었다", func() {
-		var list linkedList
-		for _, num := range []int{1, 2, 2, 3, 3, 4} {
-			list.head = list.insert(num)
-		}
+func TestLinkedListRemoveDuplicates(t *testing.T) {
+	t.Log("https://www.hackerrank.com/challenges/30-linked-list-deletion/problem")
 
-		list.head = removeDuplicates(list.head)
-		err := utils.PrintTest(func() {
-			list.display()
-		}, []string{
-			"1", "2", "3", "4",
+	for i, tt := range []struct {
+		given []int
+		want  []string
+	}{
+		{
+			given: []int{1, 2, 2, 3, 3, 4},
+			want:  []string{"1", "2", "3", "4"},
+		},
+		{
+			given: []int{1, 2, 2, 2, 3, 3, 3, 3, 4, 4},
+			want:  []string{"1", "2", "3", "4"},
+		},
+	} {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			var list linkedList
+			for _, num := range tt.given {
+				list.head = list.insert(num)
+			}
+
+			list.head = removeDuplicates(list.head)
+			err := utils.PrintTest(func() {
+				list.display()
+			}, tt.want)
+			assert.NoError(t, err)
 		})
-		Expect(err).ShouldNot(HaveOccurred())
-	})
-
-	It("조금 더 까다로운 테스트 케이스", func() {
-		var list linkedList
-		for _, num := range []int{1, 2, 2, 2, 3, 3, 3, 3, 4, 4} {
-			list.head = list.insert(num)
-		}
-
-		list.head = removeDuplicates(list.head)
-		err := utils.PrintTest(func() {
-			list.display()
-		}, []string{
-			"1", "2", "3", "4",
-		})
-		Expect(err).ShouldNot(HaveOccurred())
-	})
-})
+	}
+}

@@ -81,7 +81,8 @@ func TestPalindromeIndexPerformance(t *testing.T) {
 		file, err := os.Open("./test_data/palindrome_index.csv")
 		assert.NoError(t, err)
 		defer func() {
-			_ = file.Close()
+			err := file.Close()
+			assert.NoError(t, err)
 		}()
 
 		r := csv.NewReader(bufio.NewReader(file))
