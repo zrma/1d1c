@@ -103,12 +103,14 @@ func TestFreqQueryPerformance(t *testing.T) {
 	}, time.Second*10, time.Millisecond*100, "시간 초과")
 }
 
-func readInputCSV(fileName string) ([][]int32, error) {
+func readInputCSV(fileName string) (arr [][]int32, err error) {
 	file, err := os.Open(fileName)
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() {
+		err = file.Close()
+	}()
 
 	r := csv.NewReader(bufio.NewReader(file))
 	rows, err := r.ReadAll()
@@ -116,7 +118,6 @@ func readInputCSV(fileName string) ([][]int32, error) {
 		return nil, err
 	}
 
-	var arr [][]int32
 	for _, row := range rows {
 		var cols []int32
 		for _, col := range row {
@@ -131,12 +132,14 @@ func readInputCSV(fileName string) ([][]int32, error) {
 	return arr, nil
 }
 
-func readResultCSV(fileName string) ([]int32, error) {
+func readResultCSV(fileName string) (arr []int32, err error) {
 	file, err := os.Open(fileName)
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() {
+		err = file.Close()
+	}()
 
 	r := csv.NewReader(bufio.NewReader(file))
 	rows, err := r.ReadAll()
@@ -144,7 +147,6 @@ func readResultCSV(fileName string) ([]int32, error) {
 		return nil, err
 	}
 
-	var arr []int32
 	for _, row := range rows {
 		num, err := strconv.ParseInt(strings.TrimSpace(row[0]), 10, 32)
 		if err != nil {

@@ -10,6 +10,7 @@ import (
 func TestFilter(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/30-regex-patterns/problem")
 
+	//noinspection SpellCheckingInspection
 	err := utils.PrintTest(func() {
 		filter([][]string{
 			{"riya", "riya@gmail.com"},

@@ -21,6 +21,7 @@ func TestNewStudent(t *testing.T) {
 		{30, "T"},
 	} {
 		t.Run(fmt.Sprintf("%d", tt.given), func(t *testing.T) {
+			//noinspection SpellCheckingInspection
 			const (
 				firstName      = "Heraldo"
 				lastName       = "Memelli"

@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestHighestValuePalindrom(t *testing.T) {
+func TestHighestValuePalindrome(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/richie-rich/problem")
 
 	for i, tt := range []struct {

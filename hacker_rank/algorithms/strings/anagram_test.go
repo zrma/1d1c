@@ -9,6 +9,7 @@ import (
 func TestAnagram(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/anagram/problem")
 
+	//noinspection SpellCheckingInspection
 	for _, tt := range []struct {
 		given string
 		want  int32

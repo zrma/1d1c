@@ -9,6 +9,7 @@ import (
 func TestStringConstruction(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/string-construction/problem")
 
+	//noinspection SpellCheckingInspection
 	for _, tt := range []struct {
 		given string
 		want  int32

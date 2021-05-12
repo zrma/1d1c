@@ -9,6 +9,7 @@ import (
 func TestCountingValleys(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/counting-valleys/problem")
 
+	//noinspection SpellCheckingInspection
 	for _, tt := range []struct {
 		given string
 		want  int32

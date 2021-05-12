@@ -7,7 +7,7 @@ import (
 	"github.com/zrma/going/utils"
 )
 
-func TestDayaType(t *testing.T) {
+func TestDataType(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/30-data-types/problem")
 
 	err := utils.PrintTest(func() {

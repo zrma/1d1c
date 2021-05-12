@@ -14,6 +14,7 @@ import (
 func TestPlayWithBook(t *testing.T) {
 	t.Parallel()
 
+	//noinspection SpellCheckingInspection
 	t.Run("gomock 사용 연습", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		defer ctrl.Finish()

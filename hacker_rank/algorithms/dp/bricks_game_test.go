@@ -64,7 +64,10 @@ func TestBricksGamePerformance(t *testing.T) {
 		if err != nil {
 			return nil, err
 		}
-		defer file.Close()
+		defer func() {
+			err := file.Close()
+			assert.NoError(t, err)
+		}()
 
 		r := csv.NewReader(bufio.NewReader(file))
 		rows, err := r.ReadAll()

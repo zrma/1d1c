@@ -14,6 +14,7 @@ import (
 func TestPalindromeIndex(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/palindrome-index/problem")
 
+	//noinspection SpellCheckingInspection
 	for _, tt := range []struct {
 		s    string
 		want int32
@@ -43,6 +44,7 @@ func TestPalindromeIndex(t *testing.T) {
 }
 
 func TestEqualPrefix(t *testing.T) {
+	//noinspection SpellCheckingInspection
 	for _, tt := range []struct {
 		description    string
 		given1, given2 string

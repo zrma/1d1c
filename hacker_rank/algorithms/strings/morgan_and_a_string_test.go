@@ -10,6 +10,7 @@ import (
 func TestMorganAndString(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/morgan-and-a-string/problem")
 
+	//noinspection SpellCheckingInspection
 	for i, tt := range []struct {
 		jack, daniel string
 		want         string

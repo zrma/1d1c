@@ -9,6 +9,7 @@ import (
 func TestSuperReducedString(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/reduced-string/problem")
 
+	//noinspection SpellCheckingInspection
 	for _, tt := range []struct {
 		given string
 		want  string

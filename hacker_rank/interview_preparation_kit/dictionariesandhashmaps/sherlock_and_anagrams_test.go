@@ -10,6 +10,7 @@ import (
 func TestSherlockAndAnagrams(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/sherlock-and-anagrams/problem")
 
+	//goland:noinspection SpellCheckingInspection
 	for _, tt := range []struct {
 		given string
 		want  int32
@@ -29,6 +30,7 @@ func TestSherlockAndAnagrams(t *testing.T) {
 
 func TestSherlockAndAnagramsPerformance(t *testing.T) {
 	assert.Eventually(t, func() bool {
+		//goland:noinspection SpellCheckingInspection
 		for _, tt := range []struct {
 			given string
 			want  int32

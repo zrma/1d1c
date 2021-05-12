@@ -9,6 +9,7 @@ import (
 func TestIsValid(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/sherlock-and-valid-string/problem")
 
+	//noinspection SpellCheckingInspection
 	for _, tt := range []struct {
 		given string
 		want  string

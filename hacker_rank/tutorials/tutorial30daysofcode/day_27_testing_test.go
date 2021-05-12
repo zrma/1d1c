@@ -33,7 +33,7 @@ func TestMinimumIndex(t *testing.T) {
 
 		got, err := minimumIndex(seq)
 		assert.NoError(t, err)
-		assert.Equal(t, 0, got, "해당 풀이에서는 minimumIndex가 0")
+		assert.Equal(t, 0, got, "해당 풀이에서는 minimumIndex = 0")
 	})
 
 	t.Run("exactlyTwoDifferentMinimums() 함수는 가장 작은 정수 두 개와 임의의 다른 더 큰 0개 이상의 정수로 이뤄진 슬라이스를 반환한다.", func(t *testing.T) {
@@ -50,6 +50,6 @@ func TestMinimumIndex(t *testing.T) {
 
 		got, err := minimumIndex(seq)
 		assert.NoError(t, err)
-		assert.Equal(t, 1, got, "해당 풀이에서는 minimumIndex가 1")
+		assert.Equal(t, 1, got, "해당 풀이에서는 minimumIndex = 1")
 	})
 }

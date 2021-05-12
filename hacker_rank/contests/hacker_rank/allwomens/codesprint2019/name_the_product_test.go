@@ -10,6 +10,7 @@ import (
 func TestProductName(t *testing.T) {
 	t.Log("https://www.hackerrank.com/contests/hackerrank-all-womens-codesprint-2019/challenges/name-the-product")
 
+	//noinspection SpellCheckingInspection
 	for i, tt := range []struct {
 		given []string
 		want  string
