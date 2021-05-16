@@ -1,28 +1,29 @@
 package lv0easy
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/ginkgo/extensions/table"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://leetcode.com/problems/palindrome-number/", func() {
-	type testData struct {
-		input    int
-		expected bool
-	}
+func TestIsPalindrome(t *testing.T) {
+	t.Log("https://leetcode.com/problems/palindrome-number/")
 
-	//noinspection SpellCheckingInspection
-	DescribeTable("문제를 풀었다",
-		func(data testData) {
-			actual := isPalindrome(data.input)
-			Expect(actual).Should(Equal(data.expected))
-		},
-		Entry("0", testData{121, true}),
-		Entry("1", testData{-121, false}),
-		Entry("2", testData{10, false}),
-		Entry("3", testData{1234, false}),
-		Entry("4", testData{1234321, true}),
-		Entry("6", testData{0, true}),
-	)
-})
+	for _, tt := range []struct {
+		given int
+		want  bool
+	}{
+		{121, true},
+		{-121, false},
+		{10, false},
+		{1234, false},
+		{1234321, true},
+		{0, true},
+	} {
+		t.Run(fmt.Sprintf("%d", tt.given), func(t *testing.T) {
+			got := isPalindrome(tt.given)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}

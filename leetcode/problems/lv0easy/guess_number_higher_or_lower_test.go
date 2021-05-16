@@ -1,45 +1,47 @@
 package lv0easy
 
 import (
+	"fmt"
 	"math"
+	"testing"
 
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/ginkgo/extensions/table"
-	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://leetcode.com/problems/guess-number-higher-or-lower/", func() {
-	type testData struct {
-		n        int
-		expected int
+func TestSolveGuessNumber(t *testing.T) {
+	t.Log("https://leetcode.com/problems/guess-number-higher-or-lower/")
+
+	for _, tt := range []struct {
+		given int
+		want  int
+	}{
+		{5, 4},
+		{10, 3},
+		{10, 6},
+		{100, 37},
+		{100, 38},
+		{100, 49},
+		{100, 50},
+		{100, 51},
+		{1024, 511},
+		{1024, 512},
+		{1024, 513},
+		{1024, 1024},
+	} {
+		t.Run(fmt.Sprintf("%d,", tt.given), func(t *testing.T) {
+			// 3진 탐색, 1회 탐색에 2번씩 호출
+			want := int(math.Ceil((math.Log(float64(tt.given)))/math.Log(3))*2) + 1
+			got, callCount := solveGuessNumber(tt.given, tt.want)
+			assert.Equal(t, tt.want, got)
+			assert.LessOrEqual(t, callCount, want, "성능 제한")
+		})
 	}
 
-	//noinspection SpellCheckingInspection
-	DescribeTable("문제를 풀었다",
-		func(data testData) {
-			actual, callCount := solveGuessNumber(data.n, data.expected)
-			Expect(actual).Should(Equal(data.expected))
-
-			// 3진 탐색, 1회 탐색에 2번씩 호출
-			expectedCount := ((math.Log(float64(data.n)))/math.Log(3))*2 + 1
-			Expect(callCount).Should(BeNumerically("<=", math.Ceil(expectedCount)))
-		},
-		Entry("0", testData{5, 4}),
-		Entry("1-0", testData{10, 3}),
-		Entry("1-1", testData{10, 6}),
-		Entry("2-0", testData{100, 37}),
-		Entry("2-1", testData{100, 38}),
-		Entry("2-2", testData{100, 49}),
-		Entry("2-3", testData{100, 50}),
-		Entry("2-4", testData{100, 51}),
-		Entry("3-0", testData{1024, 511}),
-		Entry("3-1", testData{1024, 512}),
-		Entry("3-2", testData{1024, 513}),
-		Entry("3-3", testData{1024, 1024}),
-	)
-
-	It("예외 처리", func() {
-		actual := guessNumber(0)
-		Expect(actual).Should(Equal(-1))
+}
+func TestGuessNumber(t *testing.T) {
+	assert.NotPanics(t, func() {
+		const want = -1
+		got := guessNumber(0)
+		assert.Equal(t, want, got)
 	})
-})
+}

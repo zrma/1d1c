@@ -1,24 +1,18 @@
 package lv1medium
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/ginkgo/extensions/table"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://leetcode.com/problems/container-with-most-water/", func() {
-	type testData struct {
-		arr      []int
-		expected int
-	}
+func TestMaxArea(t *testing.T) {
+	t.Log("https://leetcode.com/problems/container-with-most-water/")
 
-	DescribeTable("문제를 풀었다.", func(data testData) {
-		actual := maxArea(data.arr)
-		Expect(actual).Should(Equal(data.expected))
-	},
-		Entry("한 자리 올림", testData{
-			arr:      []int{1, 8, 6, 2, 5, 4, 8, 3, 7},
-			expected: 49,
-		}),
+	var (
+		given = []int{1, 8, 6, 2, 5, 4, 8, 3, 7}
+		want  = 49
 	)
-})
+	got := maxArea(given)
+	assert.Equal(t, want, got)
+}

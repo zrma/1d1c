@@ -1,139 +1,134 @@
 package lv2hard
 
 import (
+	"fmt"
 	"math"
 	"math/rand"
 	"testing"
 
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/ginkgo/extensions/table"
-	. "github.com/onsi/gomega"
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://leetcode.com/problems/median-of-two-sorted-arrays/", func() {
-	Context("함수 전체 테스트", func() {
-		type testData struct {
-			arr1, arr2 []int
-			expected   float64
-		}
+func TestFindMedianSortedArrays(t *testing.T) {
+	t.Log("https://leetcode.com/problems/median-of-two-sorted-arrays/")
 
-		DescribeTable("문제를 풀었다.", func(data testData) {
-			By("By merge", func() {
-				actual := findMedianSortedArraysWithMerge(data.arr1, data.arr2)
-				Expect(actual).Should(Equal(data.expected))
-			})
-
-			By("By index", func() {
-				actual := findMedianSortedArrays(data.arr1, data.arr2)
-				Expect(actual).Should(Equal(data.expected))
-			})
-
-			By("By bin search", func() {
-				actual := findMedianSortedArraysWithBinSearch(data.arr1, data.arr2)
-				Expect(actual).Should(Equal(data.expected))
-			})
-
-			By("By bin search solution", func() {
-				actual := findMedianSortedArraysWithBinSearchSolution(data.arr1, data.arr2)
-				Expect(actual).Should(Equal(data.expected))
-			})
+	for i, tt := range []struct {
+		arr1, arr2 []int
+		want       float64
+	}{
+		{
+			arr1: []int{1, 3},
+			arr2: []int{2},
+			want: 2.0,
 		},
-			Entry("0", testData{
-				arr1:     []int{1, 3},
-				arr2:     []int{2},
-				expected: 2.0,
-			}),
-			Entry("1", testData{
-				arr1:     []int{1, 2},
-				arr2:     []int{3, 4},
-				expected: 2.5,
-			}),
-			Entry("2", testData{
-				arr1:     []int{1, 2},
-				arr2:     []int{100},
-				expected: 2.0,
-			}),
-			Entry("3-0", testData{
-				arr1:     []int{1, 200},
-				arr2:     []int{10, 90},
-				expected: 50.0,
-			}),
-			Entry("3-1", testData{
-				arr1:     []int{1, 10, 200},
-				arr2:     []int{90},
-				expected: 50.0,
-			}),
-			Entry("4-0", testData{
-				arr1:     []int{1, 2, 2, 3},
-				arr2:     []int{100},
-				expected: 2.0,
-			}),
-			Entry("4-1", testData{
-				arr1:     []int{1, 2, 2, 3, 3, 3},
-				arr2:     []int{100},
-				expected: 3.0,
-			}),
-			Entry("5", testData{
-				arr1:     []int{2, 2, 3, 3, 3, 100},
-				arr2:     []int{1},
-				expected: 3.0,
-			}),
-			Entry("5-1", testData{
-				arr1:     []int{2, 2, 2, 2, 2, 2},
-				arr2:     []int{2},
-				expected: 2.0,
-			}),
-			Entry("5-2", testData{
-				arr1:     []int{2},
-				arr2:     []int{2, 2, 2, 2, 2, 2},
-				expected: 2.0,
-			}),
-			Entry("6", testData{
-				arr1:     []int{2, 3, 4, 4, 4, 4, 4, 4, 4},
-				arr2:     []int{1, 5, 5, 5},
-				expected: 4,
-			}),
-			Entry("6-1", testData{
-				arr1:     []int{3, 4},
-				arr2:     []int{1, 2},
-				expected: 2.5,
-			}),
-			Entry("6-2", testData{
-				arr1:     []int{1},
-				arr2:     []int{1},
-				expected: 1,
-			}),
-			Entry("6-2", testData{
-				arr1:     []int{1},
-				arr2:     []int{2, 3, 4},
-				expected: 2.5,
-			}),
-		)
-	})
-
-	Context("유틸 함수 테스트", func() {
-		nums := arr([]int{0, 1, 2, 3, 4})
-
-		type testData struct {
-			idx      int
-			expected int
-		}
-
-		DescribeTable("arr.getVal", func(data testData) {
-			actual := arr(nums).getVal(data.idx)
-			Expect(actual).Should(Equal(data.expected))
+		{
+			arr1: []int{1, 2},
+			arr2: []int{3, 4},
+			want: 2.5,
 		},
-			Entry("0", testData{idx: -1, expected: math.MinInt32}),
-			Entry("1", testData{idx: 0, expected: 0}),
-			Entry("2", testData{idx: 4, expected: 4}),
-			Entry("3", testData{idx: 5, expected: math.MaxInt32}),
-		)
-	})
-})
+		{
+			arr1: []int{1, 2},
+			arr2: []int{100},
+			want: 2.0,
+		},
+		{
+			arr1: []int{1, 200},
+			arr2: []int{10, 90},
+			want: 50.0,
+		},
+		{
+			arr1: []int{1, 10, 200},
+			arr2: []int{90},
+			want: 50.0,
+		},
+		{
+			arr1: []int{1, 2, 2, 3},
+			arr2: []int{100},
+			want: 2.0,
+		},
+		{
+			arr1: []int{1, 2, 2, 3, 3, 3},
+			arr2: []int{100},
+			want: 3.0,
+		},
+		{
+			arr1: []int{2, 2, 3, 3, 3, 100},
+			arr2: []int{1},
+			want: 3.0,
+		},
+		{
+			arr1: []int{2, 2, 2, 2, 2, 2},
+			arr2: []int{2},
+			want: 2.0,
+		},
+		{
+			arr1: []int{2},
+			arr2: []int{2, 2, 2, 2, 2, 2},
+			want: 2.0,
+		},
+		{
+			arr1: []int{2, 3, 4, 4, 4, 4, 4, 4, 4},
+			arr2: []int{1, 5, 5, 5},
+			want: 4,
+		},
+		{
+			arr1: []int{3, 4},
+			arr2: []int{1, 2},
+			want: 2.5,
+		},
+		{
+			arr1: []int{1},
+			arr2: []int{1},
+			want: 1,
+		},
+		{
+			arr1: []int{1},
+			arr2: []int{2, 3, 4},
+			want: 2.5,
+		},
+	} {
+		t.Run(fmt.Sprintf("%d by merge", i), func(t *testing.T) {
+			got := findMedianSortedArraysWithMerge(tt.arr1, tt.arr2)
+			assert.Equal(t, tt.want, got)
+		})
+
+		t.Run(fmt.Sprintf("%d by index", i), func(t *testing.T) {
+			got := findMedianSortedArrays(tt.arr1, tt.arr2)
+			assert.Equal(t, tt.want, got)
+		})
+
+		t.Run(fmt.Sprintf("%d by bin search", i), func(t *testing.T) {
+			got := findMedianSortedArraysWithBinSearch(tt.arr1, tt.arr2)
+			assert.Equal(t, tt.want, got)
+		})
+
+		t.Run(fmt.Sprintf("%d by bin search solution\"", i), func(t *testing.T) {
+			got := findMedianSortedArraysWithBinSearchSolution(tt.arr1, tt.arr2)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
+
+func TestGetVal(t *testing.T) {
+	for _, tt := range []struct {
+		given int
+		want  int
+	}{
+		{-1, math.MinInt32},
+		{0, 0},
+		{4, 4},
+		{5, math.MaxInt32},
+	} {
+		t.Run(fmt.Sprintf("%d", tt.given), func(t *testing.T) {
+			nums := arr([]int{0, 1, 2, 3, 4})
+			got := nums.getVal(tt.given)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}
 
 //goos: linux
 //goarch: amd64
-//pkg: github.com/zrma/1d1go/leetcode/problems/lv2hard
 //BenchmarkFindMedian1/By_merge-16                         127035747               9.02   ns/op
 //BenchmarkFindMedian1/By_index-16                        1000000000               0.929  ns/op
 //BenchmarkFindMedian1/By_bin_search-16                   1000000000               1.12   ns/op

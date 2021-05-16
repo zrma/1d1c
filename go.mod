@@ -17,8 +17,6 @@ require (
 	github.com/golang/mock v1.4.4
 	github.com/golang/protobuf v1.4.2
 	github.com/mattn/go-sqlite3 v1.10.0
-	github.com/onsi/ginkgo v1.12.0
-	github.com/onsi/gomega v1.9.0
 	github.com/panjf2000/ants/v2 v2.3.0
 	github.com/stretchr/testify v1.5.1
 	github.com/zrma/going v0.0.0-20200629120819-ff54dafa1f7a

@@ -1,39 +1,30 @@
 package lv1medium
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://leetcode.com/problems/zigzag-conversion/", func() {
-	It("문제를 풀었다.", func() {
-		//noinspection SpellCheckingInspection
-		const inputString = "PAYPALISHIRING"
+func TestConvert(t *testing.T) {
+	t.Log("https://leetcode.com/problems/zigzag-conversion/")
 
-		By("case 1", func() {
-			//noinspection SpellCheckingInspection
-			const expected = "PAHNAPLSIIGYIR"
-
-			actual := convert(inputString, 3)
-			Expect(actual).Should(Equal(expected))
+	//noinspection SpellCheckingInspection
+	for _, tt := range []struct {
+		given string
+		n     int
+		want  string
+	}{
+		{"PAYPALISHIRING", 3, "PAHNAPLSIIGYIR"},
+		{"PAYPALISHIRING", 4, "PINALSIGYAHRPI"},
+		{"AB", 1, "AB"},
+	} {
+		t.Run(fmt.Sprintf("%s %d", tt.given, tt.n), func(t *testing.T) {
+			assert.NotPanics(t, func() {
+				got := convert(tt.given, tt.n)
+				assert.Equal(t, tt.want, got)
+			})
 		})
-
-		By("case 2", func() {
-			//noinspection SpellCheckingInspection
-			const expected = "PINALSIGYAHRPI"
-
-			actual := convert(inputString, 4)
-			Expect(actual).Should(Equal(expected))
-		})
-	})
-
-	It("it should not be panic", func(done Done) {
-		defer close(done)
-
-		//noinspection SpellCheckingInspection
-		const expected = "AB"
-
-		actual := convert("AB", 1)
-		Expect(actual).Should(Equal(expected))
-	})
-})
+	}
+}

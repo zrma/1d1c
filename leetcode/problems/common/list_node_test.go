@@ -1,42 +1,46 @@
 package common
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("ListNode", func() {
-	It("동작 검증", func() {
-		node := ListNode{
-			Val: 123,
-			Next: &ListNode{
-				Val: 456,
-			},
-		}
+func TestListNode(t *testing.T) {
+	node := ListNode{
+		Val: 123,
+		Next: &ListNode{
+			Val: 456,
+		},
+	}
 
-		By("GetVal 함수 검증", func() {
-			actual := node.GetVal()
-			Expect(actual).Should(Equal(123))
-		})
+	{
+		const want = 123
+		got := node.GetVal()
+		assert.Equal(t, want, got)
+	}
 
-		By("GetNext 함수 검증", func() {
-			next := node.GetNext()
-			Expect(next).ShouldNot(BeNil())
+	{
+		next := node.GetNext()
+		assert.NotNil(t, next)
 
-			actual := next.GetVal()
-			Expect(actual).Should(Equal(456))
-		})
+		const want = 456
+		got := next.GetVal()
+		assert.Equal(t, want, got)
+	}
 
-		By("Traversal 함수 검증", func() {
-			actual := node.Traversal()
-			Expect(actual).Should(Equal("456123"))
-		})
+	t.Run("Traversal 함수 검증", func(t *testing.T) {
+		const want = "456123"
+		got := node.Traversal()
+		assert.Equal(t, want, got)
 	})
+}
 
-	//noinspection GoNilness
-	It("nil 예외 처리", func() {
+//noinspection GoNilness
+func TestListNodeNil(t *testing.T) {
+	assert.NotPanics(t, func() {
 		var node *ListNode
-		Expect(node.GetVal()).Should(Equal(0))
-		Expect(node.GetNext().GetVal()).Should(Equal(0))
+		assert.Zero(t, node.GetVal())
+		assert.Zero(t, node.GetNext().GetVal())
 	})
-})
+}

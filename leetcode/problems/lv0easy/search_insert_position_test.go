@@ -1,27 +1,28 @@
 package lv0easy
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/ginkgo/extensions/table"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://leetcode.com/problems/search-insert-position/", func() {
-	type testData struct {
-		nums     []int
-		target   int
-		expected int
-	}
+func TestSearchInsert(t *testing.T) {
+	t.Log("https://leetcode.com/problems/search-insert-position/")
 
-	//noinspection SpellCheckingInspection
-	DescribeTable("문제를 풀었다",
-		func(data testData) {
-			actual := searchInsert(data.nums, data.target)
-			Expect(actual).Should(Equal(data.expected))
-		},
-		Entry("0", testData{[]int{1, 3, 5, 6}, 5, 2}),
-		Entry("1", testData{[]int{1, 3, 5, 6}, 2, 1}),
-		Entry("2", testData{[]int{1, 3, 5, 6}, 7, 4}),
-		Entry("3", testData{[]int{1, 3, 5, 6}, 0, 0}),
-	)
-})
+	for i, tt := range []struct {
+		nums   []int
+		target int
+		want   int
+	}{
+		{[]int{1, 3, 5, 6}, 5, 2},
+		{[]int{1, 3, 5, 6}, 2, 1},
+		{[]int{1, 3, 5, 6}, 7, 4},
+		{[]int{1, 3, 5, 6}, 0, 0},
+	} {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			got := searchInsert(tt.nums, tt.target)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}

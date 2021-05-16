@@ -1,14 +1,17 @@
 package lv1medium
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/ginkgo/extensions/table"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 
 	. "github.com/zrma/1d1go/leetcode/problems/common"
 )
 
-var _ = Describe("https://leetcode.com/problems/add-two-numbers/", func() {
+func TestAddTwoNumbers(t *testing.T) {
+	t.Log("https://leetcode.com/problems/add-two-numbers/")
+
 	build := func(arr []int) *ListNode {
 		l := &ListNode{}
 		cur := l
@@ -19,32 +22,32 @@ var _ = Describe("https://leetcode.com/problems/add-two-numbers/", func() {
 		return l.GetNext()
 	}
 
-	type testData struct {
-		l1, l2   []int
-		expected []int
+	for i, tt := range []struct {
+		l1, l2 []int
+		want   []int
+	}{
+		{
+			l1:   []int{2, 4, 3},
+			l2:   []int{5, 6, 4},
+			want: []int{7, 0, 8},
+		},
+		{
+			l1:   []int{5},
+			l2:   []int{5},
+			want: []int{0, 1},
+		},
+		{
+			l1:   nil,
+			l2:   []int{5, 6, 4},
+			want: []int{5, 6, 4},
+		},
+	} {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			l1 := build(tt.l1)
+			l2 := build(tt.l2)
+			want := build(tt.want)
+			got := addTwoNumbers(l1, l2)
+			assert.Equal(t, want.Traversal(), got.Traversal())
+		})
 	}
-
-	DescribeTable("문제를 풀었다.", func(data testData) {
-		l1 := build(data.l1)
-		l2 := build(data.l2)
-		expected := build(data.expected)
-		actual := addTwoNumbers(l1, l2)
-		Expect(actual.Traversal()).Should(Equal(expected.Traversal()))
-	},
-		Entry("정상 동작", testData{
-			l1:       []int{2, 4, 3},
-			l2:       []int{5, 6, 4},
-			expected: []int{7, 0, 8},
-		}),
-		Entry("한 자리 올림", testData{
-			l1:       []int{5},
-			l2:       []int{5},
-			expected: []int{0, 1},
-		}),
-		Entry("예외 처리.", testData{
-			l1:       nil,
-			l2:       []int{5, 6, 4},
-			expected: []int{5, 6, 4},
-		}),
-	)
-})
+}

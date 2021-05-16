@@ -1,24 +1,27 @@
 package lv0easy
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/ginkgo/extensions/table"
-	. "github.com/onsi/gomega"
+	"fmt"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://leetcode.com/problems/reverse-integer/", func() {
-	type testData struct {
-		input, expected int
-	}
+func TestReverse(t *testing.T) {
+	t.Log("https://leetcode.com/problems/reverse-integer/")
 
-	DescribeTable("문제를 풀었다",
-		func(data testData) {
-			actual := reverse(data.input)
-			Expect(actual).Should(Equal(data.expected))
-		},
-		Entry("0", testData{123, 321}),
-		Entry("1", testData{-123, -321}),
-		Entry("2", testData{120, 21}),
-		Entry("3", testData{1534236469, 0}),
-	)
-})
+	for _, tt := range []struct {
+		given int
+		want  int
+	}{
+		{123, 321},
+		{-123, -321},
+		{120, 21},
+		{1534236469, 0},
+	} {
+		t.Run(fmt.Sprintf("%d", tt.given), func(t *testing.T) {
+			got := reverse(tt.given)
+			assert.Equal(t, tt.want, got)
+		})
+	}
+}

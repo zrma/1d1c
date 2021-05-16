@@ -1,20 +1,31 @@
 package lv0easy
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-var _ = Describe("https://leetcode.com/problems/two-sum/", func() {
-	It("문제를 풀었다.", func() {
-		actual := twoSum([]int{2, 7, 11, 15}, 9)
-		Expect(actual).Should(Equal([]int{0, 1}))
-	})
-})
+func TestTwoSum(t *testing.T) {
+	t.Log("https://leetcode.com/problems/two-sum/")
 
-var _ = Describe("https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/", func() {
-	It("문제를 풀었다.", func() {
-		actual := twoSum2InputArrayIsSorted([]int{2, 7, 11, 15}, 9)
-		Expect(actual).Should(Equal([]int{1, 2}))
-	})
-})
+	const target = 9
+	var (
+		nums = []int{2, 7, 11, 15}
+		want = []int{0, 1}
+	)
+	got := twoSum(nums, target)
+	assert.Equal(t, want, got)
+}
+
+func TestTwoSum2InputArrayIsSorted(t *testing.T) {
+	t.Log("https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/")
+
+	var (
+		nums   = []int{2, 7, 11, 15}
+		target = 9
+		want   = []int{1, 2}
+	)
+	got := twoSum2InputArrayIsSorted(nums, target)
+	assert.Equal(t, want, got)
+}
