@@ -1,7 +1,7 @@
 package strings
 
 import (
-	"github.com/zrma/going/utils/str"
+	"1d1go/utils/str"
 )
 
 func equalPrefix(s1, s2 string) bool {

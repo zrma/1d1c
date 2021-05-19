@@ -1,7 +1,7 @@
 package strings
 
 import (
-	"github.com/zrma/going/utils/integer"
+	"1d1go/utils/integer"
 )
 
 func countMap(s string) map[int32]int32 {

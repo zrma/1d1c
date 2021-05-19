@@ -3,7 +3,7 @@ package tutorial30daysofcode
 import (
 	"math"
 
-	"github.com/zrma/going/utils/integer"
+	"1d1go/utils/integer"
 )
 
 type difference struct {

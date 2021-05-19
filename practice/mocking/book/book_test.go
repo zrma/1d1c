@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	. "github.com/zrma/1d1go/practice/mocking/book"
-	"github.com/zrma/1d1go/practice/mocking/mocks"
+	. "1d1go/practice/mocking/book"
+	"1d1go/practice/mocking/mocks"
 )
 
 func TestPlayWithBook(t *testing.T) {

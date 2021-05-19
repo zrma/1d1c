@@ -7,8 +7,9 @@ import (
 	"fmt"
 
 	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/zrma/1d1go/cmd/entgo/ent/group"
-	"github.com/zrma/1d1go/cmd/entgo/ent/predicate"
+
+	"1d1go/cmd/entgo/ent/group"
+	"1d1go/cmd/entgo/ent/predicate"
 )
 
 // GroupUpdate is the builder for updating Group entities.

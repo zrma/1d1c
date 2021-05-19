@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/zrma/going/utils"
+	"1d1go/utils"
 )
 
 func TestLinkedListRemoveDuplicates(t *testing.T) {

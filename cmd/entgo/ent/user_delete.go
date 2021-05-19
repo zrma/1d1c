@@ -5,9 +5,9 @@ package ent
 import (
 	"context"
 
+	"1d1go/cmd/entgo/ent/predicate"
+	"1d1go/cmd/entgo/ent/user"
 	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/zrma/1d1go/cmd/entgo/ent/predicate"
-	"github.com/zrma/1d1go/cmd/entgo/ent/user"
 )
 
 // UserDelete is the builder for deleting a User entity.

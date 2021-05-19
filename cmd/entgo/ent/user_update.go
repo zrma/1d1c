@@ -6,10 +6,10 @@ import (
 	"context"
 	"fmt"
 
+	"1d1go/cmd/entgo/ent/car"
+	"1d1go/cmd/entgo/ent/predicate"
+	"1d1go/cmd/entgo/ent/user"
 	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/zrma/1d1go/cmd/entgo/ent/car"
-	"github.com/zrma/1d1go/cmd/entgo/ent/predicate"
-	"github.com/zrma/1d1go/cmd/entgo/ent/user"
 )
 
 // UserUpdate is the builder for updating User entities.

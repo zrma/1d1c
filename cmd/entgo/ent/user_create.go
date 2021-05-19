@@ -8,8 +8,9 @@ import (
 	"fmt"
 
 	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/zrma/1d1go/cmd/entgo/ent/car"
-	"github.com/zrma/1d1go/cmd/entgo/ent/user"
+
+	"1d1go/cmd/entgo/ent/car"
+	"1d1go/cmd/entgo/ent/user"
 )
 
 // UserCreate is the builder for creating a User entity.

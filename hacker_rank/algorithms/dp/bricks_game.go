@@ -1,7 +1,7 @@
 package dp
 
 import (
-	"github.com/zrma/going/utils/integer"
+	"1d1go/utils/integer"
 )
 
 func bricksGame(arr []int32) int64 {

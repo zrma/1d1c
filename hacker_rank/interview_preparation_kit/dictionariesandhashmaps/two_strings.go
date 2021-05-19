@@ -1,7 +1,7 @@
 package dictionariesandhashmaps
 
 import (
-	"github.com/zrma/going/utils/str"
+	"1d1go/utils/str"
 )
 
 func twoStrings(s1, s2 string) string {

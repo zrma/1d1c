@@ -7,14 +7,13 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/zrma/1d1go/cmd/entgo/ent/migrate"
-
-	"github.com/zrma/1d1go/cmd/entgo/ent/car"
-	"github.com/zrma/1d1go/cmd/entgo/ent/group"
-	"github.com/zrma/1d1go/cmd/entgo/ent/user"
-
 	"github.com/facebookincubator/ent/dialect"
 	"github.com/facebookincubator/ent/dialect/sql"
+
+	"1d1go/cmd/entgo/ent/car"
+	"1d1go/cmd/entgo/ent/group"
+	"1d1go/cmd/entgo/ent/migrate"
+	"1d1go/cmd/entgo/ent/user"
 )
 
 // Client is the client that holds all ent builders.

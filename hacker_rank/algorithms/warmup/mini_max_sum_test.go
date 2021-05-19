@@ -3,8 +3,8 @@ package warmup
 import (
 	"testing"
 
+	"1d1go/utils"
 	"github.com/stretchr/testify/assert"
-	"github.com/zrma/going/utils"
 )
 
 func TestMiniMaxSum(t *testing.T) {

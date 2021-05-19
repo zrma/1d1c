@@ -1,6 +1,6 @@
 package strings
 
-import "github.com/zrma/going/utils/integer"
+import "1d1go/utils/integer"
 
 // https://en.wikipedia.org/wiki/Longest_common_subsequence_problem
 func commonChild(s1, s2 string) int32 {

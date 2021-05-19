@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
+	"1d1go/utils"
 	"github.com/stretchr/testify/assert"
-	"github.com/zrma/going/utils"
 )
 
 func TestCountSwaps(t *testing.T) {

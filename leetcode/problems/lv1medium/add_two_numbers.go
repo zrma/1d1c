@@ -1,7 +1,7 @@
 package lv1medium
 
 import (
-	"github.com/zrma/1d1go/leetcode/problems/common"
+	"1d1go/leetcode/problems/common"
 )
 
 func addTwoNumbers(l1, l2 *common.ListNode) *common.ListNode {

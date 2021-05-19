@@ -8,11 +8,11 @@ import (
 	"fmt"
 	"math"
 
+	"1d1go/cmd/entgo/ent/car"
+	"1d1go/cmd/entgo/ent/group"
+	"1d1go/cmd/entgo/ent/predicate"
+	"1d1go/cmd/entgo/ent/user"
 	"github.com/facebookincubator/ent/dialect/sql"
-	"github.com/zrma/1d1go/cmd/entgo/ent/car"
-	"github.com/zrma/1d1go/cmd/entgo/ent/group"
-	"github.com/zrma/1d1go/cmd/entgo/ent/predicate"
-	"github.com/zrma/1d1go/cmd/entgo/ent/user"
 )
 
 // UserQuery is the builder for querying User entities.

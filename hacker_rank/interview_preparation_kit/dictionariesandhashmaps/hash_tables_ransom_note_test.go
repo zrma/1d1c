@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"testing"
 
+	"1d1go/utils"
 	"github.com/stretchr/testify/assert"
-	"github.com/zrma/going/utils"
 )
 
 func TestCheckMagazine(t *testing.T) {

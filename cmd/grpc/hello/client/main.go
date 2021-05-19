@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 
-	"github.com/zrma/1d1go/cmd/grpc/hello/pb"
+	"1d1go/cmd/grpc/hello/pb"
 )
 
 const (

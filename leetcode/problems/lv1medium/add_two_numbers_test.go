@@ -6,7 +6,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	. "github.com/zrma/1d1go/leetcode/problems/common"
+	. "1d1go/leetcode/problems/common"
 )
 
 func TestAddTwoNumbers(t *testing.T) {

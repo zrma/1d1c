@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/zrma/1d1go/cmd/interface/vehicle"
+	"1d1go/cmd/interface/vehicle"
 )
 
 type car struct {

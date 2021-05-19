@@ -5,4 +5,4 @@ name = "go"
 enabled = true
 
   [analyzers.meta]
-  import_paths = ["github.com/zrma/1d1go"]
+  import_paths = ["1d1go"]

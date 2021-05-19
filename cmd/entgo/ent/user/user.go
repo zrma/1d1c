@@ -3,7 +3,7 @@
 package user
 
 import (
-	"github.com/zrma/1d1go/cmd/entgo/ent/schema"
+	"1d1go/cmd/entgo/ent/schema"
 )
 
 const (

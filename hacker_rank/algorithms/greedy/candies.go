@@ -1,7 +1,7 @@
 package greedy
 
 import (
-	"github.com/zrma/going/utils/integer"
+	"1d1go/utils/integer"
 )
 
 func candies(n int32, arr []int32) int64 {

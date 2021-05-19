@@ -3,7 +3,7 @@ package tutorial30daysofcode
 import (
 	"fmt"
 
-	"github.com/zrma/going/utils/integer"
+	"1d1go/utils/integer"
 )
 
 func exception(n, p int64) error {
