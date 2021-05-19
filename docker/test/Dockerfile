@@ -12,7 +12,7 @@ RUN apt-get -y install --no-install-recommends wget=1.20.3-1ubuntu1 curl=7.68.0-
 RUN apt-get autoremove -y
 RUN apt-get clean && rm -rf /var/cache/apt/* && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
 
-ARG GO_VERSION=1.16
+ARG GO_VERSION=1.16.4
 
 ADD https://dl.google.com/go/go${GO_VERSION}.linux-amd64.tar.gz /usr/local/
 RUN tar -zxf /usr/local/go${GO_VERSION}.linux-amd64.tar.gz -C /usr/local

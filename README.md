@@ -17,7 +17,7 @@
 
 ## Requirement
 
-- [Go](https://golang.org) (v1.15+)
+- [Go](https://golang.org) (v1.16+)
 - [Docker](https://www.docker.com/) (v20.10+)
 
 ## Initialize
