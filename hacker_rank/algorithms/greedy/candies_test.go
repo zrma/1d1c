@@ -15,7 +15,7 @@ import (
 func TestCanDies(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/candies/problem")
 
-	for _, tc := range []struct {
+	for _, tt := range []struct {
 		description string
 		given       []int32
 		want        int64
@@ -46,8 +46,8 @@ func TestCanDies(t *testing.T) {
 			want:        15,
 		},
 	} {
-		got := candies(int32(len(tc.given)), tc.given)
-		assert.Equal(t, tc.want, got)
+		got := candies(int32(len(tt.given)), tt.given)
+		assert.Equal(t, tt.want, got)
 	}
 }
 

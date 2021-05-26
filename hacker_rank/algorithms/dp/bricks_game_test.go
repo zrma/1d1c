@@ -15,7 +15,7 @@ import (
 func TestBricksGame(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/play-game/problem")
 
-	for _, tc := range []struct {
+	for _, tt := range []struct {
 		description string
 		given       []int32
 		want        int64
@@ -51,9 +51,9 @@ func TestBricksGame(t *testing.T) {
 			want:        1001,
 		},
 	} {
-		t.Run(tc.description, func(t *testing.T) {
-			got := bricksGame(tc.given)
-			assert.Equal(t, tc.want, got)
+		t.Run(tt.description, func(t *testing.T) {
+			got := bricksGame(tt.given)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }

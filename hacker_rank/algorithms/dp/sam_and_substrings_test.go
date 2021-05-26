@@ -9,7 +9,7 @@ import (
 func TestSubStrings(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/sam-and-substrings/problem")
 
-	for _, tc := range []struct {
+	for _, tt := range []struct {
 		description string
 		given       string
 		want        int32
@@ -89,9 +89,9 @@ func TestSubStrings(t *testing.T) {
 				4,
 		},
 	} {
-		t.Run(tc.description, func(t *testing.T) {
-			got := substrings(tc.given)
-			assert.Equal(t, tc.want, got)
+		t.Run(tt.description, func(t *testing.T) {
+			got := substrings(tt.given)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
