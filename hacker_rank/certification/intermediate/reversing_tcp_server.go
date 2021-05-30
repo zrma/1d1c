@@ -2,8 +2,8 @@ package intermediate
 
 import (
 	"context"
+	"io"
 	"net"
-	"strings"
 )
 
 const (
@@ -11,40 +11,41 @@ const (
 	network       = "tcp"
 )
 
-func TCPServer(ctx context.Context, ready chan string) {
-	const endpoint = ""
-	addr, err := net.ResolveTCPAddr(network, endpoint)
-	if err != nil {
-		panic(err)
-	}
+type TCPAcceptor interface {
+	AcceptTCP() (*net.TCPConn, error)
+}
 
-	listener, err := net.ListenTCP(network, addr)
-	if err != nil {
-		panic(err)
-	}
+type Logger interface {
+	Error(args ...interface{})
+}
+
+func TCPServer(ctx context.Context, acceptor TCPAcceptor, logger Logger) chan interface{} {
+	waitCh := make(chan interface{})
 	go func() {
-		defer func() {
-			_ = listener.Close()
-		}()
-
+		defer close(waitCh)
 		for ctx.Err() == nil {
-			conn, err := listener.AcceptTCP()
+			conn, err := acceptor.AcceptTCP()
+			if ctx.Err() != nil && ctx.Err() == context.Canceled {
+				return
+			}
 			if err != nil {
-				panic(err)
+				logger.Error("TCPServer", err)
+				return
 			}
 			go handleConn(conn)
 		}
 	}()
-
-	ss := strings.Split(listener.Addr().String(), ":")
-	if len(ss) < 2 {
-		ready <- listener.Addr().String()
-	} else {
-		ready <- ss[len(ss)-1]
-	}
+	return waitCh
 }
 
-func handleConn(conn *net.TCPConn) {
+type Buffer interface {
+	SetReadBuffer(int) error
+	SetWriteBuffer(int) error
+	io.ReadWriter
+	io.Closer
+}
+
+func handleConn(conn Buffer) {
 	defer func() { _ = conn.Close() }()
 	buf := make([]byte, maxBufferSize)
 	if err := conn.SetReadBuffer(maxBufferSize); err != nil {

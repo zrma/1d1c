@@ -18,9 +18,10 @@ require (
 	github.com/golang/protobuf v1.4.2
 	github.com/mattn/go-sqlite3 v1.10.0
 	github.com/panjf2000/ants/v2 v2.3.0
-	github.com/stretchr/testify v1.5.1
+	github.com/stretchr/testify v1.7.0
 	go.uber.org/dig v1.10.0
 	go.uber.org/fx v1.13.1
+	go.uber.org/multierr v1.6.0 // indirect
 	golang.org/x/image v0.0.0-20200119044424-58c23975cae1 // indirect
 	golang.org/x/lint v0.0.0-20200302205851-738671d3881b // indirect
 	golang.org/x/mobile v0.0.0-20190806162312-597adff16ade // indirect
@@ -32,4 +33,5 @@ require (
 	google.golang.org/grpc v1.32.0
 	google.golang.org/grpc/cmd/protoc-gen-go-grpc v0.0.0-20200925170654-e6c98a478e62
 	google.golang.org/protobuf v1.25.0
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )

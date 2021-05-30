@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestModuloFibonacciSequence(t *testing.T) {
@@ -29,12 +30,16 @@ func TestModuloFibonacciSequence(t *testing.T) {
 	} {
 		t.Run(fmt.Sprintf("%d %d", tt.skip, tt.total), func(t *testing.T) {
 			resultChan := make(chan int)
+			defer close(resultChan)
 			requestChan := make(chan bool)
+			defer close(requestChan)
+
 			go ModuloFibonacciSequence(requestChan, resultChan)
 
 			var got []int
 			for i := int32(0); i < tt.skip+tt.total; i++ {
 				start := time.Now().UnixNano()
+
 				requestChan <- true
 				res := <-resultChan
 				if i < tt.skip {
@@ -42,14 +47,38 @@ func TestModuloFibonacciSequence(t *testing.T) {
 				}
 				end := time.Now().UnixNano()
 				timeDiff := (end - start) / 1000000
-				if timeDiff < 3 {
-					fmt.Println("Rate is too high")
-					break
-				}
+				require.Greater(t, timeDiff, int64(3), "Rate is too high")
+
 				got = append(got, res)
 			}
 
 			assert.Equal(t, tt.want, got)
 		})
 	}
+}
+
+func TestModuloFibonacciSequenceReqFalse(t *testing.T) {
+	resultChan := make(chan int)
+	requestChan := make(chan bool)
+	go ModuloFibonacciSequence(requestChan, resultChan)
+
+	waitChan := make(chan interface{})
+	go func() {
+		defer close(waitChan)
+
+		start := time.Now().UnixNano()
+		got := <-resultChan
+		require.Zero(t, got)
+		end := time.Now().UnixNano()
+		timeDiff := (end - start) / 1000000
+		assert.Greater(t, timeDiff, int64(3))
+	}()
+	requestChan <- false
+
+	time.Sleep(time.Millisecond * 10)
+
+	close(requestChan)
+	close(resultChan)
+
+	<-waitChan
 }

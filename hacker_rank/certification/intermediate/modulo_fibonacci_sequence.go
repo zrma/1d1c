@@ -1,6 +1,8 @@
 package intermediate
 
-import "time"
+import (
+	"time"
+)
 
 func ModuloFibonacciSequence(requestChan chan bool, resultChan chan int) {
 	var x0 = 1
