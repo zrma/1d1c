@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"1d1go/utils"
 	"github.com/stretchr/testify/assert"
+
+	"1d1go/utils"
 )
 
 func TestSorting(t *testing.T) {
@@ -33,10 +34,11 @@ func TestSorting(t *testing.T) {
 		},
 	} {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
-			err := utils.PrintTest(func() {
+			got, err := utils.GetPrinted(func() {
 				sorting(tt.given)
-			}, tt.want)
+			})
 			assert.NoError(t, err)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }

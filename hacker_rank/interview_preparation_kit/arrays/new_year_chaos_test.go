@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"1d1go/utils"
 	"github.com/stretchr/testify/assert"
+
+	"1d1go/utils"
 )
 
 func TestMinimumBribes(t *testing.T) {
@@ -22,12 +23,12 @@ func TestMinimumBribes(t *testing.T) {
 		{[]int32{1, 2, 5, 3, 4, 7, 8, 6}, "4"},
 	} {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
-			err := utils.PrintTest(func() {
+			want := []string{tt.want}
+			got, err := utils.GetPrinted(func() {
 				minimumBribes(tt.given)
-			}, []string{
-				tt.want,
 			})
 			assert.NoError(t, err)
+			assert.Equal(t, want, got)
 		})
 	}
 }

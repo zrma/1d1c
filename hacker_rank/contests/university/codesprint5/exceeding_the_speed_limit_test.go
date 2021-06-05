@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"1d1go/utils"
 	"github.com/stretchr/testify/assert"
+
+	"1d1go/utils"
 )
 
 func TestExceedingTheSpeedLimit(t *testing.T) {
@@ -19,10 +20,11 @@ func TestExceedingTheSpeedLimit(t *testing.T) {
 	} {
 		t.Run(fmt.Sprintf("%d", tt.given), func(t *testing.T) {
 			want := []string{tt.want}
-			err := utils.PrintTest(func() {
+			got, err := utils.GetPrinted(func() {
 				exceedingTheSpeedLimit(tt.given)
-			}, want)
+			})
 			assert.NoError(t, err)
+			assert.Equal(t, want, got)
 		})
 	}
 }

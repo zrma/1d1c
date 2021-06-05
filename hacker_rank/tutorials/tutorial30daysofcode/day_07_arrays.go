@@ -9,6 +9,4 @@ func printReverse(arr []int32) {
 			fmt.Printf(" ")
 		}
 	}
-
-	fmt.Printf("\n")
 }

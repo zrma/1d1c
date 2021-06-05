@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"1d1go/utils"
 	"github.com/stretchr/testify/assert"
+
+	"1d1go/utils"
 )
 
 func TestClassAndInstance(t *testing.T) {
@@ -50,10 +51,11 @@ func TestClassAndInstance(t *testing.T) {
 		},
 	} {
 		t.Run(fmt.Sprintf("%d", tt.given), func(t *testing.T) {
-			err := utils.PrintTest(func() {
+			got, err := utils.GetPrinted(func() {
 				classAndInstance(tt.given)
-			}, tt.want)
+			})
 			assert.NoError(t, err)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }

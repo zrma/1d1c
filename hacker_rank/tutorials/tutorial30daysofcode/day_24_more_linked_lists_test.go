@@ -32,10 +32,11 @@ func TestLinkedListRemoveDuplicates(t *testing.T) {
 			}
 
 			list.head = removeDuplicates(list.head)
-			err := utils.PrintTest(func() {
+			got, err := utils.GetPrinted(func() {
 				list.display()
-			}, tt.want)
+			})
 			assert.NoError(t, err)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }

@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"1d1go/utils"
 	"github.com/stretchr/testify/assert"
+
+	"1d1go/utils"
 )
 
 func TestAbstractClasses(t *testing.T) {
@@ -17,13 +18,14 @@ func TestAbstractClasses(t *testing.T) {
 		author = "Paulo Coelho"
 		price  = 248
 	)
-
-	err := utils.PrintTest(func() {
-		abstractClasses(title, author, price)
-	}, []string{
+	want := []string{
 		fmt.Sprintf("Title: %s", title),
 		fmt.Sprintf("Author: %s", author),
 		fmt.Sprintf("Price: %d", price),
+	}
+	got, err := utils.GetPrinted(func() {
+		abstractClasses(title, author, price)
 	})
 	assert.NoError(t, err)
+	assert.Equal(t, want, got)
 }

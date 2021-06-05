@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"1d1go/utils"
 	"github.com/stretchr/testify/assert"
+
+	"1d1go/utils"
 )
 
 func TestBinaryNumbers(t *testing.T) {
@@ -19,10 +20,12 @@ func TestBinaryNumbers(t *testing.T) {
 		{13, "2"},
 	} {
 		t.Run(fmt.Sprintf("%d", tt.given), func(t *testing.T) {
-			err := utils.PrintTest(func() {
+			want := []string{tt.want}
+			got, err := utils.GetPrinted(func() {
 				binaryNumbers(tt.given)
-			}, []string{tt.want})
+			})
 			assert.NoError(t, err)
+			assert.Equal(t, want, got)
 		})
 	}
 }

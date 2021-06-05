@@ -10,8 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"1d1go/utils"
 	"github.com/stretchr/testify/assert"
+
+	"1d1go/utils"
 )
 
 func TestCountSwaps(t *testing.T) {
@@ -22,24 +23,24 @@ func TestCountSwaps(t *testing.T) {
 		want  []string
 	}{
 		{
-			[]int32{6, 4, 1},
-			[]string{
+			given: []int32{6, 4, 1},
+			want: []string{
 				"Array is sorted in 3 swaps.",
 				"First Element: 1",
 				"Last Element: 6",
 			},
 		},
 		{
-			[]int32{1, 2, 3},
-			[]string{
+			given: []int32{1, 2, 3},
+			want: []string{
 				"Array is sorted in 0 swaps.",
 				"First Element: 1",
 				"Last Element: 3",
 			},
 		},
 		{
-			[]int32{3, 2, 1},
-			[]string{
+			given: []int32{3, 2, 1},
+			want: []string{
 				"Array is sorted in 3 swaps.",
 				"First Element: 1",
 				"Last Element: 3",
@@ -47,10 +48,11 @@ func TestCountSwaps(t *testing.T) {
 		},
 	} {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
-			err := utils.PrintTest(func() {
+			got, err := utils.GetPrinted(func() {
 				countSwaps(tt.given)
-			}, tt.want)
+			})
 			assert.NoError(t, err)
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }
@@ -78,13 +80,15 @@ func TestCountSwapsPerformance(t *testing.T) {
 
 		assert.Len(t, given, 528)
 
-		err = utils.PrintTest(func() {
-			countSwaps(given)
-		}, []string{
+		want := []string{
 			"Array is sorted in 68472 swaps.",
 			"First Element: 4842",
 			"Last Element: 1994569",
+		}
+		got, err := utils.GetPrinted(func() {
+			countSwaps(given)
 		})
-		return assert.NoError(t, err)
+		assert.NoError(t, err)
+		return assert.Equal(t, want, got)
 	}, time.Second, time.Millisecond*100, "시간 초과")
 }

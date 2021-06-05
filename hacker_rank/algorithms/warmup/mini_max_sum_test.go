@@ -3,17 +3,18 @@ package warmup
 import (
 	"testing"
 
-	"1d1go/utils"
 	"github.com/stretchr/testify/assert"
+
+	"1d1go/utils"
 )
 
 func TestMiniMaxSum(t *testing.T) {
 	t.Log("https://www.hackerrank.com/challenges/mini-max-sum/problem")
 
-	err := utils.PrintTest(func() {
+	want := []string{"10 14"}
+	got, err := utils.GetPrinted(func() {
 		miniMaxSum([]int64{1, 2, 3, 4, 5})
-	}, []string{
-		"10 14",
 	})
 	assert.NoError(t, err)
+	assert.Equal(t, want, got)
 }

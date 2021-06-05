@@ -1,17 +1,15 @@
 package utils
 
 import (
-	"errors"
 	"io/ioutil"
 	"os"
 	"strings"
-
-	"github.com/go-test/deep"
+	"sync"
 )
 
-// PrintTest 함수는 인자로 전달하는 함수 내부에서 표준 출력으로 출력한 문자열과 두 번째 인자로 전달한 문자열을 비교한다.
-// 만약 그 내용이 다르면 오류를 반환한다.
-func PrintTest(f func(), expected []string) (err error) {
+// GetPrinted 함수는
+// 첫 번째 인자로 전달한 함수(f)의 내부에서 표준 출력으로 출력한 문자열을 반환한다.
+func GetPrinted(f func()) ([]string, error) {
 	r, w, _ := os.Pipe()
 	tmp := os.Stdout
 	defer func() {
@@ -19,26 +17,27 @@ func PrintTest(f func(), expected []string) (err error) {
 		_ = r.Close()
 	}()
 	os.Stdout = w
+
+	var wg sync.WaitGroup
+	wg.Add(1)
 	go func() {
 		defer func() {
 			_ = w.Close()
+			wg.Done()
 		}()
 		f()
 	}()
-	var stdout []byte
-	stdout, err = ioutil.ReadAll(r)
+	wg.Wait()
+	stdout, err := readAll(r)
 	if err != nil {
-		return err
+		return nil, err
 	}
-
 	const lineFeed = "\n"
 	got := strings.Split(string(stdout), lineFeed)
 	if got[len(got)-1] == "" {
 		got = got[:len(got)-1]
 	}
-	diff := deep.Equal(got, expected)
-	if diff != nil {
-		return errors.New(strings.Join(diff, lineFeed))
-	}
-	return nil
+	return got, nil
 }
+
+var readAll = ioutil.ReadAll

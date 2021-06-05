@@ -1,42 +1,43 @@
-package utils_test
+package utils
 
 import (
+	"errors"
 	"fmt"
+	"io"
+	"io/ioutil"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-
-	"1d1go/utils"
 )
 
 func TestPrintTest(t *testing.T) {
 	t.Run("정상 동작", func(t *testing.T) {
-		err := utils.PrintTest(func() {
-			fmt.Println("test")
-		}, []string{
-			"test",
+		const given = "test"
+		want := []string{given}
+		got, err := GetPrinted(func() {
+			fmt.Println(given)
 		})
 		assert.NoError(t, err)
+		assert.Equal(t, want, got)
 	})
 
 	t.Run("반환값 없음", func(t *testing.T) {
-		err := utils.PrintTest(func() {
-		}, []string{})
+		got, err := GetPrinted(func() {})
 		assert.NoError(t, err)
+		assert.Empty(t, got)
 	})
 
-	t.Run("반환값이 있어야 하는데 안 나오는 경우", func(t *testing.T) {
-		err := utils.PrintTest(func() {
-		}, []string{
-			"failed",
+	t.Run("readAll 에러 처리", func(t *testing.T) {
+		wantErr := errors.New("this is sparta")
+		readAll = func(r io.Reader) ([]byte, error) {
+			assert.NotNil(t, r)
+			return nil, wantErr
+		}
+		defer func() { readAll = ioutil.ReadAll }()
+		got, err := GetPrinted(func() {
+			fmt.Println("somewhat")
 		})
-		assert.Error(t, err)
-	})
-
-	t.Run("반환값이 없어야 하는데 나오는 경우", func(t *testing.T) {
-		err := utils.PrintTest(func() {
-			fmt.Println("test")
-		}, []string{})
-		assert.Error(t, err)
+		assert.Equal(t, wantErr, err)
+		assert.Empty(t, got)
 	})
 }

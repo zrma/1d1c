@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"testing"
 
-	"1d1go/utils"
 	"github.com/stretchr/testify/assert"
+
+	"1d1go/utils"
 )
 
 func TestCheckMagazine(t *testing.T) {
@@ -32,10 +33,12 @@ func TestCheckMagazine(t *testing.T) {
 		},
 	} {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
-			err := utils.PrintTest(func() {
+			want := []string{tt.want}
+			got, err := utils.GetPrinted(func() {
 				checkMagazine(tt.magazine, tt.note)
-			}, []string{tt.want})
+			})
 			assert.NoError(t, err)
+			assert.Equal(t, want, got)
 		})
 	}
 }

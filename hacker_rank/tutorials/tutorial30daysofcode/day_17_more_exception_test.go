@@ -22,12 +22,12 @@ func TestMoreException(t *testing.T) {
 		{-1, 3, "n and p should be non-negative"},
 	} {
 		t.Run(fmt.Sprintf("%d %d", tt.n, tt.p), func(t *testing.T) {
-			err := utils.PrintTest(func() {
+			want := []string{tt.want}
+			got, err := utils.GetPrinted(func() {
 				moreException(tt.n, tt.p)
-			}, []string{
-				tt.want,
 			})
 			assert.NoError(t, err)
+			assert.Equal(t, want, got)
 		})
 	}
 }

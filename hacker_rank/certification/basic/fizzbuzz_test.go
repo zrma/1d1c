@@ -9,9 +9,7 @@ import (
 )
 
 func TestFizzBuzz(t *testing.T) {
-	err := utils.PrintTest(func() {
-		fizzBuzz(15)
-	}, []string{
+	want := []string{
 		"1",
 		"2",
 		"Fizz",
@@ -27,6 +25,10 @@ func TestFizzBuzz(t *testing.T) {
 		"13",
 		"14",
 		"FizzBuzz",
+	}
+	got, err := utils.GetPrinted(func() {
+		fizzBuzz(15)
 	})
 	assert.NoError(t, err)
+	assert.Equal(t, want, got)
 }
